@@ -1,0 +1,3647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta
+        name="description"
+        content="Track your ZamCargo shipment using the tracking number provided by the billing team."
+    >
+
+    <title>Track Shipment | ZamCargo</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Bootstrap Icons -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+        :root {
+            --primary: #001d4d;
+            --primary-dark: #001338;
+            --primary-light: #07326d;
+
+            --accent: #d89216;
+            --accent-light: #f0ad34;
+
+            --white: #ffffff;
+            --page-background: #f4f6fa;
+            --card-background: #ffffff;
+
+            --text-dark: #18243a;
+            --text-muted: #748097;
+            --border: #e5eaf2;
+
+            --success: #159957;
+            --success-light: #e7f8ef;
+
+            --warning: #d89216;
+            --warning-light: #fff7e8;
+
+            --danger: #d64f4f;
+            --danger-light: #fff0f0;
+
+            --info: #3478d4;
+            --info-light: #edf5ff;
+
+            --shadow:
+                0 12px 35px
+                rgba(0, 29, 77, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+            font-family:
+                "Segoe UI",
+                sans-serif;
+
+            -webkit-tap-highlight-color:
+                transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+
+            background:
+                var(--page-background);
+
+            color:
+                var(--text-dark);
+        }
+
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button,
+        a {
+            touch-action: manipulation;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* =====================================
+           Desktop Sidebar
+        ===================================== */
+
+        .desktop-sidebar {
+            position: fixed;
+            inset: 0 auto 0 0;
+            z-index: 1000;
+
+            width: 255px;
+            padding: 24px 18px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(0, 29, 77, 0.98),
+                    rgba(0, 19, 54, 1)
+                );
+
+            color: var(--white);
+
+            display: none;
+            flex-direction: column;
+        }
+
+        .sidebar-logo-box {
+            height: 70px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 12px;
+            margin-bottom: 24px;
+        }
+
+        .sidebar-logo {
+            width: 135px;
+            max-height: 65px;
+            object-fit: contain;
+        }
+
+        .desktop-navigation {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .desktop-nav-link {
+            min-height: 50px;
+            padding: 0 15px;
+
+            border-radius: 14px;
+
+            color:
+                rgba(255, 255, 255, 0.76);
+
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            font-size: 0.94rem;
+            font-weight: 650;
+
+            transition: 0.25s ease;
+        }
+
+        .desktop-nav-link i {
+            width: 22px;
+            font-size: 1.15rem;
+        }
+
+        .desktop-nav-link:hover,
+        .desktop-nav-link.active {
+            background:
+                rgba(255, 255, 255, 0.12);
+
+            color: var(--white);
+        }
+
+        .desktop-nav-link.active {
+            box-shadow:
+                inset 4px 0 0
+                var(--accent);
+        }
+
+        .desktop-sidebar-footer {
+            margin-top: auto;
+        }
+
+        .sidebar-support {
+            padding: 17px;
+            border-radius: 17px;
+
+            background:
+                rgba(255, 255, 255, 0.09);
+        }
+
+        .sidebar-support > i {
+            color: var(--accent-light);
+            font-size: 1.4rem;
+        }
+
+        .sidebar-support h3 {
+            margin: 10px 0 4px;
+            font-size: 0.94rem;
+            font-weight: 750;
+        }
+
+        .sidebar-support p {
+            margin: 0 0 12px;
+
+            color:
+                rgba(255, 255, 255, 0.68);
+
+            font-size: 0.76rem;
+            line-height: 1.45;
+        }
+
+        .sidebar-support a {
+            color: var(--white);
+            font-size: 0.8rem;
+            font-weight: 750;
+        }
+
+        /* =====================================
+           Main Layout
+        ===================================== */
+
+        .main-wrapper {
+            width: 100%;
+            min-height: 100vh;
+            padding-bottom: 96px;
+        }
+
+        /* =====================================
+           Mobile Header
+        ===================================== */
+
+        .mobile-header {
+            position: sticky;
+            top: 0;
+            z-index: 900;
+
+            min-height: 72px;
+
+            padding:
+                max(
+                    10px,
+                    env(safe-area-inset-top)
+                )
+                15px
+                10px;
+
+            border-bottom:
+                1px solid var(--border);
+
+            background:
+                rgba(255, 255, 255, 0.96);
+
+            backdrop-filter:
+                blur(16px);
+
+            -webkit-backdrop-filter:
+                blur(16px);
+
+            display: grid;
+            grid-template-columns:
+                44px 1fr 44px;
+
+            align-items: center;
+        }
+
+        .header-button {
+            width: 44px;
+            height: 44px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 14px;
+
+            background: var(--white);
+            color: var(--primary);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.16rem;
+        }
+
+        .header-button:active {
+            transform: scale(0.96);
+            background: #f3f6fb;
+        }
+
+        .mobile-header-title {
+            padding: 0 8px;
+            text-align: center;
+        }
+
+        .mobile-header-title h1 {
+            margin: 0;
+
+            color: var(--primary);
+
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .mobile-header-title p {
+            margin: 3px 0 0;
+
+            color: var(--text-muted);
+
+            font-size: 0.65rem;
+        }
+
+        /* =====================================
+           Desktop Header
+        ===================================== */
+
+        .desktop-header {
+            display: none;
+
+            min-height: 82px;
+            padding: 0 32px;
+
+            border-bottom:
+                1px solid var(--border);
+
+            background: var(--white);
+
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .desktop-page-title h1 {
+            margin: 0;
+
+            color: var(--primary);
+
+            font-size: 1.45rem;
+            font-weight: 800;
+        }
+
+        .desktop-page-title p {
+            margin: 4px 0 0;
+
+            color: var(--text-muted);
+
+            font-size: 0.83rem;
+        }
+
+        .desktop-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .desktop-profile-info {
+            text-align: right;
+        }
+
+        .desktop-profile-info strong {
+            display: block;
+
+            color: var(--text-dark);
+
+            font-size: 0.87rem;
+        }
+
+        .desktop-profile-info span {
+            color: var(--text-muted);
+            font-size: 0.72rem;
+        }
+
+        .profile-avatar {
+            width: 44px;
+            height: 44px;
+
+            border:
+                2px solid
+                rgba(216, 146, 22, 0.3);
+
+            border-radius: 50%;
+
+            background: var(--primary);
+            color: var(--white);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 0.88rem;
+            font-weight: 800;
+        }
+
+        /* =====================================
+           Page Content
+        ===================================== */
+
+        .page-content {
+            width: 100%;
+            max-width: 1060px;
+
+            margin: auto;
+            padding: 18px 14px 30px;
+        }
+
+        /* Hero */
+
+        .tracking-intro {
+            position: relative;
+            overflow: hidden;
+
+            padding: 23px 19px;
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 29, 77, 0.97),
+                    rgba(7, 50, 109, 0.91)
+                ),
+                url(
+                    "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d"
+                );
+
+            background-size: cover;
+            background-position: center;
+
+            color: var(--white);
+
+            box-shadow: var(--shadow);
+        }
+
+        .tracking-intro::before {
+            content: "";
+
+            position: absolute;
+            right: -45px;
+            bottom: -88px;
+
+            width: 180px;
+            height: 180px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(216, 146, 22, 0.17);
+        }
+
+        .tracking-intro::after {
+            content: "";
+
+            position: absolute;
+            top: -62px;
+            right: -52px;
+
+            width: 165px;
+            height: 165px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255, 255, 255, 0.07);
+        }
+
+        .tracking-intro-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .intro-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            min-height: 28px;
+
+            padding: 0 11px;
+            margin-bottom: 13px;
+
+            border-radius: 30px;
+
+            background:
+                rgba(255, 255, 255, 0.13);
+
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .tracking-intro h2 {
+            margin: 0 0 8px;
+
+            font-size: 1.55rem;
+            font-weight: 850;
+        }
+
+        .tracking-intro h2 span {
+            color: var(--accent-light);
+        }
+
+        .tracking-intro p {
+            max-width: 580px;
+            margin: 0;
+
+            color:
+                rgba(255, 255, 255, 0.77);
+
+            font-size: 0.83rem;
+            line-height: 1.55;
+        }
+
+        /* Tracking Search Card */
+
+        .tracking-search-card {
+            position: relative;
+            z-index: 3;
+
+            margin-top: 15px;
+            padding: 18px 16px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 21px;
+
+            background: var(--white);
+
+            box-shadow: var(--shadow);
+        }
+
+        .search-heading {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+
+            margin-bottom: 17px;
+        }
+
+        .search-heading-icon {
+            width: 46px;
+            height: 46px;
+            flex-shrink: 0;
+
+            border-radius: 15px;
+
+            background:
+                rgba(0, 29, 77, 0.08);
+
+            color: var(--primary);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.15rem;
+        }
+
+        .search-heading h2 {
+            margin: 2px 0 4px;
+
+            color: var(--primary);
+
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .search-heading p {
+            margin: 0;
+
+            color: var(--text-muted);
+
+            font-size: 0.71rem;
+            line-height: 1.45;
+        }
+
+        .tracking-form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .tracking-input-wrapper {
+            position: relative;
+        }
+
+        .tracking-input-icon {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+
+            transform:
+                translateY(-50%);
+
+            color:
+                rgba(0, 29, 77, 0.62);
+
+            font-size: 1rem;
+
+            pointer-events: none;
+        }
+
+        .tracking-input {
+            width: 100%;
+            height: 58px;
+
+            padding:
+                0 47px 0 44px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 15px;
+            outline: none;
+
+            background: #f9fafc;
+            color: var(--primary);
+
+            font-size: 16px;
+            font-weight: 650;
+
+            letter-spacing: 0.03em;
+
+            transition: 0.22s ease;
+        }
+
+        .tracking-input::placeholder {
+            color: #8a94a5;
+            font-weight: 400;
+            letter-spacing: normal;
+        }
+
+        .tracking-input:focus {
+            border-color: var(--accent);
+
+            background: var(--white);
+
+            box-shadow:
+                0 0 0 4px
+                rgba(216, 146, 22, 0.14);
+        }
+
+        .tracking-input.invalid {
+            border-color: var(--danger);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(214, 79, 79, 0.1);
+        }
+
+        .clear-input-button {
+            position: absolute;
+            top: 50%;
+            right: 7px;
+
+            width: 43px;
+            height: 43px;
+
+            border: none;
+            border-radius: 12px;
+
+            background: transparent;
+            color: var(--text-muted);
+
+            display: none;
+            align-items: center;
+            justify-content: center;
+
+            transform:
+                translateY(-50%);
+        }
+
+        .clear-input-button.visible {
+            display: flex;
+        }
+
+        .clear-input-button:active {
+            background: #eef2f7;
+        }
+
+        .track-button {
+            min-height: 58px;
+
+            border: none;
+            border-radius: 15px;
+
+            background: var(--primary);
+            color: var(--white);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            font-size: 0.9rem;
+            font-weight: 800;
+
+            transition: 0.2s ease;
+        }
+
+        .track-button:active {
+            transform: scale(0.985);
+        }
+
+        .track-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .tracking-helper {
+            display: flex;
+            align-items: flex-start;
+            gap: 7px;
+
+            margin-top: 10px;
+
+            color: var(--text-muted);
+
+            font-size: 0.68rem;
+            line-height: 1.45;
+        }
+
+        .tracking-helper i {
+            margin-top: 1px;
+            color: var(--info);
+        }
+
+        .field-error {
+            display: none;
+            margin-top: 6px;
+
+            color: var(--danger);
+
+            font-size: 0.7rem;
+        }
+
+        .field-error.visible {
+            display: block;
+        }
+
+        /* Empty State */
+
+        .empty-state {
+            margin-top: 15px;
+            padding: 30px 18px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 22px;
+
+            background: var(--white);
+
+            text-align: center;
+
+            box-shadow:
+                0 8px 25px
+                rgba(0, 29, 77, 0.05);
+        }
+
+        .empty-state-icon {
+            width: 72px;
+            height: 72px;
+
+            margin: 0 auto 17px;
+
+            border-radius: 23px;
+
+            background:
+                rgba(0, 29, 77, 0.07);
+
+            color: var(--primary);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.75rem;
+        }
+
+        .empty-state h2 {
+            margin-bottom: 7px;
+
+            color: var(--primary);
+
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .empty-state p {
+            max-width: 430px;
+
+            margin: auto;
+
+            color: var(--text-muted);
+
+            font-size: 0.75rem;
+            line-height: 1.55;
+        }
+
+        /* Tracking Results */
+
+        .tracking-results {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .tracking-results.visible {
+            display: block;
+            animation: revealResults 0.35s ease;
+        }
+
+        @keyframes revealResults {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Status Card */
+
+        .status-card {
+            position: relative;
+            overflow: hidden;
+
+            padding: 20px 17px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 22px;
+
+            background: var(--white);
+
+            box-shadow: var(--shadow);
+        }
+
+        .status-card::after {
+            content: "";
+
+            position: absolute;
+            top: -44px;
+            right: -45px;
+
+            width: 130px;
+            height: 130px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(52, 120, 212, 0.07);
+        }
+
+        .status-header {
+            position: relative;
+            z-index: 2;
+
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+
+            margin-bottom: 19px;
+        }
+
+        .status-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            min-width: 0;
+        }
+
+        .status-icon {
+            width: 49px;
+            height: 49px;
+            flex-shrink: 0;
+
+            border-radius: 16px;
+
+            background: var(--info-light);
+            color: var(--info);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.2rem;
+        }
+
+        .status-title span {
+            display: block;
+
+            margin-bottom: 4px;
+
+            color: var(--text-muted);
+
+            font-size: 0.66rem;
+        }
+
+        .status-title h2 {
+            margin: 0;
+
+            color: var(--primary);
+
+            font-size: 0.96rem;
+            font-weight: 850;
+
+            overflow-wrap: anywhere;
+        }
+
+        .status-badge {
+            min-height: 29px;
+
+            padding: 0 11px;
+
+            border-radius: 30px;
+
+            background: var(--warning-light);
+            color: #956006;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 0.66rem;
+            font-weight: 850;
+            white-space: nowrap;
+        }
+
+        .status-message {
+            position: relative;
+            z-index: 2;
+
+            padding: 14px;
+
+            border-radius: 16px;
+
+            background: #f7f9fc;
+        }
+
+        .status-message strong {
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: var(--primary);
+
+            font-size: 0.82rem;
+        }
+
+        .status-message p {
+            margin: 0;
+
+            color: var(--text-muted);
+
+            font-size: 0.71rem;
+            line-height: 1.5;
+        }
+
+        /* Route Card */
+
+        .route-card {
+            margin-top: 13px;
+            padding: 18px 16px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 21px;
+
+            background: var(--white);
+
+            box-shadow:
+                0 8px 25px
+                rgba(0, 29, 77, 0.05);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+
+            margin-bottom: 16px;
+        }
+
+        .section-heading h2 {
+            margin: 0;
+
+            color: var(--primary);
+
+            font-size: 0.95rem;
+            font-weight: 800;
+        }
+
+        .section-heading span {
+            color: var(--text-muted);
+            font-size: 0.67rem;
+        }
+
+        .shipment-route {
+            display: grid;
+            grid-template-columns:
+                1fr 42px 1fr;
+
+            align-items: center;
+            gap: 7px;
+
+            padding: 15px;
+
+            border-radius: 17px;
+
+            background: #f7f9fc;
+        }
+
+        .route-location:last-child {
+            text-align: right;
+        }
+
+        .route-location span {
+            display: block;
+
+            color: var(--text-muted);
+
+            font-size: 0.64rem;
+        }
+
+        .route-location strong {
+            display: block;
+
+            margin-top: 4px;
+
+            color: var(--primary);
+
+            font-size: 0.82rem;
+            line-height: 1.35;
+        }
+
+        .route-icon {
+            color: var(--accent);
+
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        /* Progress */
+
+        .shipment-progress {
+            margin-top: 19px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+
+            margin-bottom: 8px;
+        }
+
+        .progress-info span {
+            color: var(--text-muted);
+            font-size: 0.68rem;
+        }
+
+        .progress-info strong {
+            color: var(--primary);
+            font-size: 0.7rem;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 9px;
+
+            overflow: hidden;
+
+            border-radius: 30px;
+            background: #e9edf4;
+        }
+
+        .progress-bar-custom {
+            width: 68%;
+            height: 100%;
+
+            border-radius: inherit;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--primary),
+                    var(--accent)
+                );
+
+            transition:
+                width 0.6s ease;
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+
+            margin-top: 8px;
+
+            color: var(--text-muted);
+
+            font-size: 0.61rem;
+        }
+
+        /* Delivery Summary */
+
+        .delivery-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 10px;
+            margin-top: 13px;
+        }
+
+        .delivery-card {
+            min-height: 105px;
+
+            padding: 14px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 17px;
+
+            background: var(--white);
+
+            box-shadow:
+                0 7px 20px
+                rgba(0, 29, 77, 0.04);
+        }
+
+        .delivery-card-icon {
+            width: 38px;
+            height: 38px;
+
+            margin-bottom: 11px;
+
+            border-radius: 12px;
+
+            background: var(--info-light);
+            color: var(--info);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 0.95rem;
+        }
+
+        .delivery-card:nth-child(2)
+        .delivery-card-icon {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .delivery-card span {
+            display: block;
+
+            margin-bottom: 4px;
+
+            color: var(--text-muted);
+
+            font-size: 0.64rem;
+        }
+
+        .delivery-card strong {
+            display: block;
+
+            color: var(--primary);
+
+            font-size: 0.79rem;
+            line-height: 1.35;
+        }
+
+        /* Main Columns */
+
+        .tracking-columns {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 13px;
+
+            margin-top: 13px;
+        }
+
+        /* Timeline */
+
+        .timeline-card {
+            padding: 18px 16px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 21px;
+
+            background: var(--white);
+
+            box-shadow:
+                0 8px 25px
+                rgba(0, 29, 77, 0.05);
+        }
+
+        .timeline-list {
+            position: relative;
+        }
+
+        .timeline-item {
+            position: relative;
+
+            display: grid;
+            grid-template-columns:
+                42px 1fr;
+
+            gap: 12px;
+
+            padding-bottom: 23px;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-marker {
+            position: relative;
+            z-index: 2;
+
+            width: 42px;
+            height: 42px;
+
+            border-radius: 14px;
+
+            background: #eef2f7;
+            color: #9aa5b7;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 0.95rem;
+        }
+
+        .timeline-item:not(:last-child)
+        .timeline-marker::after {
+            content: "";
+
+            position: absolute;
+            top: 42px;
+            left: 50%;
+
+            width: 2px;
+            height: 23px;
+
+            background: var(--border);
+
+            transform:
+                translateX(-50%);
+        }
+
+        .timeline-item.completed
+        .timeline-marker {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .timeline-item.completed:not(:last-child)
+        .timeline-marker::after {
+            background:
+                rgba(21, 153, 87, 0.35);
+        }
+
+        .timeline-item.current
+        .timeline-marker {
+            background: var(--warning-light);
+            color: var(--warning);
+
+            box-shadow:
+                0 0 0 4px
+                rgba(216, 146, 22, 0.1);
+        }
+
+        .timeline-content {
+            min-width: 0;
+            padding-top: 2px;
+        }
+
+        .timeline-content h3 {
+            margin: 0 0 4px;
+
+            color: var(--primary);
+
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+
+        .timeline-content p {
+            margin: 0 0 5px;
+
+            color: var(--text-muted);
+
+            font-size: 0.68rem;
+            line-height: 1.45;
+        }
+
+        .timeline-time {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+
+            color: #95a0b2;
+
+            font-size: 0.62rem;
+        }
+
+        /* Shipment Details */
+
+        .details-card {
+            padding: 18px 16px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 21px;
+
+            background: var(--white);
+
+            box-shadow:
+                0 8px 25px
+                rgba(0, 29, 77, 0.05);
+        }
+
+        .detail-row {
+            display: grid;
+            grid-template-columns:
+                125px 1fr;
+
+            gap: 12px;
+
+            padding: 11px 0;
+
+            border-bottom:
+                1px solid var(--border);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-row span {
+            color: var(--text-muted);
+            font-size: 0.69rem;
+        }
+
+        .detail-row strong {
+            color: var(--text-dark);
+
+            font-size: 0.72rem;
+            font-weight: 750;
+
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        /* Billing Note */
+
+        .billing-note {
+            display: grid;
+            grid-template-columns:
+                43px 1fr;
+
+            gap: 12px;
+
+            margin-top: 13px;
+            padding: 15px;
+
+            border:
+                1px solid
+                rgba(52, 120, 212, 0.2);
+
+            border-radius: 17px;
+
+            background: var(--info-light);
+        }
+
+        .billing-note-icon {
+            width: 43px;
+            height: 43px;
+
+            border-radius: 13px;
+
+            background:
+                rgba(52, 120, 212, 0.13);
+
+            color: var(--info);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.05rem;
+        }
+
+        .billing-note h3 {
+            margin: 1px 0 5px;
+
+            color: #245a9e;
+
+            font-size: 0.8rem;
+            font-weight: 850;
+        }
+
+        .billing-note p {
+            margin: 0;
+
+            color: #52749f;
+
+            font-size: 0.7rem;
+            line-height: 1.5;
+        }
+
+        /* Actions */
+
+        .tracking-actions {
+            display: grid;
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 10px;
+            margin-top: 13px;
+        }
+
+        .secondary-action,
+        .primary-action {
+            min-height: 54px;
+
+            border-radius: 15px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+
+        .secondary-action {
+            border:
+                1px solid var(--border);
+
+            background: var(--white);
+            color: var(--primary);
+        }
+
+        .primary-action {
+            border: none;
+
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .secondary-action:active,
+        .primary-action:active {
+            transform: scale(0.98);
+        }
+
+        /* =====================================
+           Bottom Navigation
+        ===================================== */
+
+        .bottom-navigation {
+            position: fixed;
+            left: 10px;
+            right: 10px;
+
+            bottom:
+                max(
+                    10px,
+                    env(safe-area-inset-bottom)
+                );
+
+            z-index: 950;
+
+            min-height: 69px;
+            padding: 8px 6px;
+
+            border:
+                1px solid
+                rgba(229, 234, 242, 0.95);
+
+            border-radius: 22px;
+
+            background:
+                rgba(255, 255, 255, 0.96);
+
+            backdrop-filter:
+                blur(18px);
+
+            -webkit-backdrop-filter:
+                blur(18px);
+
+            box-shadow:
+                0 10px 35px
+                rgba(0, 29, 77, 0.15);
+
+            display: grid;
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            align-items: center;
+        }
+
+        .bottom-nav-link {
+            position: relative;
+
+            min-height: 52px;
+            border-radius: 15px;
+
+            color: #8390a5;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+
+            font-size: 0.6rem;
+            font-weight: 700;
+        }
+
+        .bottom-nav-link i {
+            font-size: 1.18rem;
+        }
+
+        .bottom-nav-link.active {
+            background:
+                rgba(0, 29, 77, 0.08);
+
+            color: var(--primary);
+        }
+
+        .bottom-nav-link.active::before {
+            content: "";
+
+            position: absolute;
+            top: 3px;
+
+            width: 19px;
+            height: 3px;
+
+            border-radius: 30px;
+
+            background: var(--accent);
+        }
+
+        .bottom-nav-link.main-action {
+            width: 53px;
+            height: 53px;
+            min-height: 53px;
+
+            margin: -23px auto 0;
+
+            border-radius: 18px;
+
+            background: var(--primary);
+            color: var(--white);
+
+            box-shadow:
+                0 8px 22px
+                rgba(0, 29, 77, 0.28);
+        }
+
+        .bottom-nav-link.main-action i {
+            font-size: 1.35rem;
+        }
+
+        .bottom-nav-link.main-action span {
+            display: none;
+        }
+
+        /* =====================================
+           Mobile Menu
+        ===================================== */
+
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1090;
+
+            background:
+                rgba(0, 15, 40, 0.55);
+
+            opacity: 0;
+            visibility: hidden;
+
+            transition: 0.3s ease;
+        }
+
+        .menu-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1100;
+
+            width: min(84%, 340px);
+
+            padding:
+                max(
+                    18px,
+                    env(safe-area-inset-top)
+                )
+                18px
+                25px;
+
+            background: var(--white);
+
+            transform:
+                translateX(105%);
+
+            transition: 0.3s ease;
+
+            display: flex;
+            flex-direction: column;
+
+            box-shadow:
+                -15px 0 45px
+                rgba(0, 29, 77, 0.15);
+        }
+
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+
+            padding-bottom: 18px;
+
+            border-bottom:
+                1px solid var(--border);
+        }
+
+        .mobile-menu-user {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+
+            min-width: 0;
+        }
+
+        .mobile-menu-user h3 {
+            margin: 0 0 3px;
+
+            color: var(--primary);
+
+            font-size: 0.88rem;
+            font-weight: 800;
+        }
+
+        .mobile-menu-user p {
+            max-width: 175px;
+            margin: 0;
+
+            overflow: hidden;
+
+            color: var(--text-muted);
+
+            font-size: 0.69rem;
+
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .close-menu-button {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 13px;
+
+            background: var(--white);
+            color: var(--primary);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-menu-navigation {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+            margin-top: 18px;
+        }
+
+        .mobile-menu-link {
+            min-height: 52px;
+            padding: 0 14px;
+
+            border-radius: 14px;
+
+            color: var(--text-dark);
+
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            font-size: 0.87rem;
+            font-weight: 650;
+        }
+
+        .mobile-menu-link i {
+            width: 21px;
+
+            color: var(--primary);
+
+            font-size: 1.12rem;
+        }
+
+        .mobile-menu-link.active {
+            background:
+                rgba(0, 29, 77, 0.07);
+
+            color: var(--primary);
+        }
+
+        /* Toast */
+
+        .toast-message {
+            position: fixed;
+            top: 18px;
+            left: 50%;
+            z-index: 1500;
+
+            width: calc(100% - 30px);
+            max-width: 420px;
+
+            padding: 14px 17px;
+
+            border-radius: 15px;
+
+            background: var(--white);
+            color: var(--primary);
+
+            box-shadow:
+                0 15px 45px
+                rgba(0, 29, 77, 0.2);
+
+            font-size: 0.84rem;
+            font-weight: 700;
+
+            transform:
+                translate(-50%, -120px);
+
+            opacity: 0;
+
+            transition: 0.35s ease;
+        }
+
+        .toast-message.show {
+            transform:
+                translate(-50%, 0);
+
+            opacity: 1;
+        }
+
+        .toast-message.error {
+            color: var(--danger);
+        }
+
+        /* =====================================
+           Responsive
+        ===================================== */
+
+        @media (min-width: 600px) {
+            .page-content {
+                padding: 24px;
+            }
+
+            .tracking-intro {
+                padding: 28px;
+            }
+
+            .tracking-search-card {
+                padding: 21px;
+            }
+
+            .tracking-form {
+                grid-template-columns:
+                    1fr 170px;
+            }
+
+            .tracking-helper,
+            .field-error {
+                grid-column: 1 / -1;
+            }
+
+            .delivery-grid {
+                grid-template-columns:
+                    repeat(4, 1fr);
+            }
+        }
+
+        @media (min-width: 800px) {
+            .tracking-columns {
+                grid-template-columns:
+                    1.2fr 0.8fr;
+
+                align-items: start;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .desktop-sidebar {
+                display: flex;
+            }
+
+            .main-wrapper {
+                width:
+                    calc(100% - 255px);
+
+                margin-left: 255px;
+                padding-bottom: 0;
+            }
+
+            .mobile-header,
+            .bottom-navigation {
+                display: none;
+            }
+
+            .desktop-header {
+                display: flex;
+            }
+
+            .page-content {
+                padding:
+                    28px 32px 45px;
+            }
+
+            .tracking-intro h2 {
+                font-size: 1.9rem;
+            }
+        }
+
+        @media (max-width: 390px) {
+            .page-content {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .tracking-search-card,
+            .status-card,
+            .route-card,
+            .timeline-card,
+            .details-card {
+                padding-left: 13px;
+                padding-right: 13px;
+            }
+
+            .delivery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tracking-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-row {
+                grid-template-columns:
+                    105px 1fr;
+            }
+
+            .bottom-navigation {
+                left: 6px;
+                right: 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Desktop Sidebar -->
+    <aside class="desktop-sidebar">
+
+        <div class="sidebar-logo-box">
+
+            <img
+                src="images/logo.png"
+                class="sidebar-logo"
+                alt="ZamCargo Logo"
+            >
+
+        </div>
+
+        <nav class="desktop-navigation">
+
+            <a
+                href="dashboard.html"
+                class="desktop-nav-link"
+            >
+                <i class="bi bi-grid-1x2"></i>
+                Dashboard
+            </a>
+
+            <a
+                href="quotations.html"
+                class="desktop-nav-link"
+            >
+                <i class="bi bi-file-earmark-text"></i>
+                Quotations
+            </a>
+
+            <a
+                href="shipments.html"
+                class="desktop-nav-link active"
+            >
+                <i class="bi bi-box-seam"></i>
+                Shipments
+            </a>
+
+            <a
+                href="claims.html"
+                class="desktop-nav-link"
+            >
+                <i class="bi bi-shield-exclamation"></i>
+                Claims
+            </a>
+
+            <a
+                href="notifications.html"
+                class="desktop-nav-link"
+            >
+                <i class="bi bi-bell"></i>
+                Notifications
+            </a>
+
+            <a
+                href="profile.html"
+                class="desktop-nav-link"
+            >
+                <i class="bi bi-person"></i>
+                My Profile
+            </a>
+
+        </nav>
+
+        <div class="desktop-sidebar-footer">
+
+            <div class="sidebar-support">
+
+                <i class="bi bi-headset"></i>
+
+                <h3>Need assistance?</h3>
+
+                <p>
+                    Contact the ZamCargo team if you have not received your
+                    tracking number or need help tracking your shipment.
+                </p>
+
+                <a href="support.html">
+                    Contact Support
+                    <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+
+            <button
+                type="button"
+                class="header-button"
+                id="backButton"
+                aria-label="Return to dashboard"
+            >
+                <i class="bi bi-arrow-left"></i>
+            </button>
+
+            <div class="mobile-header-title">
+
+                <h1>Track Shipment</h1>
+
+                <p>
+                    View shipment progress
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                class="header-button"
+                id="menuButton"
+                aria-label="Open account menu"
+            >
+                <i class="bi bi-list"></i>
+            </button>
+
+        </header>
+
+        <!-- Desktop Header -->
+        <header class="desktop-header">
+
+            <div class="desktop-page-title">
+
+                <h1>Track Shipment</h1>
+
+                <p>
+                    Enter the tracking number provided by the billing team.
+                </p>
+
+            </div>
+
+            <div class="desktop-profile">
+
+                <div class="desktop-profile-info">
+
+                    <strong>
+                        John Mushi
+                    </strong>
+
+                    <span>
+                        Customer Account
+                    </span>
+
+                </div>
+
+                <div class="profile-avatar">
+                    JM
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- Page Content -->
+        <main class="page-content">
+
+            <!-- Introduction -->
+            <section class="tracking-intro">
+
+                <div class="tracking-intro-content">
+
+                    <span class="intro-label">
+                        <i class="bi bi-geo-alt"></i>
+                        Shipment Tracking
+                    </span>
+
+                    <h2>
+                        Track Your
+                        <span>Shipment</span>
+                    </h2>
+
+                    <p>
+                        Enter the tracking number provided by the ZamCargo
+                        billing team to view the latest location, progress and
+                        delivery status of your shipment.
+                    </p>
+
+                </div>
+
+            </section>
+
+            <!-- Search -->
+            <section class="tracking-search-card">
+
+                <div class="search-heading">
+
+                    <div class="search-heading-icon">
+                        <i class="bi bi-upc-scan"></i>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Enter Tracking Number
+                        </h2>
+
+                        <p>
+                            Use the shipment tracking number sent to you by
+                            the billing team after payment confirmation.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <form
+                    class="tracking-form"
+                    id="trackingForm"
+                    novalidate
+                >
+
+                    <div class="tracking-input-wrapper">
+
+                        <i
+                            class="bi bi-search tracking-input-icon"
+                        ></i>
+
+                        <input
+                            type="text"
+                            id="trackingNumber"
+                            name="trackingNumber"
+                            class="tracking-input"
+                            placeholder="Example: ZC-2026-00128"
+                            autocomplete="off"
+                            autocapitalize="characters"
+                            spellcheck="false"
+                            maxlength="30"
+                            aria-describedby="trackingHelper trackingError"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="clear-input-button"
+                            id="clearInputButton"
+                            aria-label="Clear tracking number"
+                        >
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="track-button"
+                        id="trackButton"
+                    >
+                        <i class="bi bi-geo-alt"></i>
+                        Track Shipment
+                    </button>
+
+                    <p
+                        class="tracking-helper"
+                        id="trackingHelper"
+                    >
+                        <i class="bi bi-info-circle"></i>
+
+                        <span>
+                            The tracking number is provided after billing
+                            verification and shipment registration.
+                        </span>
+                    </p>
+
+                    <small
+                        class="field-error"
+                        id="trackingError"
+                    >
+                        Enter a valid shipment tracking number.
+                    </small>
+
+                </form>
+
+            </section>
+
+            <!-- Empty State -->
+            <section
+                class="empty-state"
+                id="emptyState"
+            >
+
+                <div class="empty-state-icon">
+                    <i class="bi bi-truck"></i>
+                </div>
+
+                <h2>
+                    Your shipment status will appear here
+                </h2>
+
+                <p>
+                    Enter the tracking number provided by the billing team
+                    to view the latest shipment updates and estimated
+                    delivery information.
+                </p>
+
+            </section>
+
+            <!-- Tracking Results -->
+            <section
+                class="tracking-results"
+                id="trackingResults"
+                aria-live="polite"
+            >
+
+                <!-- Status Summary -->
+                <article class="status-card">
+
+                    <div class="status-header">
+
+                        <div class="status-title">
+
+                            <div class="status-icon">
+                                <i class="bi bi-truck"></i>
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Tracking Number
+                                </span>
+
+                                <h2 id="resultTrackingNumber">
+                                    ZC-2026-00128
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+                        <span
+                            class="status-badge"
+                            id="shipmentStatusBadge"
+                        >
+                            In Transit
+                        </span>
+
+                    </div>
+
+                    <div class="status-message">
+
+                        <strong id="statusHeadline">
+                            Your shipment is in transit
+                        </strong>
+
+                        <p id="statusDescription">
+                            The cargo has departed the Dar es Salaam
+                            warehouse and is currently moving toward
+                            the destination.
+                        </p>
+
+                    </div>
+
+                </article>
+
+                <!-- Route -->
+                <article class="route-card">
+
+                    <div class="section-heading">
+
+                        <h2>
+                            Shipment Route
+                        </h2>
+
+                        <span id="shipmentMode">
+                            Road Freight
+                        </span>
+
+                    </div>
+
+                    <div class="shipment-route">
+
+                        <div class="route-location">
+
+                            <span>
+                                Origin
+                            </span>
+
+                            <strong id="shipmentOrigin">
+                                Dar es Salaam, Tanzania
+                            </strong>
+
+                        </div>
+
+                        <div class="route-icon">
+                            <i class="bi bi-arrow-right"></i>
+                        </div>
+
+                        <div class="route-location">
+
+                            <span>
+                                Destination
+                            </span>
+
+                            <strong id="shipmentDestination">
+                                Lusaka, Zambia
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <div class="shipment-progress">
+
+                        <div class="progress-info">
+
+                            <span>
+                                Shipment progress
+                            </span>
+
+                            <strong id="progressPercentage">
+                                68%
+                            </strong>
+
+                        </div>
+
+                        <div class="progress-track">
+
+                            <div
+                                class="progress-bar-custom"
+                                id="shipmentProgressBar"
+                            ></div>
+
+                        </div>
+
+                        <div class="progress-labels">
+
+                            <span>
+                                Collected
+                            </span>
+
+                            <span>
+                                In Transit
+                            </span>
+
+                            <span>
+                                Delivered
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+                <!-- Delivery Summary -->
+                <div class="delivery-grid">
+
+                    <article class="delivery-card">
+
+                        <div class="delivery-card-icon">
+                            <i class="bi bi-calendar-event"></i>
+                        </div>
+
+                        <span>
+                            Estimated Delivery
+                        </span>
+
+                        <strong id="estimatedDelivery">
+                            29 July 2026
+                        </strong>
+
+                    </article>
+
+                    <article class="delivery-card">
+
+                        <div class="delivery-card-icon">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+
+                        <span>
+                            Current Location
+                        </span>
+
+                        <strong id="currentLocation">
+                            Mbeya, Tanzania
+                        </strong>
+
+                    </article>
+
+                    <article class="delivery-card">
+
+                        <div class="delivery-card-icon">
+                            <i class="bi bi-box-seam"></i>
+                        </div>
+
+                        <span>
+                            Cargo Type
+                        </span>
+
+                        <strong id="cargoType">
+                            General Cargo
+                        </strong>
+
+                    </article>
+
+                    <article class="delivery-card">
+
+                        <div class="delivery-card-icon">
+                            <i class="bi bi-speedometer2"></i>
+                        </div>
+
+                        <span>
+                            Total Weight
+                        </span>
+
+                        <strong id="shipmentWeight">
+                            420 kg
+                        </strong>
+
+                    </article>
+
+                </div>
+
+                <div class="tracking-columns">
+
+                    <!-- Shipment Timeline -->
+                    <article class="timeline-card">
+
+                        <div class="section-heading">
+
+                            <h2>
+                                Tracking History
+                            </h2>
+
+                            <span>
+                                Latest updates
+                            </span>
+
+                        </div>
+
+                        <div
+                            class="timeline-list"
+                            id="timelineList"
+                        >
+
+                            <div
+                                class="timeline-item completed"
+                            >
+
+                                <div class="timeline-marker">
+                                    <i class="bi bi-check-lg"></i>
+                                </div>
+
+                                <div class="timeline-content">
+
+                                    <h3>
+                                        Shipment Registered
+                                    </h3>
+
+                                    <p>
+                                        Shipment details were registered
+                                        after billing confirmation.
+                                    </p>
+
+                                    <span class="timeline-time">
+                                        <i class="bi bi-clock"></i>
+                                        24 July 2026, 9:15 AM
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            <div
+                                class="timeline-item completed"
+                            >
+
+                                <div class="timeline-marker">
+                                    <i class="bi bi-check-lg"></i>
+                                </div>
+
+                                <div class="timeline-content">
+
+                                    <h3>
+                                        Cargo Collected
+                                    </h3>
+
+                                    <p>
+                                        Cargo was collected and received
+                                        at the ZamCargo warehouse.
+                                    </p>
+
+                                    <span class="timeline-time">
+                                        <i class="bi bi-clock"></i>
+                                        24 July 2026, 2:40 PM
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            <div
+                                class="timeline-item completed"
+                            >
+
+                                <div class="timeline-marker">
+                                    <i class="bi bi-check-lg"></i>
+                                </div>
+
+                                <div class="timeline-content">
+
+                                    <h3>
+                                        Departed Warehouse
+                                    </h3>
+
+                                    <p>
+                                        Shipment departed the Dar es Salaam
+                                        warehouse for onward transportation.
+                                    </p>
+
+                                    <span class="timeline-time">
+                                        <i class="bi bi-clock"></i>
+                                        25 July 2026, 7:30 AM
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            <div
+                                class="timeline-item current"
+                            >
+
+                                <div class="timeline-marker">
+                                    <i class="bi bi-truck"></i>
+                                </div>
+
+                                <div class="timeline-content">
+
+                                    <h3>
+                                        In Transit
+                                    </h3>
+
+                                    <p>
+                                        Shipment is currently moving through
+                                        Mbeya toward the Tanzania–Zambia border.
+                                    </p>
+
+                                    <span class="timeline-time">
+                                        <i class="bi bi-clock"></i>
+                                        26 July 2026, 8:20 AM
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="timeline-item">
+
+                                <div class="timeline-marker">
+                                    <i class="bi bi-building-check"></i>
+                                </div>
+
+                                <div class="timeline-content">
+
+                                    <h3>
+                                        Destination Processing
+                                    </h3>
+
+                                    <p>
+                                        The shipment will be processed at
+                                        the destination hub.
+                                    </p>
+
+                                    <span class="timeline-time">
+                                        Awaiting update
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="timeline-item">
+
+                                <div class="timeline-marker">
+                                    <i class="bi bi-house-check"></i>
+                                </div>
+
+                                <div class="timeline-content">
+
+                                    <h3>
+                                        Delivered
+                                    </h3>
+
+                                    <p>
+                                        The shipment will be marked as
+                                        delivered after successful receipt.
+                                    </p>
+
+                                    <span class="timeline-time">
+                                        Awaiting delivery
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                    <!-- Shipment Details -->
+                    <div>
+
+                        <article class="details-card">
+
+                            <div class="section-heading">
+
+                                <h2>
+                                    Shipment Details
+                                </h2>
+
+                                <span>
+                                    Summary
+                                </span>
+
+                            </div>
+
+                            <div class="detail-row">
+
+                                <span>
+                                    Shipment Reference
+                                </span>
+
+                                <strong id="shipmentReference">
+                                    SHP-2026-00128
+                                </strong>
+
+                            </div>
+
+                            <div class="detail-row">
+
+                                <span>
+                                    Tracking Number
+                                </span>
+
+                                <strong id="detailsTrackingNumber">
+                                    ZC-2026-00128
+                                </strong>
+
+                            </div>
+
+                            <div class="detail-row">
+
+                                <span>
+                                    Transport Mode
+                                </span>
+
+                                <strong id="detailsTransportMode">
+                                    Road Freight
+                                </strong>
+
+                            </div>
+
+                            <div class="detail-row">
+
+                                <span>
+                                    Number of Packages
+                                </span>
+
+                                <strong id="numberOfPackages">
+                                    10 Packages
+                                </strong>
+
+                            </div>
+
+                            <div class="detail-row">
+
+                                <span>
+                                    Total Volume
+                                </span>
+
+                                <strong id="shipmentVolume">
+                                    25 CBM
+                                </strong>
+
+                            </div>
+
+                            <div class="detail-row">
+
+                                <span>
+                                    Billing Status
+                                </span>
+
+                                <strong>
+                                    Payment Confirmed
+                                </strong>
+
+                            </div>
+
+                        </article>
+
+                        <!-- Billing Note -->
+                        <div class="billing-note">
+
+                            <div class="billing-note-icon">
+                                <i class="bi bi-receipt"></i>
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Tracking Number Information
+                                </h3>
+
+                                <p>
+                                    The tracking number is created and shared
+                                    by the billing team after payment has been
+                                    verified and the shipment has been
+                                    registered.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="tracking-actions">
+
+                            <button
+                                type="button"
+                                class="secondary-action"
+                                id="copyTrackingButton"
+                            >
+                                <i class="bi bi-copy"></i>
+                                Copy Number
+                            </button>
+
+                            <button
+                                type="button"
+                                class="primary-action"
+                                id="supportButton"
+                            >
+                                <i class="bi bi-headset"></i>
+                                Get Support
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="bottom-navigation">
+
+        <a
+            href="dashboard.html"
+            class="bottom-nav-link"
+        >
+            <i class="bi bi-grid-1x2"></i>
+            <span>Home</span>
+        </a>
+
+        <a
+            href="quotations.html"
+            class="bottom-nav-link"
+        >
+            <i class="bi bi-file-earmark-text"></i>
+            <span>Quotes</span>
+        </a>
+
+        <a
+            href="request-quote.html"
+            class="bottom-nav-link main-action"
+            aria-label="Request quotation"
+        >
+            <i class="bi bi-plus-lg"></i>
+            <span>Request</span>
+        </a>
+
+        <a
+            href="shipments.html"
+            class="bottom-nav-link active"
+        >
+            <i class="bi bi-box-seam"></i>
+            <span>Shipments</span>
+        </a>
+
+        <a
+            href="claims.html"
+            class="bottom-nav-link"
+        >
+            <i class="bi bi-shield-exclamation"></i>
+            <span>Claims</span>
+        </a>
+
+    </nav>
+
+    <!-- Menu Overlay -->
+    <div
+        class="menu-overlay"
+        id="menuOverlay"
+    ></div>
+
+    <!-- Mobile Menu -->
+    <aside
+        class="mobile-menu"
+        id="mobileMenu"
+        aria-hidden="true"
+    >
+
+        <div class="mobile-menu-header">
+
+            <div class="mobile-menu-user">
+
+                <div class="profile-avatar">
+                    JM
+                </div>
+
+                <div>
+
+                    <h3>
+                        John Mushi
+                    </h3>
+
+                    <p>
+                        johnmushi@example.com
+                    </p>
+
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                class="close-menu-button"
+                id="closeMenuButton"
+                aria-label="Close account menu"
+            >
+                <i class="bi bi-x-lg"></i>
+            </button>
+
+        </div>
+
+        <nav class="mobile-menu-navigation">
+
+            <a
+                href="dashboard.html"
+                class="mobile-menu-link"
+            >
+                <i class="bi bi-grid-1x2"></i>
+                Dashboard
+            </a>
+
+            <a
+                href="quotations.html"
+                class="mobile-menu-link"
+            >
+                <i class="bi bi-file-earmark-text"></i>
+                Quotations
+            </a>
+
+            <a
+                href="shipments.html"
+                class="mobile-menu-link active"
+            >
+                <i class="bi bi-box-seam"></i>
+                Shipments
+            </a>
+
+            <a
+                href="claims.html"
+                class="mobile-menu-link"
+            >
+                <i class="bi bi-shield-exclamation"></i>
+                Claims
+            </a>
+
+            <a
+                href="notifications.html"
+                class="mobile-menu-link"
+            >
+                <i class="bi bi-bell"></i>
+                Notifications
+            </a>
+
+            <a
+                href="support.html"
+                class="mobile-menu-link"
+            >
+                <i class="bi bi-headset"></i>
+                Support
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- Toast -->
+    <div
+        class="toast-message"
+        id="toastMessage"
+        role="status"
+        aria-live="polite"
+    ></div>
+
+    <script>
+        /*
+        ============================================
+        Demonstration Shipment Records
+
+        Replace this object with data from your
+        backend shipment tracking API.
+        ============================================
+        */
+
+        const shipmentRecords = {
+            "ZC-2026-00128": {
+                trackingNumber:
+                    "ZC-2026-00128",
+
+                shipmentReference:
+                    "SHP-2026-00128",
+
+                status:
+                    "In Transit",
+
+                statusHeadline:
+                    "Your shipment is in transit",
+
+                statusDescription:
+                    "The cargo has departed the Dar es Salaam warehouse and is currently moving toward the destination.",
+
+                origin:
+                    "Dar es Salaam, Tanzania",
+
+                destination:
+                    "Lusaka, Zambia",
+
+                transportMode:
+                    "Road Freight",
+
+                progress:
+                    68,
+
+                estimatedDelivery:
+                    "29 July 2026",
+
+                currentLocation:
+                    "Mbeya, Tanzania",
+
+                cargoType:
+                    "General Cargo",
+
+                weight:
+                    "420 kg",
+
+                packages:
+                    "10 Packages",
+
+                volume:
+                    "25 CBM"
+            },
+
+            "ZC-2026-00129": {
+                trackingNumber:
+                    "ZC-2026-00129",
+
+                shipmentReference:
+                    "SHP-2026-00129",
+
+                status:
+                    "Processing",
+
+                statusHeadline:
+                    "Your shipment is being processed",
+
+                statusDescription:
+                    "The cargo has been received at the warehouse and is being prepared for dispatch.",
+
+                origin:
+                    "Dar es Salaam, Tanzania",
+
+                destination:
+                    "Ndola, Zambia",
+
+                transportMode:
+                    "Road Freight",
+
+                progress:
+                    28,
+
+                estimatedDelivery:
+                    "31 July 2026",
+
+                currentLocation:
+                    "Dar es Salaam Warehouse",
+
+                cargoType:
+                    "Automotive Parts",
+
+                weight:
+                    "780 kg",
+
+                packages:
+                    "18 Packages",
+
+                volume:
+                    "32 CBM"
+            }
+        };
+
+        /*
+        ============================================
+        Elements
+        ============================================
+        */
+
+        const trackingForm =
+            document.getElementById(
+                "trackingForm"
+            );
+
+        const trackingNumber =
+            document.getElementById(
+                "trackingNumber"
+            );
+
+        const trackingError =
+            document.getElementById(
+                "trackingError"
+            );
+
+        const clearInputButton =
+            document.getElementById(
+                "clearInputButton"
+            );
+
+        const trackButton =
+            document.getElementById(
+                "trackButton"
+            );
+
+        const emptyState =
+            document.getElementById(
+                "emptyState"
+            );
+
+        const trackingResults =
+            document.getElementById(
+                "trackingResults"
+            );
+
+        const menuButton =
+            document.getElementById(
+                "menuButton"
+            );
+
+        const closeMenuButton =
+            document.getElementById(
+                "closeMenuButton"
+            );
+
+        const mobileMenu =
+            document.getElementById(
+                "mobileMenu"
+            );
+
+        const menuOverlay =
+            document.getElementById(
+                "menuOverlay"
+            );
+
+        const backButton =
+            document.getElementById(
+                "backButton"
+            );
+
+        const copyTrackingButton =
+            document.getElementById(
+                "copyTrackingButton"
+            );
+
+        const supportButton =
+            document.getElementById(
+                "supportButton"
+            );
+
+        const toastMessage =
+            document.getElementById(
+                "toastMessage"
+            );
+
+        /*
+        ============================================
+        Tracking Number Formatting
+        ============================================
+        */
+
+        trackingNumber.addEventListener(
+            "input",
+            () => {
+                trackingNumber.value =
+                    trackingNumber.value
+                        .toUpperCase()
+                        .replace(
+                            /[^A-Z0-9-]/g,
+                            ""
+                        );
+
+                clearInputButton.classList.toggle(
+                    "visible",
+                    trackingNumber.value.length > 0
+                );
+
+                clearTrackingError();
+            }
+        );
+
+        clearInputButton.addEventListener(
+            "click",
+            () => {
+                trackingNumber.value = "";
+
+                clearInputButton.classList.remove(
+                    "visible"
+                );
+
+                clearTrackingError();
+
+                trackingNumber.focus();
+            }
+        );
+
+        /*
+        ============================================
+        Validation
+        ============================================
+        */
+
+        function validateTrackingNumber() {
+            const value =
+                trackingNumber.value
+                    .trim()
+                    .toUpperCase();
+
+            const trackingPattern =
+                /^[A-Z0-9][A-Z0-9-]{5,29}$/;
+
+            if (!trackingPattern.test(value)) {
+                trackingNumber.classList.add(
+                    "invalid"
+                );
+
+                trackingError.textContent =
+                    "Enter the valid tracking number provided by the billing team.";
+
+                trackingError.classList.add(
+                    "visible"
+                );
+
+                return false;
+            }
+
+            clearTrackingError();
+            return true;
+        }
+
+        function clearTrackingError() {
+            trackingNumber.classList.remove(
+                "invalid"
+            );
+
+            trackingError.classList.remove(
+                "visible"
+            );
+        }
+
+        /*
+        ============================================
+        Tracking Search
+        ============================================
+        */
+
+        trackingForm.addEventListener(
+            "submit",
+            async (event) => {
+                event.preventDefault();
+
+                if (!validateTrackingNumber()) {
+                    showToast(
+                        "Please enter a valid tracking number.",
+                        true
+                    );
+
+                    return;
+                }
+
+                const number =
+                    trackingNumber.value
+                        .trim()
+                        .toUpperCase();
+
+                trackButton.disabled = true;
+
+                trackButton.innerHTML = `
+                    <span
+                        class="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                    ></span>
+                    Checking Status...
+                `;
+
+                try {
+                    /*
+                    Replace this demonstration section
+                    with your backend API call.
+
+                    Example:
+
+                    const token =
+                        localStorage.getItem(
+                            "zamcargo_token"
+                        ) ||
+                        sessionStorage.getItem(
+                            "zamcargo_token"
+                        );
+
+                    const response = await fetch(
+                        `/api/shipments/track/${encodeURIComponent(
+                            number
+                        )}`,
+                        {
+                            headers: {
+                                "Authorization":
+                                    `Bearer ${token}`
+                            }
+                        }
+                    );
+
+                    const shipment =
+                        await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(
+                            shipment.message ||
+                            "Shipment not found."
+                        );
+                    }
+                    */
+
+                    await new Promise(
+                        (resolve) => {
+                            setTimeout(
+                                resolve,
+                                1000
+                            );
+                        }
+                    );
+
+                    const shipment =
+                        shipmentRecords[number];
+
+                    if (!shipment) {
+                        throw new Error(
+                            "No shipment was found for this tracking number. Confirm the number with the billing team."
+                        );
+                    }
+
+                    displayShipment(shipment);
+
+                    showToast(
+                        "Shipment status updated successfully."
+                    );
+
+                } catch (error) {
+                    trackingResults.classList.remove(
+                        "visible"
+                    );
+
+                    emptyState.style.display =
+                        "block";
+
+                    trackingError.textContent =
+                        error.message;
+
+                    trackingError.classList.add(
+                        "visible"
+                    );
+
+                    trackingNumber.classList.add(
+                        "invalid"
+                    );
+
+                    showToast(
+                        error.message,
+                        true
+                    );
+
+                } finally {
+                    trackButton.disabled = false;
+
+                    trackButton.innerHTML = `
+                        <i class="bi bi-geo-alt"></i>
+                        Track Shipment
+                    `;
+                }
+            }
+        );
+
+        /*
+        ============================================
+        Display Shipment
+        ============================================
+        */
+
+        function displayShipment(shipment) {
+            document.getElementById(
+                "resultTrackingNumber"
+            ).textContent =
+                shipment.trackingNumber;
+
+            document.getElementById(
+                "detailsTrackingNumber"
+            ).textContent =
+                shipment.trackingNumber;
+
+            document.getElementById(
+                "shipmentReference"
+            ).textContent =
+                shipment.shipmentReference;
+
+            document.getElementById(
+                "shipmentStatusBadge"
+            ).textContent =
+                shipment.status;
+
+            document.getElementById(
+                "statusHeadline"
+            ).textContent =
+                shipment.statusHeadline;
+
+            document.getElementById(
+                "statusDescription"
+            ).textContent =
+                shipment.statusDescription;
+
+            document.getElementById(
+                "shipmentOrigin"
+            ).textContent =
+                shipment.origin;
+
+            document.getElementById(
+                "shipmentDestination"
+            ).textContent =
+                shipment.destination;
+
+            document.getElementById(
+                "shipmentMode"
+            ).textContent =
+                shipment.transportMode;
+
+            document.getElementById(
+                "detailsTransportMode"
+            ).textContent =
+                shipment.transportMode;
+
+            document.getElementById(
+                "progressPercentage"
+            ).textContent =
+                `${shipment.progress}%`;
+
+            document.getElementById(
+                "shipmentProgressBar"
+            ).style.width =
+                `${shipment.progress}%`;
+
+            document.getElementById(
+                "estimatedDelivery"
+            ).textContent =
+                shipment.estimatedDelivery;
+
+            document.getElementById(
+                "currentLocation"
+            ).textContent =
+                shipment.currentLocation;
+
+            document.getElementById(
+                "cargoType"
+            ).textContent =
+                shipment.cargoType;
+
+            document.getElementById(
+                "shipmentWeight"
+            ).textContent =
+                shipment.weight;
+
+            document.getElementById(
+                "numberOfPackages"
+            ).textContent =
+                shipment.packages;
+
+            document.getElementById(
+                "shipmentVolume"
+            ).textContent =
+                shipment.volume;
+
+            emptyState.style.display =
+                "none";
+
+            trackingResults.classList.add(
+                "visible"
+            );
+
+            setTimeout(() => {
+                trackingResults.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }, 150);
+        }
+
+        /*
+        ============================================
+        Copy Tracking Number
+        ============================================
+        */
+
+        copyTrackingButton.addEventListener(
+            "click",
+            async () => {
+                const displayedTrackingNumber =
+                    document.getElementById(
+                        "resultTrackingNumber"
+                    ).textContent.trim();
+
+                try {
+                    await navigator.clipboard.writeText(
+                        displayedTrackingNumber
+                    );
+
+                    showToast(
+                        "Tracking number copied."
+                    );
+
+                } catch (error) {
+                    showToast(
+                        "Unable to copy tracking number.",
+                        true
+                    );
+                }
+            }
+        );
+
+        /*
+        ============================================
+        Support
+        ============================================
+        */
+
+        supportButton.addEventListener(
+            "click",
+            () => {
+                window.location.href =
+                    "support.html";
+            }
+        );
+
+        /*
+        ============================================
+        Mobile Menu
+        ============================================
+        */
+
+        function openMenu() {
+            mobileMenu.classList.add(
+                "open"
+            );
+
+            menuOverlay.classList.add(
+                "show"
+            );
+
+            mobileMenu.setAttribute(
+                "aria-hidden",
+                "false"
+            );
+
+            document.body.classList.add(
+                "menu-open"
+            );
+        }
+
+        function closeMenu() {
+            mobileMenu.classList.remove(
+                "open"
+            );
+
+            menuOverlay.classList.remove(
+                "show"
+            );
+
+            mobileMenu.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
+            document.body.classList.remove(
+                "menu-open"
+            );
+        }
+
+        menuButton.addEventListener(
+            "click",
+            openMenu
+        );
+
+        closeMenuButton.addEventListener(
+            "click",
+            closeMenu
+        );
+
+        menuOverlay.addEventListener(
+            "click",
+            closeMenu
+        );
+
+        document.addEventListener(
+            "keydown",
+            (event) => {
+                if (event.key === "Escape") {
+                    closeMenu();
+                }
+            }
+        );
+
+        /*
+        ============================================
+        Back Button
+        ============================================
+        */
+
+        backButton.addEventListener(
+            "click",
+            () => {
+                window.location.href =
+                    "dashboard.html";
+            }
+        );
+
+        /*
+        ============================================
+        Toast Message
+        ============================================
+        */
+
+        function showToast(
+            message,
+            isError = false
+        ) {
+            toastMessage.textContent =
+                message;
+
+            toastMessage.classList.toggle(
+                "error",
+                isError
+            );
+
+            toastMessage.classList.add(
+                "show"
+            );
+
+            clearTimeout(
+                showToast.timeout
+            );
+
+            showToast.timeout =
+                setTimeout(() => {
+                    toastMessage.classList.remove(
+                        "show"
+                    );
+                }, 3500);
+        }
+
+        /*
+        ============================================
+        Optional URL Tracking Number
+
+        Example:
+        track-shipment.html?tracking=ZC-2026-00128
+        ============================================
+        */
+
+        function loadTrackingNumberFromURL() {
+            const parameters =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+            const trackingParameter =
+                parameters.get("tracking");
+
+            if (!trackingParameter) {
+                return;
+            }
+
+            trackingNumber.value =
+                trackingParameter
+                    .toUpperCase()
+                    .replace(
+                        /[^A-Z0-9-]/g,
+                        ""
+                    );
+
+            clearInputButton.classList.add(
+                "visible"
+            );
+
+            trackingForm.requestSubmit();
+        }
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            loadTrackingNumberFromURL
+        );
+    </script>
+
+</body>
+</html>

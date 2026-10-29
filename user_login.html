@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Log in to your ZamCargo account to request quotations, track shipments and receive cargo updates."
+    >
+
+    <title>Log In | ZamCargo</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Bootstrap Icons -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+        :root {
+            --primary: #001d4d;
+            --primary-dark: #001338;
+            --accent: #d89216;
+            --white: #ffffff;
+            --light-text: #d8d8d8;
+            --danger: #ffb1b1;
+            --success: #7ce3a2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            color: var(--white);
+
+            background:
+                linear-gradient(
+                    rgba(0, 25, 65, 0.86),
+                    rgba(0, 25, 65, 0.95)
+                ),
+                url("https://images.unsplash.com/photo-1578575437130-527eed3abbec");
+
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button,
+        a {
+            touch-action: manipulation;
+        }
+
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 18px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 430px;
+        }
+
+        /* Header */
+
+        .page-header {
+            display: grid;
+            grid-template-columns: 48px 1fr 48px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            width: 46px;
+            height: 46px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.3rem;
+            transition: 0.25s ease;
+        }
+
+        .back-button:active {
+            transform: scale(0.96);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .logo {
+            display: block;
+            width: 120px;
+            max-height: 75px;
+            object-fit: contain;
+            margin: auto;
+        }
+
+        /* Login card */
+
+        .login-card {
+            width: 100%;
+            padding: 28px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.17);
+            border-radius: 26px;
+            background: rgba(255, 255, 255, 0.1);
+
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+        }
+
+        .login-heading {
+            margin-bottom: 26px;
+        }
+
+        .login-heading h1 {
+            margin-bottom: 8px;
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.15;
+        }
+
+        .login-heading h1 span {
+            color: var(--accent);
+        }
+
+        .login-heading p {
+            margin: 0;
+            color: var(--light-text);
+            font-size: 0.94rem;
+            line-height: 1.55;
+        }
+
+        /* Form */
+
+        .form-field {
+            margin-bottom: 17px;
+        }
+
+        .form-field label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.88rem;
+            font-weight: 650;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            z-index: 2;
+
+            transform: translateY(-50%);
+            color: rgba(0, 29, 77, 0.72);
+            font-size: 1.03rem;
+            pointer-events: none;
+        }
+
+        .form-control-custom {
+            width: 100%;
+            height: 58px;
+            padding: 0 50px 0 45px;
+
+            border: 1px solid rgba(255, 255, 255, 0.32);
+            border-radius: 15px;
+            outline: none;
+
+            background: rgba(255, 255, 255, 0.94);
+            color: var(--primary);
+
+            font-size: 1rem;
+            transition: 0.25s ease;
+        }
+
+        .form-control-custom::placeholder {
+            color: #768197;
+        }
+
+        .form-control-custom:focus {
+            border-color: var(--accent);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(216, 146, 22, 0.18);
+        }
+
+        .form-control-custom.invalid {
+            border-color: #ff8b8b;
+            box-shadow: 0 0 0 3px rgba(255, 80, 80, 0.14);
+        }
+
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 7px;
+
+            width: 44px;
+            height: 44px;
+
+            border: none;
+            border-radius: 11px;
+            background: transparent;
+            color: var(--primary);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.05rem;
+            transform: translateY(-50%);
+        }
+
+        .password-toggle:active {
+            background: rgba(0, 29, 77, 0.1);
+        }
+
+        .field-error {
+            display: none;
+            margin-top: 6px;
+            color: var(--danger);
+            font-size: 0.77rem;
+            line-height: 1.4;
+        }
+
+        .field-error.visible {
+            display: block;
+        }
+
+        /* Login options */
+
+        .login-options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 3px 0 23px;
+        }
+
+        .remember-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .remember-box input {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            accent-color: var(--accent);
+        }
+
+        .remember-box label {
+            color: var(--light-text);
+            font-size: 0.84rem;
+            cursor: pointer;
+        }
+
+        .forgot-password {
+            color: var(--white);
+            font-size: 0.84rem;
+            font-weight: 700;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .forgot-password:hover,
+        .forgot-password:active {
+            color: var(--accent);
+        }
+
+        /* Login button */
+
+        .login-button {
+            width: 100%;
+            min-height: 60px;
+
+            border: none;
+            border-radius: 16px;
+
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--primary);
+
+            font-size: 1.08rem;
+            font-weight: 800;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            transition: 0.25s ease;
+        }
+
+        .login-button:hover {
+            background: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .login-button:active {
+            transform: scale(0.98);
+        }
+
+        .login-button:disabled {
+            opacity: 0.72;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Divider */
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 23px 0;
+            color: var(--light-text);
+            font-size: 0.78rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Registration link */
+
+        .create-account-box {
+            text-align: center;
+        }
+
+        .create-account-box p {
+            margin-bottom: 12px;
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        .create-account-button {
+            width: 100%;
+            min-height: 56px;
+
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--white);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            font-size: 0.98rem;
+            font-weight: 750;
+            text-decoration: none;
+
+            transition: 0.25s ease;
+        }
+
+        .create-account-button:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.16);
+        }
+
+        .create-account-button:active {
+            transform: scale(0.98);
+        }
+
+        /* Secure access message */
+
+        .security-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+
+            margin-top: 18px;
+            color: rgba(255, 255, 255, 0.7);
+
+            font-size: 0.75rem;
+            text-align: center;
+        }
+
+        .security-note i {
+            color: var(--success);
+        }
+
+        /* Notification */
+
+        .notification {
+            position: fixed;
+            top: 18px;
+            left: 50%;
+            z-index: 9999;
+
+            width: calc(100% - 32px);
+            max-width: 410px;
+
+            padding: 14px 17px;
+            border-radius: 14px;
+
+            background: var(--white);
+            color: var(--primary);
+
+            font-size: 0.88rem;
+            font-weight: 650;
+
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
+
+            transform: translate(-50%, -120px);
+            opacity: 0;
+
+            transition: 0.35s ease;
+        }
+
+        .notification.show {
+            transform: translate(-50%, 0);
+            opacity: 1;
+        }
+
+        .notification.error {
+            color: #a40000;
+        }
+
+        /* Smartphone optimization */
+
+        @media (max-width: 576px) {
+            body {
+                background-attachment: scroll;
+            }
+
+            .login-page {
+                min-height: 100dvh;
+                align-items: flex-start;
+                padding: 14px;
+            }
+
+            .login-container {
+                margin: auto 0;
+            }
+
+            .page-header {
+                margin-bottom: 15px;
+            }
+
+            .logo {
+                width: 110px;
+            }
+
+            .login-card {
+                padding: 24px 18px;
+                border-radius: 22px;
+            }
+
+            .login-heading {
+                margin-bottom: 22px;
+            }
+
+            .login-heading h1 {
+                font-size: 1.75rem;
+            }
+
+            .form-control-custom {
+                height: 58px;
+                font-size: 16px;
+            }
+
+            .login-button {
+                min-height: 60px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .login-page {
+                padding: 10px;
+            }
+
+            .login-card {
+                padding: 21px 15px;
+            }
+
+            .login-options {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 13px;
+            }
+
+            .forgot-password {
+                margin-left: 26px;
+            }
+        }
+
+        @media (max-height: 680px) {
+            .login-page {
+                align-items: flex-start;
+            }
+
+            .login-container {
+                margin: 12px 0;
+            }
+
+            .page-header {
+                margin-bottom: 12px;
+            }
+
+            .login-card {
+                padding-top: 21px;
+                padding-bottom: 21px;
+            }
+
+            .login-heading {
+                margin-bottom: 18px;
+            }
+
+            .login-heading p {
+                font-size: 0.88rem;
+            }
+
+            .form-field {
+                margin-bottom: 13px;
+            }
+
+            .divider {
+                margin: 18px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Notification -->
+    <div
+        class="notification"
+        id="notification"
+        role="alert"
+        aria-live="polite"
+    ></div>
+
+    <main class="login-page">
+        <div class="login-container">
+
+            <!-- Header -->
+            <header class="page-header">
+
+                <button
+                    type="button"
+                    class="back-button"
+                    id="backButton"
+                    aria-label="Return to welcome page"
+                >
+                    <i class="bi bi-arrow-left"></i>
+                </button>
+
+                <img
+                    src="images/logo.png"
+                    class="logo"
+                    alt="ZamCargo Logo"
+                >
+
+                <div></div>
+
+            </header>
+
+            <!-- Login card -->
+            <section class="login-card">
+
+                <div class="login-heading">
+
+                    <h1>
+                        Welcome <span>Back</span>
+                    </h1>
+
+                    <p>
+                        Log in to request freight quotations, track shipments
+                        and receive shipment updates.
+                    </p>
+
+                </div>
+
+                <form id="loginForm" novalidate>
+
+                    <!-- Email address -->
+                    <div class="form-field">
+
+                        <label for="email">
+                            Email Address
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="bi bi-envelope input-icon"></i>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="form-control-custom"
+                                placeholder="Enter your email address"
+                                autocomplete="email"
+                                inputmode="email"
+                                autocapitalize="none"
+                                spellcheck="false"
+                                required
+                            >
+
+                        </div>
+
+                        <small
+                            class="field-error"
+                            id="emailError"
+                        >
+                            Please enter a valid email address.
+                        </small>
+
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-field">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="bi bi-lock input-icon"></i>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                class="form-control-custom"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="passwordToggle"
+                                aria-label="Show password"
+                            >
+                                <i class="bi bi-eye"></i>
+                            </button>
+
+                        </div>
+
+                        <small
+                            class="field-error"
+                            id="passwordError"
+                        >
+                            Please enter your password.
+                        </small>
+
+                    </div>
+
+                    <!-- Remember and forgot password -->
+                    <div class="login-options">
+
+                        <div class="remember-box">
+
+                            <input
+                                type="checkbox"
+                                id="rememberMe"
+                                name="rememberMe"
+                            >
+
+                            <label for="rememberMe">
+                                Remember me
+                            </label>
+
+                        </div>
+
+                        <a
+                            href="forgot-password.html"
+                            class="forgot-password"
+                        >
+                            Forgot Password?
+                        </a>
+
+                    </div>
+
+                    <!-- Login button -->
+                    <button
+                        type="submit"
+                        class="login-button"
+                        id="loginButton"
+                    >
+                        Log In
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+
+                </form>
+
+                <div class="divider">
+                    New to ZamCargo?
+                </div>
+
+                <div class="create-account-box">
+
+                    <p>
+                        Create an account and start managing your shipments.
+                    </p>
+
+                    <a
+                        href="user_register.html"
+                        class="create-account-button"
+                    >
+                        <i class="bi bi-person-plus"></i>
+                        Create Account
+                    </a>
+
+                </div>
+
+                <div class="security-note">
+                    <i class="bi bi-shield-check"></i>
+                    Your account information is securely protected.
+                </div>
+
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        const loginForm =
+            document.getElementById("loginForm");
+
+        const email =
+            document.getElementById("email");
+
+        const password =
+            document.getElementById("password");
+
+        const rememberMe =
+            document.getElementById("rememberMe");
+
+        const passwordToggle =
+            document.getElementById("passwordToggle");
+
+        const loginButton =
+            document.getElementById("loginButton");
+
+        const backButton =
+            document.getElementById("backButton");
+
+        const notification =
+            document.getElementById("notification");
+
+        /*
+        -------------------------------------------
+        Back button
+        -------------------------------------------
+        */
+
+        backButton.addEventListener("click", () => {
+            window.location.href = "index.html";
+        });
+
+        /*
+        -------------------------------------------
+        Password visibility
+        -------------------------------------------
+        */
+
+        passwordToggle.addEventListener("click", () => {
+            const passwordIsVisible =
+                password.type === "text";
+
+            password.type =
+                passwordIsVisible
+                    ? "password"
+                    : "text";
+
+            const icon =
+                passwordToggle.querySelector("i");
+
+            icon.className =
+                passwordIsVisible
+                    ? "bi bi-eye"
+                    : "bi bi-eye-slash";
+
+            passwordToggle.setAttribute(
+                "aria-label",
+                passwordIsVisible
+                    ? "Show password"
+                    : "Hide password"
+            );
+        });
+
+        /*
+        -------------------------------------------
+        Field validation helpers
+        -------------------------------------------
+        */
+
+        function showFieldError(
+            field,
+            errorId,
+            message = ""
+        ) {
+            const errorElement =
+                document.getElementById(errorId);
+
+            field.classList.add("invalid");
+
+            if (message) {
+                errorElement.textContent = message;
+            }
+
+            errorElement.classList.add("visible");
+        }
+
+        function clearFieldError(field, errorId) {
+            field.classList.remove("invalid");
+
+            document
+                .getElementById(errorId)
+                .classList.remove("visible");
+        }
+
+        function validateEmail() {
+            const emailValue =
+                email.value.trim();
+
+            const emailPattern =
+                /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+            if (!emailPattern.test(emailValue)) {
+                showFieldError(
+                    email,
+                    "emailError",
+                    "Please enter a valid email address."
+                );
+
+                return false;
+            }
+
+            clearFieldError(
+                email,
+                "emailError"
+            );
+
+            return true;
+        }
+
+        function validatePassword() {
+            if (password.value.trim() === "") {
+                showFieldError(
+                    password,
+                    "passwordError",
+                    "Please enter your password."
+                );
+
+                return false;
+            }
+
+            clearFieldError(
+                password,
+                "passwordError"
+            );
+
+            return true;
+        }
+
+        /*
+        -------------------------------------------
+        Live validation
+        -------------------------------------------
+        */
+
+        email.addEventListener("input", () => {
+            if (email.value.trim() !== "") {
+                validateEmail();
+            } else {
+                clearFieldError(
+                    email,
+                    "emailError"
+                );
+            }
+        });
+
+        password.addEventListener("input", () => {
+            if (password.value.trim() !== "") {
+                clearFieldError(
+                    password,
+                    "passwordError"
+                );
+            }
+        });
+
+        /*
+        -------------------------------------------
+        Form submission
+        -------------------------------------------
+        */
+
+        loginForm.addEventListener(
+            "submit",
+            async (event) => {
+                event.preventDefault();
+
+                const emailIsValid =
+                    validateEmail();
+
+                const passwordIsValid =
+                    validatePassword();
+
+                if (
+                    !emailIsValid ||
+                    !passwordIsValid
+                ) {
+                    showNotification(
+                        "Please enter your correct login details.",
+                        true
+                    );
+
+                    return;
+                }
+
+                const loginData = {
+                    email:
+                        email.value
+                            .trim()
+                            .toLowerCase(),
+
+                    password:
+                        password.value,
+
+                    rememberMe:
+                        rememberMe.checked
+                };
+
+                loginButton.disabled = true;
+
+                loginButton.innerHTML = `
+                    <span
+                        class="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                    ></span>
+                    Logging In...
+                `;
+
+                try {
+                    /*
+                    Replace this demonstration section with
+                    your actual ZamCargo login API request.
+
+                    Example:
+
+                    const response = await fetch("/api/login", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(loginData)
+                    });
+
+                    const result = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(
+                            result.message ||
+                            "Invalid email or password."
+                        );
+                    }
+
+                    if (result.token) {
+                        const storage =
+                            rememberMe.checked
+                                ? localStorage
+                                : sessionStorage;
+
+                        storage.setItem(
+                            "zamcargo_token",
+                            result.token
+                        );
+                    }
+                    */
+
+                    await new Promise((resolve) => {
+                        setTimeout(resolve, 1200);
+                    });
+
+                    console.log(
+                        "Login information:",
+                        loginData
+                    );
+
+                    showNotification(
+                        "Login successful. Redirecting..."
+                    );
+
+                    setTimeout(() => {
+                        window.location.href =
+                            "dashboard.html";
+                    }, 1300);
+
+                } catch (error) {
+                    console.error(error);
+
+                    showNotification(
+                        error.message ||
+                        "Invalid email or password. Please try again.",
+                        true
+                    );
+
+                    loginButton.disabled = false;
+
+                    loginButton.innerHTML = `
+                        Log In
+                        <i class="bi bi-arrow-right"></i>
+                    `;
+                }
+            }
+        );
+
+        /*
+        -------------------------------------------
+        Notification
+        -------------------------------------------
+        */
+
+        function showNotification(
+            message,
+            isError = false
+        ) {
+            notification.textContent = message;
+
+            notification.classList.toggle(
+                "error",
+                isError
+            );
+
+            notification.classList.add("show");
+
+            clearTimeout(
+                showNotification.timeout
+            );
+
+            showNotification.timeout =
+                setTimeout(() => {
+                    notification.classList.remove(
+                        "show"
+                    );
+                }, 3500);
+        }
+    </script>
+
+</body>
+</html>

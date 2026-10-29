@@ -1,0 +1,5298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta
+        name="description"
+        content="Manage your ZamCargo customer profile, contact information and account preferences."
+    >
+
+    <title>My Profile | ZamCargo</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Bootstrap Icons -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+        :root {
+            --primary: #001d4d;
+            --primary-dark: #001338;
+            --primary-light: #07326d;
+
+            --accent: #d89216;
+            --accent-light: #f0ad34;
+
+            --white: #ffffff;
+            --page-background: #f4f6fa;
+            --card-background: #ffffff;
+
+            --text-dark: #18243a;
+            --text-muted: #748097;
+            --border: #e5eaf2;
+
+            --success: #159957;
+            --success-light: #e7f8ef;
+
+            --warning: #d89216;
+            --warning-light: #fff7e8;
+
+            --danger: #d64f4f;
+            --danger-light: #fff0f0;
+
+            --info: #3478d4;
+            --info-light: #edf5ff;
+
+            --neutral-light: #eef1f5;
+
+            --shadow:
+                0 12px 35px
+                rgba(0, 29, 77, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+            font-family:
+                "Segoe UI",
+                sans-serif;
+
+            -webkit-tap-highlight-color:
+                transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+
+            background:
+                var(--page-background);
+
+            color:
+                var(--text-dark);
+        }
+
+        body.menu-open,
+        body.modal-open-custom {
+            overflow: hidden;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        button,
+        a {
+            touch-action: manipulation;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* =====================================
+           Desktop Sidebar
+        ===================================== */
+
+        .desktop-sidebar {
+            position: fixed;
+            inset: 0 auto 0 0;
+            z-index: 1000;
+
+            width: 255px;
+            padding: 24px 18px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(0, 29, 77, 0.98),
+                    rgba(0, 19, 54, 1)
+                );
+
+            color:
+                var(--white);
+
+            display: none;
+            flex-direction: column;
+        }
+
+        .sidebar-logo-box {
+            height: 70px;
+            padding: 0 12px;
+            margin-bottom: 24px;
+
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-logo {
+            width: 135px;
+            max-height: 65px;
+            object-fit: contain;
+        }
+
+        .desktop-navigation {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .desktop-nav-link {
+            min-height: 50px;
+            padding: 0 15px;
+
+            border-radius: 14px;
+
+            color:
+                rgba(255, 255, 255, 0.76);
+
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            font-size: 0.94rem;
+            font-weight: 650;
+
+            transition: 0.25s ease;
+        }
+
+        .desktop-nav-link i {
+            width: 22px;
+            font-size: 1.15rem;
+        }
+
+        .desktop-nav-link:hover,
+        .desktop-nav-link.active {
+            background:
+                rgba(255, 255, 255, 0.12);
+
+            color:
+                var(--white);
+        }
+
+        .desktop-nav-link.active {
+            box-shadow:
+                inset 4px 0 0
+                var(--accent);
+        }
+
+        .desktop-sidebar-footer {
+            margin-top: auto;
+        }
+
+        .sidebar-support {
+            padding: 17px;
+            border-radius: 17px;
+
+            background:
+                rgba(255, 255, 255, 0.09);
+        }
+
+        .sidebar-support > i {
+            color:
+                var(--accent-light);
+
+            font-size: 1.4rem;
+        }
+
+        .sidebar-support h3 {
+            margin: 10px 0 4px;
+
+            font-size: 0.94rem;
+            font-weight: 750;
+        }
+
+        .sidebar-support p {
+            margin: 0 0 12px;
+
+            color:
+                rgba(255, 255, 255, 0.68);
+
+            font-size: 0.76rem;
+            line-height: 1.45;
+        }
+
+        .sidebar-support a {
+            color:
+                var(--white);
+
+            font-size: 0.8rem;
+            font-weight: 750;
+        }
+
+        /* =====================================
+           Main Layout
+        ===================================== */
+
+        .main-wrapper {
+            width: 100%;
+            min-height: 100vh;
+            padding-bottom: 98px;
+        }
+
+        /* =====================================
+           Mobile Header
+        ===================================== */
+
+        .mobile-header {
+            position: sticky;
+            top: 0;
+            z-index: 900;
+
+            min-height: 72px;
+
+            padding:
+                max(
+                    10px,
+                    env(safe-area-inset-top)
+                )
+                15px
+                10px;
+
+            border-bottom:
+                1px solid
+                var(--border);
+
+            background:
+                rgba(255, 255, 255, 0.96);
+
+            backdrop-filter:
+                blur(16px);
+
+            -webkit-backdrop-filter:
+                blur(16px);
+
+            display: grid;
+            grid-template-columns:
+                44px 1fr 44px;
+
+            align-items: center;
+        }
+
+        .header-button {
+            width: 44px;
+            height: 44px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 14px;
+
+            background:
+                var(--white);
+
+            color:
+                var(--primary);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.16rem;
+        }
+
+        .header-button:active {
+            transform:
+                scale(0.96);
+
+            background:
+                #f3f6fb;
+        }
+
+        .mobile-header-title {
+            padding: 0 8px;
+            text-align: center;
+        }
+
+        .mobile-header-title h1 {
+            margin: 0;
+
+            color:
+                var(--primary);
+
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .mobile-header-title p {
+            margin: 3px 0 0;
+
+            color:
+                var(--text-muted);
+
+            font-size: 0.65rem;
+        }
+
+        /* =====================================
+           Desktop Header
+        ===================================== */
+
+        .desktop-header {
+            display: none;
+
+            min-height: 82px;
+            padding: 0 32px;
+
+            border-bottom:
+                1px solid
+                var(--border);
+
+            background:
+                var(--white);
+
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .desktop-page-title h1 {
+            margin: 0;
+
+            color:
+                var(--primary);
+
+            font-size: 1.45rem;
+            font-weight: 800;
+        }
+
+        .desktop-page-title p {
+            margin: 4px 0 0;
+
+            color:
+                var(--text-muted);
+
+            font-size: 0.83rem;
+        }
+
+        .desktop-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .desktop-profile-info {
+            text-align: right;
+        }
+
+        .desktop-profile-info strong {
+            display: block;
+
+            color:
+                var(--text-dark);
+
+            font-size: 0.87rem;
+        }
+
+        .desktop-profile-info span {
+            color:
+                var(--text-muted);
+
+            font-size: 0.72rem;
+        }
+
+        .profile-avatar-small {
+            width: 44px;
+            height: 44px;
+
+            border:
+                2px solid
+                rgba(216, 146, 22, 0.3);
+
+            border-radius: 50%;
+
+            background:
+                var(--primary);
+
+            color:
+                var(--white);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 0.88rem;
+            font-weight: 800;
+        }
+
+        /* =====================================
+           Page Content
+        ===================================== */
+
+        .page-content {
+            width: 100%;
+            max-width: 1100px;
+
+            margin: auto;
+            padding: 18px 14px 30px;
+        }
+
+        /* Profile Hero */
+
+        .profile-hero {
+            position: relative;
+            overflow: hidden;
+
+            padding: 24px 19px;
+
+            border-radius: 23px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 29, 77, 0.98),
+                    rgba(7, 50, 109, 0.92)),
+
+                     url("https://images.unsplash.com/photo-1578575437130-527eed3abbec");
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            box-shadow: var(--shadow);
+
+        }
+
+        .profile-hero::before {
+            content: "";
+
+            position: absolute;
+            top: -70px;
+            right: -60px;
+
+            width: 190px;
+            height: 190px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255, 255, 255, 0.07);
+        }
+
+        .profile-hero::after {
+            content: "";
+
+            position: absolute;
+            right: 55px;
+            bottom: -100px;
+
+            width: 180px;
+            height: 180px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(216, 146, 22, 0.15);
+        }
+
+        .profile-hero-content {
+            position: relative;
+            z-index: 2;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            text-align: center;
+        }
+
+        .profile-avatar-wrapper {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .profile-avatar-large {
+            width: 96px;
+            height: 96px;
+
+            border:
+                4px solid
+                rgba(255, 255, 255, 0.2);
+
+            border-radius: 50%;
+
+            background:
+                rgba(255, 255, 255, 0.14);
+
+            color:
+                var(--white);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.65rem;
+            font-weight: 850;
+
+            box-shadow:
+                0 12px 28px
+                rgba(0, 0, 0, 0.15);
+        }
+
+        .avatar-edit-button {
+            position: absolute;
+            right: -2px;
+            bottom: 2px;
+
+            width: 34px;
+            height: 34px;
+
+            border:
+                3px solid
+                var(--primary);
+
+            border-radius: 50%;
+
+            background:
+                var(--accent);
+
+            color:
+                var(--white);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 0.76rem;
+        }
+
+        .profile-hero h2 {
+            margin: 0 0 5px;
+
+            font-size: 1.35rem;
+            font-weight: 850;
+        }
+
+        .profile-hero-email {
+            margin: 0 0 12px;
+
+            color:
+                rgba(255, 255, 255, 0.72);
+
+            font-size: 0.77rem;
+        }
+
+        .profile-badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 7px;
+        }
+
+        .profile-badge {
+            min-height: 29px;
+            padding: 0 11px;
+
+            border-radius: 30px;
+
+            background:
+                rgba(255, 255, 255, 0.13);
+
+            color:
+                var(--white);
+
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            font-size: 0.66rem;
+            font-weight: 750;
+        }
+
+        .profile-badge.verified {
+            background:
+                rgba(21, 153, 87, 0.22);
+
+            color:
+                #c9ffe1;
+        }
+
+        .hero-actions {
+            width: 100%;
+            max-width: 340px;
+
+            display: grid;
+            grid-template-columns: 1fr;
+
+            gap: 9px;
+            margin-top: 19px;
+        }
+
+        .edit-profile-button {
+            min-height: 49px;
+
+            border: none;
+            border-radius: 14px;
+
+            background:
+                var(--white);
+
+            color:
+                var(--primary);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+
+            font-size: 0.78rem;
+            font-weight: 800;
+        }
+
+        /* Statistics */
+
+        .statistics-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .stat-card {
+            min-height: 104px;
+            padding: 14px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 17px;
+
+            background:
+                var(--white);
+
+            box-shadow:
+                0 7px 20px
+                rgba(0, 29, 77, 0.04);
+        }
+
+        .stat-icon {
+            width: 38px;
+            height: 38px;
+
+            margin-bottom: 10px;
+
+            border-radius: 12px;
+
+            background:
+                var(--info-light);
+
+            color:
+                var(--info);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 0.95rem;
+        }
+
+        .stat-card:nth-child(2)
+        .stat-icon {
+            background:
+                var(--warning-light);
+
+            color:
+                var(--warning);
+        }
+
+        .stat-card:nth-child(3)
+        .stat-icon {
+            background:
+                var(--success-light);
+
+            color:
+                var(--success);
+        }
+
+        .stat-card:nth-child(4)
+        .stat-icon {
+            background:
+                var(--danger-light);
+
+            color:
+                var(--danger);
+        }
+
+        .stat-card span {
+            display: block;
+
+            margin-bottom: 4px;
+
+            color:
+                var(--text-muted);
+
+            font-size: 0.64rem;
+        }
+
+        .stat-card strong {
+            color:
+                var(--primary);
+
+            font-size: 1.15rem;
+            font-weight: 850;
+        }
+
+        /* Main Columns */
+
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+
+            margin-top: 15px;
+        }
+
+        .profile-column {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* Common Card */
+
+        .profile-card {
+            padding: 18px 16px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 21px;
+
+            background:
+                var(--white);
+
+            box-shadow:
+                0 8px 25px
+                rgba(0, 29, 77, 0.05);
+        }
+
+        .card-header-custom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+
+            margin-bottom: 16px;
+        }
+
+        .card-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .card-title-icon {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+
+            border-radius: 13px;
+
+            background:
+                rgba(0, 29, 77, 0.08);
+
+            color:
+                var(--primary);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-title-wrapper h2 {
+            margin: 0 0 3px;
+
+            color:
+                var(--primary);
+
+            font-size: 0.91rem;
+            font-weight: 800;
+        }
+
+        .card-title-wrapper p {
+            margin: 0;
+
+            color:
+                var(--text-muted);
+
+            font-size: 0.65rem;
+        }
+
+        .card-edit-button {
+            min-width: 40px;
+            height: 40px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 12px;
+
+            background:
+                #f8fafc;
+
+            color:
+                var(--primary);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Information Rows */
+
+        .information-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .information-row {
+            display: grid;
+            grid-template-columns:
+                40px 1fr;
+
+            gap: 11px;
+
+            padding: 12px 0;
+
+            border-bottom:
+                1px solid
+                var(--border);
+        }
+
+        .information-row:last-child {
+            border-bottom: none;
+        }
+
+        .information-icon {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 12px;
+
+            background:
+                #f5f7fa;
+
+            color:
+                var(--primary);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 0.91rem;
+        }
+
+        .information-content span {
+            display: block;
+
+            margin-bottom: 4px;
+
+            color:
+                var(--text-muted);
+
+            font-size: 0.63rem;
+        }
+
+        .information-content strong {
+            display: block;
+
+            color:
+                var(--text-dark);
+
+            font-size: 0.76rem;
+            font-weight: 750;
+
+            overflow-wrap: anywhere;
+        }
+
+        /* Verification */
+
+        .verification-box {
+            display: grid;
+            grid-template-columns:
+                43px 1fr;
+
+            gap: 12px;
+
+            padding: 15px;
+
+            border:
+                1px solid
+                rgba(21, 153, 87, 0.2);
+
+            border-radius: 16px;
+
+            background:
+                var(--success-light);
+        }
+
+        .verification-icon {
+            width: 43px;
+            height: 43px;
+
+            border-radius: 13px;
+
+            background:
+                rgba(21, 153, 87, 0.13);
+
+            color:
+                var(--success);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.05rem;
+        }
+
+        .verification-box h3 {
+            margin: 1px 0 5px;
+
+            color:
+                #147342;
+
+            font-size: 0.8rem;
+            font-weight: 850;
+        }
+
+        .verification-box p {
+            margin: 0;
+
+            color:
+                #4b8065;
+
+            font-size: 0.69rem;
+            line-height: 1.5;
+        }
+
+        /* Settings */
+
+        .settings-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .setting-row {
+            display: grid;
+            grid-template-columns:
+                42px 1fr auto;
+
+            gap: 11px;
+            align-items: center;
+
+            min-height: 65px;
+            padding: 10px 0;
+
+            border-bottom:
+                1px solid
+                var(--border);
+        }
+
+        .setting-row:last-child {
+            border-bottom: none;
+        }
+
+        .setting-icon {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 13px;
+
+            background:
+                #f5f7fa;
+
+            color:
+                var(--primary);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .setting-content strong {
+            display: block;
+
+            margin-bottom: 3px;
+
+            color:
+                var(--text-dark);
+
+            font-size: 0.75rem;
+            font-weight: 750;
+        }
+
+        .setting-content span {
+            display: block;
+
+            color:
+                var(--text-muted);
+
+            font-size: 0.63rem;
+            line-height: 1.35;
+        }
+
+        .setting-action {
+            width: 40px;
+            height: 40px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 12px;
+
+            background:
+                var(--white);
+
+            color:
+                var(--primary);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Switch */
+
+        .switch {
+            position: relative;
+
+            width: 46px;
+            height: 27px;
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .switch-slider {
+            position: absolute;
+            inset: 0;
+
+            border-radius: 30px;
+
+            background:
+                #dfe4ec;
+
+            cursor: pointer;
+
+            transition: 0.22s ease;
+        }
+
+        .switch-slider::before {
+            content: "";
+
+            position: absolute;
+            top: 4px;
+            left: 4px;
+
+            width: 19px;
+            height: 19px;
+
+            border-radius: 50%;
+
+            background:
+                var(--white);
+
+            box-shadow:
+                0 2px 6px
+                rgba(0, 0, 0, 0.16);
+
+            transition: 0.22s ease;
+        }
+
+        .switch input:checked +
+        .switch-slider {
+            background:
+                var(--primary);
+        }
+
+        .switch input:checked +
+        .switch-slider::before {
+            transform:
+                translateX(19px);
+        }
+
+        /* Logout */
+
+        .logout-button {
+            width: 100%;
+            min-height: 54px;
+
+            margin-top: 15px;
+
+            border:
+                1px solid
+                rgba(214, 79, 79, 0.2);
+
+            border-radius: 15px;
+
+            background:
+                var(--danger-light);
+
+            color:
+                var(--danger);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+
+        /* =====================================
+           Edit Profile Modal
+        ===================================== */
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1200;
+
+            padding: 16px;
+
+            background:
+                rgba(0, 15, 40, 0.6);
+
+            opacity: 0;
+            visibility: hidden;
+
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+
+            transition: 0.28s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .profile-modal {
+            width: 100%;
+            max-width: 650px;
+            max-height: 91vh;
+
+            overflow-y: auto;
+
+            padding:
+                11px 16px
+                max(
+                    20px,
+                    env(safe-area-inset-bottom)
+                );
+
+            border-radius:
+                24px 24px 0 0;
+
+            background:
+                var(--white);
+
+            transform:
+                translateY(105%);
+
+            transition: 0.32s ease;
+        }
+
+        .modal-overlay.show
+        .profile-modal {
+            transform:
+                translateY(0);
+        }
+
+        .modal-handle {
+            width: 44px;
+            height: 5px;
+
+            margin: 0 auto 13px;
+
+            border-radius: 20px;
+
+            background:
+                #d9dee7;
+        }
+
+        .modal-header-custom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+
+            padding-bottom: 15px;
+
+            border-bottom:
+                1px solid
+                var(--border);
+        }
+
+        .modal-header-custom h2 {
+            margin: 0 0 3px;
+
+            color:
+                var(--primary);
+
+            font-size: 1rem;
+            font-weight: 850;
+        }
+
+        .modal-header-custom p {
+            margin: 0;
+
+            color:
+                var(--text-muted);
+
+            font-size: 0.67rem;
+        }
+
+        .modal-close-button {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 13px;
+
+            background:
+                var(--white);
+
+            color:
+                var(--primary);
+        }
+
+        .profile-form {
+            padding-top: 18px;
+        }
+
+        .form-section-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            margin: 4px 0 14px;
+
+            color:
+                var(--primary);
+
+            font-size: 0.78rem;
+            font-weight: 850;
+        }
+
+        .form-section-title i {
+            color:
+                var(--accent);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        .form-field {
+            min-width: 0;
+        }
+
+        .form-field.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-field label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color:
+                var(--text-dark);
+
+            font-size: 0.77rem;
+            font-weight: 700;
+        }
+
+        .required {
+            color:
+                var(--danger);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            left: 14px;
+
+            transform:
+                translateY(-50%);
+
+            color:
+                rgba(0, 29, 77, 0.62);
+
+            pointer-events: none;
+        }
+
+        .form-control-custom,
+        .form-select-custom {
+            width: 100%;
+            height: 55px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 14px;
+            outline: none;
+
+            background:
+                #f9fafc;
+
+            color:
+                var(--primary);
+
+            font-size: 16px;
+
+            transition: 0.22s ease;
+        }
+
+        .form-control-custom {
+            padding:
+                0 15px 0 43px;
+        }
+
+        .form-select-custom {
+            padding:
+                0 42px 0 43px;
+
+            appearance: none;
+        }
+
+        .form-control-custom:focus,
+        .form-select-custom:focus {
+            border-color:
+                var(--accent);
+
+            background:
+                var(--white);
+
+            box-shadow:
+                0 0 0 4px
+                rgba(216, 146, 22, 0.14);
+        }
+
+        .form-control-custom.invalid,
+        .form-select-custom.invalid {
+            border-color:
+                var(--danger);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(214, 79, 79, 0.1);
+        }
+
+        .select-arrow {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+
+            transform:
+                translateY(-50%);
+
+            color:
+                var(--primary);
+
+            pointer-events: none;
+        }
+
+        .phone-field {
+            display: grid;
+            grid-template-columns:
+                108px 1fr;
+        }
+
+        .phone-prefix {
+            min-height: 55px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-right: none;
+            border-radius:
+                14px 0 0 14px;
+
+            background:
+                #eef2f7;
+
+            color:
+                var(--primary);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+
+            font-size: 0.77rem;
+            font-weight: 750;
+        }
+
+        .phone-field
+        .form-control-custom {
+            padding-left: 15px;
+
+            border-radius:
+                0 14px 14px 0;
+        }
+
+        .field-error {
+            display: none;
+
+            margin-top: 5px;
+
+            color:
+                var(--danger);
+
+            font-size: 0.67rem;
+        }
+
+        .field-error.visible {
+            display: block;
+        }
+
+        .modal-actions {
+            position: sticky;
+            bottom: -1px;
+
+            display: grid;
+            grid-template-columns:
+                1fr 1.5fr;
+
+            gap: 10px;
+
+            padding-top: 18px;
+            margin-top: 18px;
+
+            background:
+                var(--white);
+        }
+
+        .secondary-button,
+        .primary-button {
+            min-height: 54px;
+
+            border-radius: 15px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+
+        .secondary-button {
+            border:
+                1px solid
+                var(--border);
+
+            background:
+                #f8fafc;
+
+            color:
+                var(--primary);
+        }
+
+        .primary-button {
+            border: none;
+
+            background:
+                var(--primary);
+
+            color:
+                var(--white);
+        }
+
+        .primary-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* =====================================
+           Password Modal
+        ===================================== */
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper
+        .form-control-custom {
+            padding-right: 48px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 7px;
+
+            width: 42px;
+            height: 42px;
+
+            border: none;
+            border-radius: 12px;
+
+            background:
+                transparent;
+
+            color:
+                var(--text-muted);
+
+            transform:
+                translateY(-50%);
+        }
+
+        .password-strength {
+            margin-top: 8px;
+        }
+
+        .strength-track {
+            width: 100%;
+            height: 6px;
+
+            overflow: hidden;
+
+            border-radius: 20px;
+
+            background:
+                #e8ecf2;
+        }
+
+        .strength-bar {
+            width: 0;
+            height: 100%;
+
+            border-radius: inherit;
+
+            background:
+                var(--danger);
+
+            transition: 0.25s ease;
+        }
+
+        .strength-label {
+            display: flex;
+            justify-content: space-between;
+
+            margin-top: 5px;
+
+            color:
+                var(--text-muted);
+
+            font-size: 0.63rem;
+        }
+
+        /* =====================================
+           Bottom Navigation
+        ===================================== */
+
+        .bottom-navigation {
+            position: fixed;
+            left: 10px;
+            right: 10px;
+
+            bottom:
+                max(
+                    10px,
+                    env(safe-area-inset-bottom)
+                );
+
+            z-index: 950;
+
+            min-height: 69px;
+            padding: 8px 6px;
+
+            border:
+                1px solid
+                rgba(229, 234, 242, 0.95);
+
+            border-radius: 22px;
+
+            background:
+                rgba(255, 255, 255, 0.96);
+
+            backdrop-filter:
+                blur(18px);
+
+            -webkit-backdrop-filter:
+                blur(18px);
+
+            box-shadow:
+                0 10px 35px
+                rgba(0, 29, 77, 0.15);
+
+            display: grid;
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            align-items: center;
+        }
+
+        .bottom-nav-link {
+            position: relative;
+
+            min-height: 52px;
+            border-radius: 15px;
+
+            color:
+                #8390a5;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+
+            font-size: 0.6rem;
+            font-weight: 700;
+        }
+
+        .bottom-nav-link i {
+            font-size: 1.18rem;
+        }
+
+        .bottom-nav-link.active {
+            background:
+                rgba(0, 29, 77, 0.08);
+
+            color:
+                var(--primary);
+        }
+
+        .bottom-nav-link.active::before {
+            content: "";
+
+            position: absolute;
+            top: 3px;
+
+            width: 19px;
+            height: 3px;
+
+            border-radius: 30px;
+
+            background:
+                var(--accent);
+        }
+
+        .bottom-nav-link.main-action {
+            width: 53px;
+            height: 53px;
+            min-height: 53px;
+
+            margin: -23px auto 0;
+
+            border-radius: 18px;
+
+            background:
+                var(--primary);
+
+            color:
+                var(--white);
+
+            box-shadow:
+                0 8px 22px
+                rgba(0, 29, 77, 0.28);
+        }
+
+        .bottom-nav-link.main-action i {
+            font-size: 1.35rem;
+        }
+
+        .bottom-nav-link.main-action span {
+            display: none;
+        }
+
+        /* =====================================
+           Mobile Menu
+        ===================================== */
+
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1090;
+
+            background:
+                rgba(0, 15, 40, 0.55);
+
+            opacity: 0;
+            visibility: hidden;
+
+            transition: 0.3s ease;
+        }
+
+        .menu-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1100;
+
+            width:
+                min(84%, 340px);
+
+            padding:
+                max(
+                    18px,
+                    env(safe-area-inset-top)
+                )
+                18px
+                25px;
+
+            background:
+                var(--white);
+
+            transform:
+                translateX(105%);
+
+            transition:
+                0.3s ease;
+
+            display: flex;
+            flex-direction: column;
+
+            box-shadow:
+                -15px 0 45px
+                rgba(0, 29, 77, 0.15);
+        }
+
+        .mobile-menu.open {
+            transform:
+                translateX(0);
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+
+            padding-bottom: 18px;
+
+            border-bottom:
+                1px solid
+                var(--border);
+        }
+
+        .mobile-menu-user {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+
+            min-width: 0;
+        }
+
+        .mobile-menu-user h3 {
+            margin: 0 0 3px;
+
+            color:
+                var(--primary);
+
+            font-size: 0.88rem;
+            font-weight: 800;
+        }
+
+        .mobile-menu-user p {
+            max-width: 175px;
+            margin: 0;
+
+            overflow: hidden;
+
+            color:
+                var(--text-muted);
+
+            font-size: 0.69rem;
+
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .close-menu-button {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 13px;
+
+            background:
+                var(--white);
+
+            color:
+                var(--primary);
+        }
+
+        .mobile-menu-navigation {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+            margin-top: 18px;
+        }
+
+        .mobile-menu-link {
+            min-height: 52px;
+            padding: 0 14px;
+
+            border-radius: 14px;
+
+            color:
+                var(--text-dark);
+
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            font-size: 0.87rem;
+            font-weight: 650;
+        }
+
+        .mobile-menu-link i {
+            width: 21px;
+
+            color:
+                var(--primary);
+
+            font-size: 1.12rem;
+        }
+
+        .mobile-menu-link.active {
+            background:
+                rgba(0, 29, 77, 0.07);
+
+            color:
+                var(--primary);
+        }
+
+        /* Toast */
+
+        .toast-message {
+            position: fixed;
+            top: 18px;
+            left: 50%;
+            z-index: 1500;
+
+            width:
+                calc(100% - 30px);
+
+            max-width: 420px;
+
+            padding: 14px 17px;
+
+            border-radius: 15px;
+
+            background:
+                var(--white);
+
+            color:
+                var(--primary);
+
+            box-shadow:
+                0 15px 45px
+                rgba(0, 29, 77, 0.2);
+
+            font-size: 0.84rem;
+            font-weight: 700;
+
+            transform:
+                translate(-50%, -120px);
+
+            opacity: 0;
+
+            transition:
+                0.35s ease;
+        }
+
+        .toast-message.show {
+            transform:
+                translate(-50%, 0);
+
+            opacity: 1;
+        }
+
+        .toast-message.error {
+            color:
+                var(--danger);
+        }
+
+        .toast-message.success {
+            color:
+                var(--success);
+        }
+
+        /* =====================================
+           Responsive
+        ===================================== */
+
+        @media (min-width: 600px) {
+            .page-content {
+                padding: 24px;
+            }
+
+            .profile-hero {
+                padding: 30px;
+            }
+
+            .profile-hero-content {
+                flex-direction: row;
+                align-items: center;
+
+                text-align: left;
+            }
+
+            .profile-avatar-wrapper {
+                flex-shrink: 0;
+
+                margin:
+                    0 20px 0 0;
+            }
+
+            .profile-hero-details {
+                flex: 1;
+            }
+
+            .profile-badges {
+                justify-content:
+                    flex-start;
+            }
+
+            .hero-actions {
+                width: auto;
+                min-width: 165px;
+
+                margin:
+                    0 0 0 18px;
+            }
+
+            .statistics-grid {
+                grid-template-columns:
+                    repeat(4, 1fr);
+            }
+
+            .form-grid.two-columns {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .modal-overlay {
+                align-items: center;
+            }
+
+            .profile-modal {
+                border-radius: 24px;
+            }
+
+            .modal-handle {
+                display: none;
+            }
+        }
+
+        @media (min-width: 850px) {
+            .profile-layout {
+                grid-template-columns:
+                    1.15fr 0.85fr;
+
+                align-items: start;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .desktop-sidebar {
+                display: flex;
+            }
+
+            .main-wrapper {
+                width:
+                    calc(100% - 255px);
+
+                margin-left: 255px;
+                padding-bottom: 0;
+            }
+
+            .mobile-header,
+            .bottom-navigation {
+                display: none;
+            }
+
+            .desktop-header {
+                display: flex;
+            }
+
+            .page-content {
+                padding:
+                    28px 32px 45px;
+            }
+        }
+
+        @media (max-width: 390px) {
+            .page-content {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .profile-card {
+                padding-left: 13px;
+                padding-right: 13px;
+            }
+
+            .statistics-grid {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+            .modal-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .phone-field {
+                grid-template-columns:
+                    102px 1fr;
+            }
+
+            .bottom-navigation {
+                left: 6px;
+                right: 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Desktop Sidebar -->
+   <aside class="desktop-sidebar">
+
+        <div class="sidebar-logo-box">
+
+            <img
+                src="images/logo.png"
+                class="sidebar-logo"
+                alt="ZamCargo Logo"
+            >
+
+        </div>
+
+        <nav class="desktop-navigation">
+
+            <a
+                href="main_dashboard.html"
+                class="desktop-nav-link"
+            >
+                <i class="bi bi-grid-1x2"></i>
+                Dashboard
+            </a>
+
+            <a
+                href="legacy_systems.html"
+                class="desktop-nav-link"
+            >
+                <i class="bi bi-window-stack"></i>
+                Systems
+            </a>
+
+            <a
+                href="request_quote.html"
+                class="desktop-nav-link"
+            >
+                <i class="bi bi-file-earmark-text"></i>
+                Quotations
+            </a>
+
+            <a
+                href="track_shipment.html"
+                class="desktop-nav-link"
+            >
+                <i class="bi bi-box-seam"></i>
+                Shipments
+            </a>
+
+            <a
+                href="user_claim.html"
+                class="desktop-nav-link"
+            >
+                <i class="bi bi-shield-exclamation"></i>
+                Claims
+            </a>
+
+            <a
+                href="notifications.html"
+                class="desktop-nav-link"
+            >
+                <i class="bi bi-bell"></i>
+                Notifications
+            </a>
+
+            <a
+                href="user_profile.html"
+                class="desktop-nav-link active"
+            >
+                <i class="bi bi-person"></i>
+                My Profile
+            </a>
+
+        </nav>
+
+        <div class="desktop-sidebar-footer">
+
+            <div class="sidebar-support">
+
+                <i class="bi bi-headset"></i>
+
+                <h3>Need system access?</h3>
+
+                <p>
+                    Contact the ICT support team if you cannot access any
+                    integrated business system.
+                </p>
+
+                <a href="support.html">
+                    Contact Support
+                    <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+
+            <button
+                type="button"
+                class="header-button"
+                id="backButton"
+                aria-label="Return to dashboard"
+            >
+                <i class="bi bi-arrow-left"></i>
+            </button>
+
+            <div class="mobile-header-title">
+
+                <h1>My Profile</h1>
+
+                <p>
+                    Account and preferences
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                class="header-button"
+                id="menuButton"
+                aria-label="Open account menu"
+            >
+                <i class="bi bi-list"></i>
+            </button>
+
+        </header>
+
+        <!-- Desktop Header -->
+        <header class="desktop-header">
+
+            <div class="desktop-page-title">
+
+                <h1>My Profile</h1>
+
+                <p>
+                    Manage your personal information, security and preferences.
+                </p>
+
+            </div>
+
+            <div class="desktop-profile">
+
+                <div class="desktop-profile-info">
+
+                    <strong id="desktopProfileName">
+                        John Mushi
+                    </strong>
+
+                    <span>
+                        Customer Account
+                    </span>
+
+                </div>
+
+                <div
+                    class="profile-avatar-small"
+                    id="desktopAvatar"
+                >
+                    JM
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- Page Content -->
+        <main class="page-content">
+
+            <!-- Profile Hero -->
+            <section class="profile-hero">
+
+                <div class="profile-hero-content">
+
+                    <div class="profile-avatar-wrapper">
+
+                        <div
+                            class="profile-avatar-large"
+                            id="profileAvatar"
+                        >
+                            JM
+                        </div>
+
+                        <button
+                            type="button"
+                            class="avatar-edit-button"
+                            id="avatarEditButton"
+                            aria-label="Change profile picture"
+                        >
+                            <i class="bi bi-camera"></i>
+                        </button>
+
+                        <input
+                            type="file"
+                            id="avatarInput"
+                            accept="image/png,image/jpeg,image/webp"
+                            hidden
+                        >
+
+                    </div>
+
+                    <div class="profile-hero-details">
+
+                        <h2 id="heroFullName">
+                            John Mushi
+                        </h2>
+
+                        <p
+                            class="profile-hero-email"
+                            id="heroEmail"
+                        >
+                            johnmushi@example.com
+                        </p>
+
+                        <div class="profile-badges">
+
+                            <span class="profile-badge">
+                                <i class="bi bi-person-vcard"></i>
+                                <span id="heroCustomerId">
+                                    CUS-001
+                                </span>
+                            </span>
+
+                            <span class="profile-badge verified">
+                                <i class="bi bi-patch-check-fill"></i>
+                                Verified Account
+                            </span>
+
+                            <span class="profile-badge">
+                                <i class="bi bi-calendar3"></i>
+                                Member since 2026
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="hero-actions">
+
+                        <button
+                            type="button"
+                            class="edit-profile-button"
+                            id="heroEditProfileButton"
+                        >
+                            <i class="bi bi-pencil-square"></i>
+                            Edit Profile
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- Statistics -->
+            <section class="statistics-grid">
+
+                <article class="stat-card">
+
+                    <div class="stat-icon">
+                        <i class="bi bi-box-seam"></i>
+                    </div>
+
+                    <span>
+                        Total Shipments
+                    </span>
+
+                    <strong>
+                        8
+                    </strong>
+
+                </article>
+
+                <article class="stat-card">
+
+                    <div class="stat-icon">
+                        <i class="bi bi-file-earmark-text"></i>
+                    </div>
+
+                    <span>
+                        Quote Requests
+                    </span>
+
+                    <strong>
+                        12
+                    </strong>
+
+                </article>
+
+                <article class="stat-card">
+
+                    <div class="stat-icon">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+
+                    <span>
+                        Delivered
+                    </span>
+
+                    <strong>
+                        5
+                    </strong>
+
+                </article>
+
+                <article class="stat-card">
+
+                    <div class="stat-icon">
+                        <i class="bi bi-shield-exclamation"></i>
+                    </div>
+
+                    <span>
+                        Claims Raised
+                    </span>
+
+                    <strong>
+                        4
+                    </strong>
+
+                </article>
+
+            </section>
+
+            <!-- Profile Columns -->
+            <section class="profile-layout">
+
+                <!-- Left Column -->
+                <div class="profile-column">
+
+                    <!-- Personal Information -->
+                    <article class="profile-card">
+
+                        <div class="card-header-custom">
+
+                            <div class="card-title-wrapper">
+
+                                <div class="card-title-icon">
+                                    <i class="bi bi-person"></i>
+                                </div>
+
+                                <div>
+
+                                    <h2>
+                                        Personal Information
+                                    </h2>
+
+                                    <p>
+                                        Your primary contact information
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <button
+                                type="button"
+                                class="card-edit-button edit-profile-trigger"
+                                aria-label="Edit personal information"
+                            >
+                                <i class="bi bi-pencil"></i>
+                            </button>
+
+                        </div>
+
+                        <div class="information-list">
+
+                            <div class="information-row">
+
+                                <div class="information-icon">
+                                    <i class="bi bi-person"></i>
+                                </div>
+
+                                <div class="information-content">
+
+                                    <span>
+                                        Full Name
+                                    </span>
+
+                                    <strong id="displayFullName">
+                                        John Mushi
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                            <div class="information-row">
+
+                                <div class="information-icon">
+                                    <i class="bi bi-envelope"></i>
+                                </div>
+
+                                <div class="information-content">
+
+                                    <span>
+                                        Email Address
+                                    </span>
+
+                                    <strong id="displayEmail">
+                                        johnmushi@example.com
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                            <div class="information-row">
+
+                                <div class="information-icon">
+                                    <i class="bi bi-telephone"></i>
+                                </div>
+
+                                <div class="information-content">
+
+                                    <span>
+                                        Phone Number
+                                    </span>
+
+                                    <strong id="displayPhone">
+                                        +255 712 345 678
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                            <div class="information-row">
+
+                                <div class="information-icon">
+                                    <i class="bi bi-geo-alt"></i>
+                                </div>
+
+                                <div class="information-content">
+
+                                    <span>
+                                        Location
+                                    </span>
+
+                                    <strong id="displayLocation">
+                                        Dar es Salaam, Tanzania
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                            <div class="information-row">
+
+                                <div class="information-icon">
+                                    <i class="bi bi-person-vcard"></i>
+                                </div>
+
+                                <div class="information-content">
+
+                                    <span>
+                                        Customer ID
+                                    </span>
+
+                                    <strong id="displayCustomerId">
+                                        CUS-001
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                    <!-- Company Information -->
+                    <article class="profile-card">
+
+                        <div class="card-header-custom">
+
+                            <div class="card-title-wrapper">
+
+                                <div class="card-title-icon">
+                                    <i class="bi bi-building"></i>
+                                </div>
+
+                                <div>
+
+                                    <h2>
+                                        Company Information
+                                    </h2>
+
+                                    <p>
+                                        Business details linked to your account
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <button
+                                type="button"
+                                class="card-edit-button edit-profile-trigger"
+                                aria-label="Edit company information"
+                            >
+                                <i class="bi bi-pencil"></i>
+                            </button>
+
+                        </div>
+
+                        <div class="information-list">
+
+                            <div class="information-row">
+
+                                <div class="information-icon">
+                                    <i class="bi bi-building"></i>
+                                </div>
+
+                                <div class="information-content">
+
+                                    <span>
+                                        Company Name
+                                    </span>
+
+                                    <strong id="displayCompanyName">
+                                        Mushi General Supplies
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                            <div class="information-row">
+
+                                <div class="information-icon">
+                                    <i class="bi bi-briefcase"></i>
+                                </div>
+
+                                <div class="information-content">
+
+                                    <span>
+                                        Business Type
+                                    </span>
+
+                                    <strong id="displayBusinessType">
+                                        General Trading
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                            <div class="information-row">
+
+                                <div class="information-icon">
+                                    <i class="bi bi-receipt"></i>
+                                </div>
+
+                                <div class="information-content">
+
+                                    <span>
+                                        Tax Identification Number
+                                    </span>
+
+                                    <strong id="displayTin">
+                                        123-456-789
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                            <div class="information-row">
+
+                                <div class="information-icon">
+                                    <i class="bi bi-pin-map"></i>
+                                </div>
+
+                                <div class="information-content">
+
+                                    <span>
+                                        Business Address
+                                    </span>
+
+                                    <strong id="displayBusinessAddress">
+                                        Kariakoo, Dar es Salaam
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+                <!-- Right Column -->
+                <div class="profile-column">
+
+                    <!-- Verification -->
+                    <article class="profile-card">
+
+                        <div class="card-header-custom">
+
+                            <div class="card-title-wrapper">
+
+                                <div class="card-title-icon">
+                                    <i class="bi bi-patch-check"></i>
+                                </div>
+
+                                <div>
+
+                                    <h2>
+                                        Account Verification
+                                    </h2>
+
+                                    <p>
+                                        Identity and contact verification
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="verification-box">
+
+                            <div class="verification-icon">
+                                <i class="bi bi-check-circle-fill"></i>
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Account Verified
+                                </h3>
+
+                                <p>
+                                    Your email address and phone number have
+                                    been successfully verified.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                    <!-- Security -->
+                    <article class="profile-card">
+
+                        <div class="card-header-custom">
+
+                            <div class="card-title-wrapper">
+
+                                <div class="card-title-icon">
+                                    <i class="bi bi-shield-lock"></i>
+                                </div>
+
+                                <div>
+
+                                    <h2>
+                                        Security
+                                    </h2>
+
+                                    <p>
+                                        Protect access to your account
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="settings-list">
+
+                            <div class="setting-row">
+
+                                <div class="setting-icon">
+                                    <i class="bi bi-key"></i>
+                                </div>
+
+                                <div class="setting-content">
+
+                                    <strong>
+                                        Password
+                                    </strong>
+
+                                    <span>
+                                        Last changed 30 days ago
+                                    </span>
+
+                                </div>
+
+                                <button
+                                    type="button"
+                                    class="setting-action"
+                                    id="changePasswordButton"
+                                    aria-label="Change password"
+                                >
+                                    <i class="bi bi-chevron-right"></i>
+                                </button>
+
+                            </div>
+
+                            <div class="setting-row">
+
+                                <div class="setting-icon">
+                                    <i class="bi bi-phone"></i>
+                                </div>
+
+                                <div class="setting-content">
+
+                                    <strong>
+                                        Two-Step Verification
+                                    </strong>
+
+                                    <span>
+                                        Add extra account protection
+                                    </span>
+
+                                </div>
+
+                                <label class="switch">
+
+                                    <input
+                                        type="checkbox"
+                                        id="twoFactorToggle"
+                                    >
+
+                                    <span class="switch-slider"></span>
+
+                                </label>
+
+                            </div>
+
+                            <div class="setting-row">
+
+                                <div class="setting-icon">
+                                    <i class="bi bi-clock-history"></i>
+                                </div>
+
+                                <div class="setting-content">
+
+                                    <strong>
+                                        Login Activity
+                                    </strong>
+
+                                    <span>
+                                        Review recent account access
+                                    </span>
+
+                                </div>
+
+                                <button
+                                    type="button"
+                                    class="setting-action"
+                                    id="loginActivityButton"
+                                    aria-label="Review login activity"
+                                >
+                                    <i class="bi bi-chevron-right"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                    <!-- Notifications -->
+                    <article class="profile-card">
+
+                        <div class="card-header-custom">
+
+                            <div class="card-title-wrapper">
+
+                                <div class="card-title-icon">
+                                    <i class="bi bi-bell"></i>
+                                </div>
+
+                                <div>
+
+                                    <h2>
+                                        Notifications
+                                    </h2>
+
+                                    <p>
+                                        Choose the updates you receive
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="settings-list">
+
+                            <div class="setting-row">
+
+                                <div class="setting-icon">
+                                    <i class="bi bi-envelope"></i>
+                                </div>
+
+                                <div class="setting-content">
+
+                                    <strong>
+                                        Email Notifications
+                                    </strong>
+
+                                    <span>
+                                        Quotes, shipments and claim updates
+                                    </span>
+
+                                </div>
+
+                                <label class="switch">
+
+                                    <input
+                                        type="checkbox"
+                                        id="emailNotificationToggle"
+                                        checked
+                                    >
+
+                                    <span class="switch-slider"></span>
+
+                                </label>
+
+                            </div>
+
+                            <div class="setting-row">
+
+                                <div class="setting-icon">
+                                    <i class="bi bi-chat-dots"></i>
+                                </div>
+
+                                <div class="setting-content">
+
+                                    <strong>
+                                        SMS Notifications
+                                    </strong>
+
+                                    <span>
+                                        Important shipment status updates
+                                    </span>
+
+                                </div>
+
+                                <label class="switch">
+
+                                    <input
+                                        type="checkbox"
+                                        id="smsNotificationToggle"
+                                        checked
+                                    >
+
+                                    <span class="switch-slider"></span>
+
+                                </label>
+
+                            </div>
+
+                            <div class="setting-row">
+
+                                <div class="setting-icon">
+                                    <i class="bi bi-megaphone"></i>
+                                </div>
+
+                                <div class="setting-content">
+
+                                    <strong>
+                                        Marketing Updates
+                                    </strong>
+
+                                    <span>
+                                        Offers and service announcements
+                                    </span>
+
+                                </div>
+
+                                <label class="switch">
+
+                                    <input
+                                        type="checkbox"
+                                        id="marketingToggle"
+                                    >
+
+                                    <span class="switch-slider"></span>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                    <button
+                        type="button"
+                        class="logout-button"
+                        id="logoutButton"
+                    >
+                        <i class="bi bi-box-arrow-right"></i>
+                        Log Out
+                    </button>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-navigation">
+
+        <a
+            href="main_dashboard.html"
+            class="bottom-nav-link"
+        >
+            <i class="bi bi-grid-1x2"></i>
+            <span>Home</span>
+        </a>
+
+         <a
+            href="legacy_systems.html"
+            class="bottom-nav-link"
+        >
+            <i class="bi bi-window-stack"></i>
+            <span>Systems</span>
+        </a>
+
+        <a
+            href="request-quote.html"
+            class="bottom-nav-link main-action"
+            aria-label="Request quotation"
+        >
+            <i class="bi bi-plus-lg"></i>
+            <span>Request</span>
+        </a>
+
+        <a
+            href="track_shipment.html"
+            class="bottom-nav-link"
+        >
+            <i class="bi bi-box-seam"></i>
+            <span>Shipments</span>
+        </a>
+
+        <a
+            href="user_profile.html"
+            class="bottom-nav-link active"
+        >
+            <i class="bi bi-person"></i>
+            <span>Profile</span>
+        </a>
+
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div
+        class="menu-overlay"
+        id="menuOverlay"
+    ></div>
+
+    <!-- Mobile Menu -->
+     <aside
+        class="mobile-menu"
+        id="mobileMenu"
+        aria-hidden="true"
+    >
+
+        <div class="mobile-menu-header">
+
+            <div class="mobile-menu-user">
+
+                <div class="profile-avatar">
+                    JM
+                </div>
+
+                <div>
+
+                    <h3>
+                        John Mushi
+                    </h3>
+
+                    <p>
+                        johnmushi@example.com
+                    </p>
+
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                class="close-menu-button"
+                id="closeMenuButton"
+                aria-label="Close account menu"
+            >
+                <i class="bi bi-x-lg"></i>
+            </button>
+
+        </div>
+
+        <nav class="mobile-menu-navigation">
+
+            <a
+                href="main_dashboard.html"
+                class="mobile-menu-link"
+            >
+                <i class="bi bi-grid-1x2"></i>
+                Dashboard
+            </a>
+
+            <a
+                href="legacy_systems.html"
+                class="mobile-menu-link"
+            >
+                <i class="bi bi-window-stack"></i>
+                Systems
+            </a>
+
+            <a
+                href="request_quote.html"
+                class="mobile-menu-link"
+            >
+                <i class="bi bi-file-earmark-text"></i>
+                Quotations
+            </a>
+
+            <a
+                href="track_shipment.html"
+                class="mobile-menu-link"
+            >
+                <i class="bi bi-box-seam"></i>
+                Shipments
+            </a>
+
+            <a
+                href="user_claim.html"
+                class="mobile-menu-link"
+            >
+                <i class="bi bi-shield-exclamation"></i>
+                Claims
+            </a>
+
+            <a
+                href="notifications.html"
+                class="mobile-menu-link"
+            >
+                <i class="bi bi-bell"></i>
+                Notifications
+            </a>
+
+            <a
+                href="user_profile.html"
+                class="mobile-menu-link active"
+            >
+                <i class="bi bi-person"></i>
+                My Profile
+            </a>
+
+            <a
+                href="support.html"
+                class="mobile-menu-link"
+            >
+                <i class="bi bi-headset"></i>
+                Support
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- Edit Profile Modal -->
+    <div
+        class="modal-overlay"
+        id="editProfileModal"
+        aria-hidden="true"
+    >
+
+        <section
+            class="profile-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="editProfileTitle"
+        >
+
+            <div class="modal-handle"></div>
+
+            <div class="modal-header-custom">
+
+                <div>
+
+                    <h2 id="editProfileTitle">
+                        Edit Profile
+                    </h2>
+
+                    <p>
+                        Update your personal and company information.
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="modal-close-button"
+                    id="closeEditProfileModal"
+                    aria-label="Close edit profile"
+                >
+                    <i class="bi bi-x-lg"></i>
+                </button>
+
+            </div>
+
+            <form
+                class="profile-form"
+                id="profileForm"
+                novalidate
+            >
+
+                <div class="form-section-title">
+                    <i class="bi bi-person"></i>
+                    Personal Information
+                </div>
+
+                <div class="form-grid two-columns">
+
+                    <div class="form-field full-width">
+
+                        <label for="fullName">
+                            Full Name
+                            <span class="required">*</span>
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="bi bi-person input-icon"></i>
+
+                            <input
+                                type="text"
+                                id="fullName"
+                                class="form-control-custom"
+                                placeholder="Enter full name"
+                                autocomplete="name"
+                                required
+                            >
+
+                        </div>
+
+                        <small
+                            class="field-error"
+                            id="fullNameError"
+                        >
+                            Enter your full name.
+                        </small>
+
+                    </div>
+
+                    <div class="form-field">
+
+                        <label for="emailAddress">
+                            Email Address
+                            <span class="required">*</span>
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="bi bi-envelope input-icon"></i>
+
+                            <input
+                                type="email"
+                                id="emailAddress"
+                                class="form-control-custom"
+                                placeholder="Enter email"
+                                autocomplete="email"
+                                inputmode="email"
+                                required
+                            >
+
+                        </div>
+
+                        <small
+                            class="field-error"
+                            id="emailAddressError"
+                        >
+                            Enter a valid email address.
+                        </small>
+
+                    </div>
+
+                    <div class="form-field">
+
+                        <label for="phoneNumber">
+                            Phone Number
+                            <span class="required">*</span>
+                        </label>
+
+                        <div class="phone-field">
+
+                            <div class="phone-prefix">
+                                🇹🇿 +255
+                            </div>
+
+                            <input
+                                type="tel"
+                                id="phoneNumber"
+                                class="form-control-custom"
+                                placeholder="712345678"
+                                maxlength="9"
+                                inputmode="numeric"
+                                autocomplete="tel"
+                                required
+                            >
+
+                        </div>
+
+                        <small
+                            class="field-error"
+                            id="phoneNumberError"
+                        >
+                            Enter nine digits beginning with 6 or 7.
+                        </small>
+
+                    </div>
+
+                    <div class="form-field full-width">
+
+                        <label for="location">
+                            Location
+                            <span class="required">*</span>
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="bi bi-geo-alt input-icon"></i>
+
+                            <select
+                                id="location"
+                                class="form-select-custom"
+                                required
+                            >
+                                <option value="">
+                                    Select location
+                                </option>
+
+                                <option value="Dar es Salaam, Tanzania">
+                                    Dar es Salaam, Tanzania
+                                </option>
+
+                                <option value="Dodoma, Tanzania">
+                                    Dodoma, Tanzania
+                                </option>
+
+                                <option value="Arusha, Tanzania">
+                                    Arusha, Tanzania
+                                </option>
+
+                                <option value="Mwanza, Tanzania">
+                                    Mwanza, Tanzania
+                                </option>
+
+                                <option value="Mbeya, Tanzania">
+                                    Mbeya, Tanzania
+                                </option>
+
+                                <option value="Lusaka, Zambia">
+                                    Lusaka, Zambia
+                                </option>
+
+                                <option value="Ndola, Zambia">
+                                    Ndola, Zambia
+                                </option>
+                            </select>
+
+                            <i class="bi bi-chevron-down select-arrow"></i>
+
+                        </div>
+
+                        <small
+                            class="field-error"
+                            id="locationError"
+                        >
+                            Select your location.
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <div
+                    class="form-section-title"
+                    style="margin-top: 22px;"
+                >
+                    <i class="bi bi-building"></i>
+                    Company Information
+                </div>
+
+                <div class="form-grid two-columns">
+
+                    <div class="form-field full-width">
+
+                        <label for="companyName">
+                            Company Name
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="bi bi-building input-icon"></i>
+
+                            <input
+                                type="text"
+                                id="companyName"
+                                class="form-control-custom"
+                                placeholder="Enter company name"
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-field">
+
+                        <label for="businessType">
+                            Business Type
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="bi bi-briefcase input-icon"></i>
+
+                            <select
+                                id="businessType"
+                                class="form-select-custom"
+                            >
+                                <option value="">
+                                    Select business type
+                                </option>
+
+                                <option value="General Trading">
+                                    General Trading
+                                </option>
+
+                                <option value="Automotive Business">
+                                    Automotive Business
+                                </option>
+
+                                <option value="Manufacturing">
+                                    Manufacturing
+                                </option>
+
+                                <option value="Construction">
+                                    Construction
+                                </option>
+
+                                <option value="Agriculture">
+                                    Agriculture
+                                </option>
+
+                                <option value="Individual Customer">
+                                    Individual Customer
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+                            </select>
+
+                            <i class="bi bi-chevron-down select-arrow"></i>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-field">
+
+                        <label for="tinNumber">
+                            Tax Identification Number
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="bi bi-receipt input-icon"></i>
+
+                            <input
+                                type="text"
+                                id="tinNumber"
+                                class="form-control-custom"
+                                placeholder="Enter TIN"
+                                maxlength="20"
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-field full-width">
+
+                        <label for="businessAddress">
+                            Business Address
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="bi bi-pin-map input-icon"></i>
+
+                            <input
+                                type="text"
+                                id="businessAddress"
+                                class="form-control-custom"
+                                placeholder="Enter business address"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        id="cancelProfileEdit"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                        id="saveProfileButton"
+                    >
+                        <i class="bi bi-check-lg"></i>
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </div>
+
+    <!-- Password Modal -->
+    <div
+        class="modal-overlay"
+        id="passwordModal"
+        aria-hidden="true"
+    >
+
+        <section
+            class="profile-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="passwordModalTitle"
+        >
+
+            <div class="modal-handle"></div>
+
+            <div class="modal-header-custom">
+
+                <div>
+
+                    <h2 id="passwordModalTitle">
+                        Change Password
+                    </h2>
+
+                    <p>
+                        Use a strong password that you do not use elsewhere.
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="modal-close-button"
+                    id="closePasswordModal"
+                    aria-label="Close password form"
+                >
+                    <i class="bi bi-x-lg"></i>
+                </button>
+
+            </div>
+
+            <form
+                class="profile-form"
+                id="passwordForm"
+                novalidate
+            >
+
+                <div class="form-grid">
+
+                    <div class="form-field">
+
+                        <label for="currentPassword">
+                            Current Password
+                            <span class="required">*</span>
+                        </label>
+
+                        <div class="password-wrapper">
+
+                            <div class="input-wrapper">
+
+                                <i class="bi bi-lock input-icon"></i>
+
+                                <input
+                                    type="password"
+                                    id="currentPassword"
+                                    class="form-control-custom"
+                                    placeholder="Enter current password"
+                                    autocomplete="current-password"
+                                    required
+                                >
+
+                            </div>
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-password-target="currentPassword"
+                                aria-label="Show current password"
+                            >
+                                <i class="bi bi-eye"></i>
+                            </button>
+
+                        </div>
+
+                        <small
+                            class="field-error"
+                            id="currentPasswordError"
+                        >
+                            Enter your current password.
+                        </small>
+
+                    </div>
+
+                    <div class="form-field">
+
+                        <label for="newPassword">
+                            New Password
+                            <span class="required">*</span>
+                        </label>
+
+                        <div class="password-wrapper">
+
+                            <div class="input-wrapper">
+
+                                <i class="bi bi-key input-icon"></i>
+
+                                <input
+                                    type="password"
+                                    id="newPassword"
+                                    class="form-control-custom"
+                                    placeholder="Create new password"
+                                    autocomplete="new-password"
+                                    required
+                                >
+
+                            </div>
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-password-target="newPassword"
+                                aria-label="Show new password"
+                            >
+                                <i class="bi bi-eye"></i>
+                            </button>
+
+                        </div>
+
+                        <div class="password-strength">
+
+                            <div class="strength-track">
+
+                                <div
+                                    class="strength-bar"
+                                    id="strengthBar"
+                                ></div>
+
+                            </div>
+
+                            <div class="strength-label">
+
+                                <span>
+                                    Password strength
+                                </span>
+
+                                <strong id="strengthText">
+                                    —
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                        <small
+                            class="field-error"
+                            id="newPasswordError"
+                        >
+                            Use at least eight characters, including a number.
+                        </small>
+
+                    </div>
+
+                    <div class="form-field">
+
+                        <label for="confirmPassword">
+                            Confirm New Password
+                            <span class="required">*</span>
+                        </label>
+
+                        <div class="password-wrapper">
+
+                            <div class="input-wrapper">
+
+                                <i class="bi bi-shield-check input-icon"></i>
+
+                                <input
+                                    type="password"
+                                    id="confirmPassword"
+                                    class="form-control-custom"
+                                    placeholder="Confirm new password"
+                                    autocomplete="new-password"
+                                    required
+                                >
+
+                            </div>
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-password-target="confirmPassword"
+                                aria-label="Show confirmed password"
+                            >
+                                <i class="bi bi-eye"></i>
+                            </button>
+
+                        </div>
+
+                        <small
+                            class="field-error"
+                            id="confirmPasswordError"
+                        >
+                            Passwords do not match.
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        id="cancelPasswordChange"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                        id="savePasswordButton"
+                    >
+                        <i class="bi bi-shield-check"></i>
+                        Update Password
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </div>
+
+    <!-- Toast -->
+    <div
+        class="toast-message"
+        id="toastMessage"
+        role="status"
+        aria-live="polite"
+    ></div>
+
+    <script>
+        /*
+        ============================================
+        Customer Profile Data
+
+        Replace this object with authenticated
+        customer data from your backend.
+        ============================================
+        */
+
+        const customerProfile = {
+            customerId: "CUS-001",
+            fullName: "John Mushi",
+            email: "johnmushi@example.com",
+            phone: "712345678",
+            location: "Dar es Salaam, Tanzania",
+
+            companyName:
+                "Mushi General Supplies",
+
+            businessType:
+                "General Trading",
+
+            tinNumber:
+                "123-456-789",
+
+            businessAddress:
+                "Kariakoo, Dar es Salaam",
+
+            verified: true,
+
+            preferences: {
+                twoFactor: false,
+                emailNotifications: true,
+                smsNotifications: true,
+                marketingNotifications: false
+            }
+        };
+
+        /*
+        ============================================
+        Elements
+        ============================================
+        */
+
+        const editProfileModal =
+            document.getElementById(
+                "editProfileModal"
+            );
+
+        const passwordModal =
+            document.getElementById(
+                "passwordModal"
+            );
+
+        const profileForm =
+            document.getElementById(
+                "profileForm"
+            );
+
+        const passwordForm =
+            document.getElementById(
+                "passwordForm"
+            );
+
+        const fullName =
+            document.getElementById(
+                "fullName"
+            );
+
+        const emailAddress =
+            document.getElementById(
+                "emailAddress"
+            );
+
+        const phoneNumber =
+            document.getElementById(
+                "phoneNumber"
+            );
+
+        const locationField =
+            document.getElementById(
+                "location"
+            );
+
+        const companyName =
+            document.getElementById(
+                "companyName"
+            );
+
+        const businessType =
+            document.getElementById(
+                "businessType"
+            );
+
+        const tinNumber =
+            document.getElementById(
+                "tinNumber"
+            );
+
+        const businessAddress =
+            document.getElementById(
+                "businessAddress"
+            );
+
+        const saveProfileButton =
+            document.getElementById(
+                "saveProfileButton"
+            );
+
+        const currentPassword =
+            document.getElementById(
+                "currentPassword"
+            );
+
+        const newPassword =
+            document.getElementById(
+                "newPassword"
+            );
+
+        const confirmPassword =
+            document.getElementById(
+                "confirmPassword"
+            );
+
+        const savePasswordButton =
+            document.getElementById(
+                "savePasswordButton"
+            );
+
+        const strengthBar =
+            document.getElementById(
+                "strengthBar"
+            );
+
+        const strengthText =
+            document.getElementById(
+                "strengthText"
+            );
+
+        const toastMessage =
+            document.getElementById(
+                "toastMessage"
+            );
+
+        const menuButton =
+            document.getElementById(
+                "menuButton"
+            );
+
+        const mobileMenu =
+            document.getElementById(
+                "mobileMenu"
+            );
+
+        const menuOverlay =
+            document.getElementById(
+                "menuOverlay"
+            );
+
+        /*
+        ============================================
+        Profile Display
+        ============================================
+        */
+
+        function getInitials(name) {
+            return name
+                .trim()
+                .split(/\s+/)
+                .slice(0, 2)
+                .map((part) =>
+                    part.charAt(0).toUpperCase()
+                )
+                .join("");
+        }
+
+        function formatPhone(phone) {
+            const cleaned =
+                phone.replace(/\D/g, "");
+
+            if (cleaned.length !== 9) {
+                return `+255 ${cleaned}`;
+            }
+
+            return `+255 ${cleaned.slice(
+                0,
+                3
+            )} ${cleaned.slice(
+                3,
+                6
+            )} ${cleaned.slice(6)}`;
+        }
+
+        function displayProfile() {
+            const initials =
+                getInitials(
+                    customerProfile.fullName
+                );
+
+            document.getElementById(
+                "profileAvatar"
+            ).textContent =
+                initials;
+
+            document.getElementById(
+                "desktopAvatar"
+            ).textContent =
+                initials;
+
+            document.getElementById(
+                "mobileMenuAvatar"
+            ).textContent =
+                initials;
+
+            document.getElementById(
+                "heroFullName"
+            ).textContent =
+                customerProfile.fullName;
+
+            document.getElementById(
+                "heroEmail"
+            ).textContent =
+                customerProfile.email;
+
+            document.getElementById(
+                "heroCustomerId"
+            ).textContent =
+                customerProfile.customerId;
+
+            document.getElementById(
+                "desktopProfileName"
+            ).textContent =
+                customerProfile.fullName;
+
+            document.getElementById(
+                "mobileMenuName"
+            ).textContent =
+                customerProfile.fullName;
+
+            document.getElementById(
+                "mobileMenuEmail"
+            ).textContent =
+                customerProfile.email;
+
+            document.getElementById(
+                "displayFullName"
+            ).textContent =
+                customerProfile.fullName;
+
+            document.getElementById(
+                "displayEmail"
+            ).textContent =
+                customerProfile.email;
+
+            document.getElementById(
+                "displayPhone"
+            ).textContent =
+                formatPhone(
+                    customerProfile.phone
+                );
+
+            document.getElementById(
+                "displayLocation"
+            ).textContent =
+                customerProfile.location;
+
+            document.getElementById(
+                "displayCustomerId"
+            ).textContent =
+                customerProfile.customerId;
+
+            document.getElementById(
+                "displayCompanyName"
+            ).textContent =
+                customerProfile.companyName ||
+                "Not provided";
+
+            document.getElementById(
+                "displayBusinessType"
+            ).textContent =
+                customerProfile.businessType ||
+                "Not provided";
+
+            document.getElementById(
+                "displayTin"
+            ).textContent =
+                customerProfile.tinNumber ||
+                "Not provided";
+
+            document.getElementById(
+                "displayBusinessAddress"
+            ).textContent =
+                customerProfile.businessAddress ||
+                "Not provided";
+
+            document.getElementById(
+                "twoFactorToggle"
+            ).checked =
+                customerProfile
+                    .preferences
+                    .twoFactor;
+
+            document.getElementById(
+                "emailNotificationToggle"
+            ).checked =
+                customerProfile
+                    .preferences
+                    .emailNotifications;
+
+            document.getElementById(
+                "smsNotificationToggle"
+            ).checked =
+                customerProfile
+                    .preferences
+                    .smsNotifications;
+
+            document.getElementById(
+                "marketingToggle"
+            ).checked =
+                customerProfile
+                    .preferences
+                    .marketingNotifications;
+        }
+
+        /*
+        ============================================
+        Edit Profile Modal
+        ============================================
+        */
+
+        function populateProfileForm() {
+            fullName.value =
+                customerProfile.fullName;
+
+            emailAddress.value =
+                customerProfile.email;
+
+            phoneNumber.value =
+                customerProfile.phone;
+
+            locationField.value =
+                customerProfile.location;
+
+            companyName.value =
+                customerProfile.companyName;
+
+            businessType.value =
+                customerProfile.businessType;
+
+            tinNumber.value =
+                customerProfile.tinNumber;
+
+            businessAddress.value =
+                customerProfile.businessAddress;
+        }
+
+        function openModal(modal) {
+            modal.classList.add("show");
+
+            modal.setAttribute(
+                "aria-hidden",
+                "false"
+            );
+
+            document.body.classList.add(
+                "modal-open-custom"
+            );
+        }
+
+        function closeModal(modal) {
+            modal.classList.remove("show");
+
+            modal.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
+            document.body.classList.remove(
+                "modal-open-custom"
+            );
+        }
+
+        function openEditProfile() {
+            populateProfileForm();
+            clearProfileErrors();
+            openModal(editProfileModal);
+
+            setTimeout(() => {
+                fullName.focus();
+            }, 350);
+        }
+
+        document
+            .querySelectorAll(
+                ".edit-profile-trigger"
+            )
+            .forEach((button) => {
+                button.addEventListener(
+                    "click",
+                    openEditProfile
+                );
+            });
+
+        document
+            .getElementById(
+                "heroEditProfileButton"
+            )
+            .addEventListener(
+                "click",
+                openEditProfile
+            );
+
+        document
+            .getElementById(
+                "closeEditProfileModal"
+            )
+            .addEventListener(
+                "click",
+                () =>
+                    closeModal(
+                        editProfileModal
+                    )
+            );
+
+        document
+            .getElementById(
+                "cancelProfileEdit"
+            )
+            .addEventListener(
+                "click",
+                () =>
+                    closeModal(
+                        editProfileModal
+                    )
+            );
+
+        editProfileModal.addEventListener(
+            "click",
+            (event) => {
+                if (
+                    event.target ===
+                    editProfileModal
+                ) {
+                    closeModal(
+                        editProfileModal
+                    );
+                }
+            }
+        );
+
+        /*
+        ============================================
+        Profile Validation
+        ============================================
+        */
+
+        function showFieldError(
+            field,
+            errorId,
+            message = ""
+        ) {
+            const error =
+                document.getElementById(
+                    errorId
+                );
+
+            field.classList.add(
+                "invalid"
+            );
+
+            if (message) {
+                error.textContent = message;
+            }
+
+            error.classList.add(
+                "visible"
+            );
+        }
+
+        function clearFieldError(
+            field,
+            errorId
+        ) {
+            field.classList.remove(
+                "invalid"
+            );
+
+            document.getElementById(
+                errorId
+            ).classList.remove(
+                "visible"
+            );
+        }
+
+        function clearProfileErrors() {
+            clearFieldError(
+                fullName,
+                "fullNameError"
+            );
+
+            clearFieldError(
+                emailAddress,
+                "emailAddressError"
+            );
+
+            clearFieldError(
+                phoneNumber,
+                "phoneNumberError"
+            );
+
+            clearFieldError(
+                locationField,
+                "locationError"
+            );
+        }
+
+        function validateProfile() {
+            const nameValid =
+                fullName.value
+                    .trim()
+                    .length >= 3;
+
+            const emailValid =
+                /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+                    .test(
+                        emailAddress.value.trim()
+                    );
+
+            const phoneValid =
+                /^[67]\d{8}$/
+                    .test(
+                        phoneNumber.value
+                    );
+
+            const locationValid =
+                Boolean(
+                    locationField.value
+                );
+
+            if (!nameValid) {
+                showFieldError(
+                    fullName,
+                    "fullNameError"
+                );
+            } else {
+                clearFieldError(
+                    fullName,
+                    "fullNameError"
+                );
+            }
+
+            if (!emailValid) {
+                showFieldError(
+                    emailAddress,
+                    "emailAddressError"
+                );
+            } else {
+                clearFieldError(
+                    emailAddress,
+                    "emailAddressError"
+                );
+            }
+
+            if (!phoneValid) {
+                showFieldError(
+                    phoneNumber,
+                    "phoneNumberError"
+                );
+            } else {
+                clearFieldError(
+                    phoneNumber,
+                    "phoneNumberError"
+                );
+            }
+
+            if (!locationValid) {
+                showFieldError(
+                    locationField,
+                    "locationError"
+                );
+            } else {
+                clearFieldError(
+                    locationField,
+                    "locationError"
+                );
+            }
+
+            return (
+                nameValid &&
+                emailValid &&
+                phoneValid &&
+                locationValid
+            );
+        }
+
+        phoneNumber.addEventListener(
+            "input",
+            () => {
+                phoneNumber.value =
+                    phoneNumber.value
+                        .replace(/\D/g, "")
+                        .slice(0, 9);
+
+                if (
+                    phoneNumber.value.length === 9
+                ) {
+                    if (
+                        /^[67]\d{8}$/
+                            .test(
+                                phoneNumber.value
+                            )
+                    ) {
+                        clearFieldError(
+                            phoneNumber,
+                            "phoneNumberError"
+                        );
+                    }
+                }
+            }
+        );
+
+        profileForm.addEventListener(
+            "submit",
+            async (event) => {
+                event.preventDefault();
+
+                if (!validateProfile()) {
+                    showToast(
+                        "Please correct the highlighted information.",
+                        true
+                    );
+
+                    return;
+                }
+
+                const updatedProfile = {
+                    fullName:
+                        fullName.value.trim(),
+
+                    email:
+                        emailAddress.value
+                            .trim()
+                            .toLowerCase(),
+
+                    phone:
+                        phoneNumber.value,
+
+                    location:
+                        locationField.value,
+
+                    companyName:
+                        companyName.value.trim(),
+
+                    businessType:
+                        businessType.value,
+
+                    tinNumber:
+                        tinNumber.value.trim(),
+
+                    businessAddress:
+                        businessAddress.value.trim()
+                };
+
+                saveProfileButton.disabled =
+                    true;
+
+                saveProfileButton.innerHTML = `
+                    <span
+                        class="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                    ></span>
+                    Saving...
+                `;
+
+                try {
+                    /*
+                    Replace with your API request:
+
+                    const response = await fetch(
+                        "/api/customers/me/profile",
+                        {
+                            method: "PUT",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json",
+
+                                Authorization:
+                                    `Bearer ${localStorage.getItem(
+                                        "zamcargo_token"
+                                    )}`
+                            },
+
+                            body: JSON.stringify(
+                                updatedProfile
+                            )
+                        }
+                    );
+
+                    const result =
+                        await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(
+                            result.message ||
+                            "Unable to update profile."
+                        );
+                    }
+                    */
+
+                    await new Promise(
+                        (resolve) =>
+                            setTimeout(
+                                resolve,
+                                900
+                            )
+                    );
+
+                    Object.assign(
+                        customerProfile,
+                        updatedProfile
+                    );
+
+                    displayProfile();
+
+                    closeModal(
+                        editProfileModal
+                    );
+
+                    showToast(
+                        "Profile updated successfully.",
+                        false,
+                        true
+                    );
+
+                } catch (error) {
+                    showToast(
+                        error.message ||
+                        "Unable to update your profile.",
+                        true
+                    );
+
+                } finally {
+                    saveProfileButton.disabled =
+                        false;
+
+                    saveProfileButton.innerHTML = `
+                        <i class="bi bi-check-lg"></i>
+                        Save Changes
+                    `;
+                }
+            }
+        );
+
+        /*
+        ============================================
+        Avatar Upload
+        ============================================
+        */
+
+        const avatarInput =
+            document.getElementById(
+                "avatarInput"
+            );
+
+        document.getElementById(
+            "avatarEditButton"
+        ).addEventListener(
+            "click",
+            () => {
+                avatarInput.click();
+            }
+        );
+
+        avatarInput.addEventListener(
+            "change",
+            () => {
+                const file =
+                    avatarInput.files[0];
+
+                if (!file) {
+                    return;
+                }
+
+                const acceptedTypes = [
+                    "image/jpeg",
+                    "image/png",
+                    "image/webp"
+                ];
+
+                if (
+                    !acceptedTypes.includes(
+                        file.type
+                    )
+                ) {
+                    showToast(
+                        "Select a JPG, PNG or WebP image.",
+                        true
+                    );
+
+                    avatarInput.value = "";
+                    return;
+                }
+
+                if (
+                    file.size >
+                    3 * 1024 * 1024
+                ) {
+                    showToast(
+                        "Profile image must be below 3 MB.",
+                        true
+                    );
+
+                    avatarInput.value = "";
+                    return;
+                }
+
+                const reader =
+                    new FileReader();
+
+                reader.onload = () => {
+                    const profileAvatar =
+                        document.getElementById(
+                            "profileAvatar"
+                        );
+
+                    profileAvatar.textContent =
+                        "";
+
+                    profileAvatar.style.backgroundImage =
+                        `url("${reader.result}")`;
+
+                    profileAvatar.style.backgroundSize =
+                        "cover";
+
+                    profileAvatar.style.backgroundPosition =
+                        "center";
+
+                    showToast(
+                        "Profile picture updated.",
+                        false,
+                        true
+                    );
+                };
+
+                reader.readAsDataURL(file);
+            }
+        );
+
+        /*
+        ============================================
+        Password Modal
+        ============================================
+        */
+
+        document.getElementById(
+            "changePasswordButton"
+        ).addEventListener(
+            "click",
+            () => {
+                passwordForm.reset();
+                resetPasswordStrength();
+                clearPasswordErrors();
+                openModal(passwordModal);
+
+                setTimeout(() => {
+                    currentPassword.focus();
+                }, 350);
+            }
+        );
+
+        document.getElementById(
+            "closePasswordModal"
+        ).addEventListener(
+            "click",
+            () =>
+                closeModal(
+                    passwordModal
+                )
+        );
+
+        document.getElementById(
+            "cancelPasswordChange"
+        ).addEventListener(
+            "click",
+            () =>
+                closeModal(
+                    passwordModal
+                )
+        );
+
+        passwordModal.addEventListener(
+            "click",
+            (event) => {
+                if (
+                    event.target ===
+                    passwordModal
+                ) {
+                    closeModal(
+                        passwordModal
+                    );
+                }
+            }
+        );
+
+        document
+            .querySelectorAll(
+                ".password-toggle"
+            )
+            .forEach((button) => {
+                button.addEventListener(
+                    "click",
+                    () => {
+                        const target =
+                            document.getElementById(
+                                button.dataset
+                                    .passwordTarget
+                            );
+
+                        const hidden =
+                            target.type ===
+                            "password";
+
+                        target.type =
+                            hidden
+                                ? "text"
+                                : "password";
+
+                        button.innerHTML =
+                            hidden
+                                ? '<i class="bi bi-eye-slash"></i>'
+                                : '<i class="bi bi-eye"></i>';
+                    }
+                );
+            });
+
+        function evaluatePasswordStrength(
+            password
+        ) {
+            let score = 0;
+
+            if (password.length >= 8) {
+                score++;
+            }
+
+            if (/[A-Z]/.test(password)) {
+                score++;
+            }
+
+            if (/[a-z]/.test(password)) {
+                score++;
+            }
+
+            if (/\d/.test(password)) {
+                score++;
+            }
+
+            if (
+                /[^A-Za-z0-9]/.test(
+                    password
+                )
+            ) {
+                score++;
+            }
+
+            return score;
+        }
+
+        function updatePasswordStrength() {
+            const score =
+                evaluatePasswordStrength(
+                    newPassword.value
+                );
+
+            const settings = {
+                0: {
+                    width: "0%",
+                    text: "—",
+                    color: "#d64f4f"
+                },
+
+                1: {
+                    width: "20%",
+                    text: "Very weak",
+                    color: "#d64f4f"
+                },
+
+                2: {
+                    width: "40%",
+                    text: "Weak",
+                    color: "#d89216"
+                },
+
+                3: {
+                    width: "60%",
+                    text: "Fair",
+                    color: "#d89216"
+                },
+
+                4: {
+                    width: "80%",
+                    text: "Strong",
+                    color: "#3478d4"
+                },
+
+                5: {
+                    width: "100%",
+                    text: "Very strong",
+                    color: "#159957"
+                }
+            };
+
+            const setting =
+                settings[score];
+
+            strengthBar.style.width =
+                setting.width;
+
+            strengthBar.style.background =
+                setting.color;
+
+            strengthText.textContent =
+                setting.text;
+
+            strengthText.style.color =
+                setting.color;
+        }
+
+        function resetPasswordStrength() {
+            strengthBar.style.width =
+                "0%";
+
+            strengthText.textContent =
+                "—";
+
+            strengthText.style.color =
+                "";
+        }
+
+        newPassword.addEventListener(
+            "input",
+            updatePasswordStrength
+        );
+
+        function clearPasswordErrors() {
+            clearFieldError(
+                currentPassword,
+                "currentPasswordError"
+            );
+
+            clearFieldError(
+                newPassword,
+                "newPasswordError"
+            );
+
+            clearFieldError(
+                confirmPassword,
+                "confirmPasswordError"
+            );
+        }
+
+        function validatePasswordForm() {
+            const currentValid =
+                currentPassword.value.length >= 1;
+
+            const newValid =
+                newPassword.value.length >= 8 &&
+                /\d/.test(
+                    newPassword.value
+                );
+
+            const confirmValid =
+                confirmPassword.value ===
+                    newPassword.value &&
+                confirmPassword.value.length > 0;
+
+            if (!currentValid) {
+                showFieldError(
+                    currentPassword,
+                    "currentPasswordError"
+                );
+            } else {
+                clearFieldError(
+                    currentPassword,
+                    "currentPasswordError"
+                );
+            }
+
+            if (!newValid) {
+                showFieldError(
+                    newPassword,
+                    "newPasswordError"
+                );
+            } else {
+                clearFieldError(
+                    newPassword,
+                    "newPasswordError"
+                );
+            }
+
+            if (!confirmValid) {
+                showFieldError(
+                    confirmPassword,
+                    "confirmPasswordError"
+                );
+            } else {
+                clearFieldError(
+                    confirmPassword,
+                    "confirmPasswordError"
+                );
+            }
+
+            return (
+                currentValid &&
+                newValid &&
+                confirmValid
+            );
+        }
+
+        passwordForm.addEventListener(
+            "submit",
+            async (event) => {
+                event.preventDefault();
+
+                if (
+                    !validatePasswordForm()
+                ) {
+                    showToast(
+                        "Please review the password information.",
+                        true
+                    );
+
+                    return;
+                }
+
+                const passwordData = {
+                    currentPassword:
+                        currentPassword.value,
+
+                    newPassword:
+                        newPassword.value
+                };
+
+                savePasswordButton.disabled =
+                    true;
+
+                savePasswordButton.innerHTML = `
+                    <span
+                        class="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                    ></span>
+                    Updating...
+                `;
+
+                try {
+                    /*
+                    Replace with backend API:
+
+                    const response = await fetch(
+                        "/api/customers/me/password",
+                        {
+                            method: "PUT",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json",
+
+                                Authorization:
+                                    `Bearer ${localStorage.getItem(
+                                        "zamcargo_token"
+                                    )}`
+                            },
+
+                            body: JSON.stringify(
+                                passwordData
+                            )
+                        }
+                    );
+
+                    const result =
+                        await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(
+                            result.message ||
+                            "Unable to change password."
+                        );
+                    }
+                    */
+
+                    await new Promise(
+                        (resolve) =>
+                            setTimeout(
+                                resolve,
+                                900
+                            )
+                    );
+
+                    console.log(
+                        "Password update:",
+                        passwordData
+                    );
+
+                    passwordForm.reset();
+
+                    closeModal(
+                        passwordModal
+                    );
+
+                    showToast(
+                        "Password updated successfully.",
+                        false,
+                        true
+                    );
+
+                } catch (error) {
+                    showToast(
+                        error.message ||
+                        "Unable to update password.",
+                        true
+                    );
+
+                } finally {
+                    savePasswordButton.disabled =
+                        false;
+
+                    savePasswordButton.innerHTML = `
+                        <i class="bi bi-shield-check"></i>
+                        Update Password
+                    `;
+                }
+            }
+        );
+
+        /*
+        ============================================
+        Preferences
+        ============================================
+        */
+
+        const preferenceMappings = [
+            {
+                id: "twoFactorToggle",
+                property: "twoFactor",
+                label:
+                    "Two-step verification"
+            },
+            {
+                id:
+                    "emailNotificationToggle",
+                property:
+                    "emailNotifications",
+                label:
+                    "Email notifications"
+            },
+            {
+                id:
+                    "smsNotificationToggle",
+                property:
+                    "smsNotifications",
+                label:
+                    "SMS notifications"
+            },
+            {
+                id:
+                    "marketingToggle",
+                property:
+                    "marketingNotifications",
+                label:
+                    "Marketing notifications"
+            }
+        ];
+
+        preferenceMappings.forEach(
+            (preference) => {
+                document.getElementById(
+                    preference.id
+                ).addEventListener(
+                    "change",
+                    (event) => {
+                        customerProfile
+                            .preferences[
+                                preference.property
+                            ] =
+                            event.target.checked;
+
+                        /*
+                        Send this update to your API.
+                        */
+
+                        showToast(
+                            `${preference.label} ${
+                                event.target.checked
+                                    ? "enabled"
+                                    : "disabled"
+                            }.`
+                        );
+                    }
+                );
+            }
+        );
+
+        document.getElementById(
+            "loginActivityButton"
+        ).addEventListener(
+            "click",
+            () => {
+                showToast(
+                    "Login activity page will open here."
+                );
+            }
+        );
+
+        /*
+        ============================================
+        Mobile Menu
+        ============================================
+        */
+
+        function openMenu() {
+            mobileMenu.classList.add(
+                "open"
+            );
+
+            menuOverlay.classList.add(
+                "show"
+            );
+
+            mobileMenu.setAttribute(
+                "aria-hidden",
+                "false"
+            );
+
+            document.body.classList.add(
+                "menu-open"
+            );
+        }
+
+        function closeMenu() {
+            mobileMenu.classList.remove(
+                "open"
+            );
+
+            menuOverlay.classList.remove(
+                "show"
+            );
+
+            mobileMenu.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
+            document.body.classList.remove(
+                "menu-open"
+            );
+        }
+
+        menuButton.addEventListener(
+            "click",
+            openMenu
+        );
+
+        document.getElementById(
+            "closeMenuButton"
+        ).addEventListener(
+            "click",
+            closeMenu
+        );
+
+        menuOverlay.addEventListener(
+            "click",
+            closeMenu
+        );
+
+        /*
+        ============================================
+        Navigation and Logout
+        ============================================
+        */
+
+        document.getElementById(
+            "backButton"
+        ).addEventListener(
+            "click",
+            () => {
+                window.location.href =
+                    "main_dashboard.html";
+            }
+        );
+
+        document.getElementById(
+            "logoutButton"
+        ).addEventListener(
+            "click",
+            () => {
+                const confirmed =
+                    window.confirm(
+                        "Are you sure you want to log out?"
+                    );
+
+                if (!confirmed) {
+                    return;
+                }
+
+                localStorage.removeItem(
+                    "zamcargo_token"
+                );
+
+                sessionStorage.removeItem(
+                    "zamcargo_token"
+                );
+
+                window.location.href =
+                    "login.html";
+            }
+        );
+
+        document.addEventListener(
+            "keydown",
+            (event) => {
+                if (
+                    event.key !== "Escape"
+                ) {
+                    return;
+                }
+
+                closeMenu();
+                closeModal(
+                    editProfileModal
+                );
+                closeModal(
+                    passwordModal
+                );
+            }
+        );
+
+        /*
+        ============================================
+        Toast
+        ============================================
+        */
+
+        function showToast(
+            message,
+            isError = false,
+            isSuccess = false
+        ) {
+            toastMessage.textContent =
+                message;
+
+            toastMessage.classList.toggle(
+                "error",
+                isError
+            );
+
+            toastMessage.classList.toggle(
+                "success",
+                isSuccess
+            );
+
+            toastMessage.classList.add(
+                "show"
+            );
+
+            clearTimeout(
+                showToast.timeout
+            );
+
+            showToast.timeout =
+                setTimeout(() => {
+                    toastMessage.classList.remove(
+                        "show"
+                    );
+                }, 3500);
+        }
+
+        /*
+        ============================================
+        Initialize
+        ============================================
+        */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            () => {
+                displayProfile();
+            }
+        );
+    </script>
+
+</body>
+</html>

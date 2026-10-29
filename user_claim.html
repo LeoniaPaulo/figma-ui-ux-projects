@@ -1,0 +1,3069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta
+        name="description"
+        content="Submit a ZamCargo claim regarding cargo loss, damage, delay or service-related issues."
+    >
+
+    <title>File a Claim | ZamCargo</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Bootstrap Icons -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+        :root {
+            --primary: #001d4d;
+            --primary-dark: #001338;
+            --primary-light: #07326d;
+            --accent: #d89216;
+            --accent-light: #f0ad34;
+
+            --white: #ffffff;
+            --page-background: #f4f6fa;
+            --card-background: #ffffff;
+
+            --text-dark: #18243a;
+            --text-muted: #748097;
+            --border: #e5eaf2;
+
+            --danger: #d64f4f;
+            --danger-dark: #a93434;
+            --danger-light: #fff0f0;
+
+            --warning: #d89216;
+            --warning-light: #fff7e8;
+
+            --success: #159957;
+            --success-light: #e7f8ef;
+
+            --info: #3478d4;
+            --info-light: #edf5ff;
+
+            --shadow: 0 12px 35px rgba(0, 29, 77, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: var(--page-background);
+            color: var(--text-dark);
+        }
+
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        button,
+        a {
+            touch-action: manipulation;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* ==========================================
+           Desktop Sidebar
+        ========================================== */
+
+        .desktop-sidebar {
+            position: fixed;
+            inset: 0 auto 0 0;
+            z-index: 1000;
+
+            width: 255px;
+            padding: 24px 18px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(0, 29, 77, 0.98),
+                    rgba(0, 19, 54, 1)
+                );
+
+            color: var(--white);
+
+            display: none;
+            flex-direction: column;
+        }
+
+        .sidebar-logo-box {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            margin-bottom: 24px;
+        }
+
+        .sidebar-logo {
+            width: 135px;
+            max-height: 65px;
+            object-fit: contain;
+        }
+
+        .desktop-navigation {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .desktop-nav-link {
+            min-height: 50px;
+            padding: 0 15px;
+            border-radius: 14px;
+
+            color: rgba(255, 255, 255, 0.76);
+
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            font-size: 0.94rem;
+            font-weight: 650;
+
+            transition: 0.25s ease;
+        }
+
+        .desktop-nav-link i {
+            width: 22px;
+            font-size: 1.15rem;
+        }
+
+        .desktop-nav-link:hover,
+        .desktop-nav-link.active {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--white);
+        }
+
+        .desktop-nav-link.active {
+            box-shadow: inset 4px 0 0 var(--accent);
+        }
+
+        .desktop-sidebar-footer {
+            margin-top: auto;
+        }
+
+        .sidebar-support {
+            padding: 17px;
+            border-radius: 17px;
+            background: rgba(255, 255, 255, 0.09);
+        }
+
+        .sidebar-support > i {
+            color: var(--accent-light);
+            font-size: 1.4rem;
+        }
+
+        .sidebar-support h3 {
+            margin: 10px 0 4px;
+            font-size: 0.94rem;
+            font-weight: 750;
+        }
+
+        .sidebar-support p {
+            margin: 0 0 12px;
+            color: rgba(255, 255, 255, 0.68);
+            font-size: 0.76rem;
+            line-height: 1.45;
+        }
+
+        .sidebar-support a {
+            color: var(--white);
+            font-size: 0.8rem;
+            font-weight: 750;
+        }
+
+        /* ==========================================
+           Main Layout
+        ========================================== */
+
+        .main-wrapper {
+            width: 100%;
+            min-height: 100vh;
+            padding-bottom: 96px;
+        }
+
+        /* ==========================================
+           Mobile Header
+        ========================================== */
+
+        .mobile-header {
+            position: sticky;
+            top: 0;
+            z-index: 900;
+
+            min-height: 72px;
+
+            padding:
+                max(10px, env(safe-area-inset-top))
+                15px
+                10px;
+
+            border-bottom: 1px solid var(--border);
+
+            background: rgba(255, 255, 255, 0.96);
+
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+
+            display: grid;
+            grid-template-columns: 44px 1fr 44px;
+            align-items: center;
+        }
+
+        .header-button {
+            width: 44px;
+            height: 44px;
+
+            border: 1px solid var(--border);
+            border-radius: 14px;
+
+            background: var(--white);
+            color: var(--primary);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.16rem;
+        }
+
+        .header-button:active {
+            transform: scale(0.96);
+            background: #f3f6fb;
+        }
+
+        .mobile-header-title {
+            padding: 0 9px;
+            text-align: center;
+        }
+
+        .mobile-header-title h1 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .mobile-header-title p {
+            margin: 3px 0 0;
+            color: var(--text-muted);
+            font-size: 0.65rem;
+        }
+
+        /* ==========================================
+           Desktop Header
+        ========================================== */
+
+        .desktop-header {
+            display: none;
+
+            min-height: 82px;
+            padding: 0 32px;
+
+            border-bottom: 1px solid var(--border);
+            background: var(--white);
+
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .desktop-page-title h1 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 1.45rem;
+            font-weight: 800;
+        }
+
+        .desktop-page-title p {
+            margin: 4px 0 0;
+            color: var(--text-muted);
+            font-size: 0.83rem;
+        }
+
+        .desktop-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .desktop-profile-info {
+            text-align: right;
+        }
+
+        .desktop-profile-info strong {
+            display: block;
+            color: var(--text-dark);
+            font-size: 0.87rem;
+        }
+
+        .desktop-profile-info span {
+            color: var(--text-muted);
+            font-size: 0.72rem;
+        }
+
+        .profile-avatar {
+            width: 44px;
+            height: 44px;
+
+            border: 2px solid rgba(216, 146, 22, 0.3);
+            border-radius: 50%;
+
+            background: var(--primary);
+            color: var(--white);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 0.88rem;
+            font-weight: 800;
+        }
+
+        /* ==========================================
+           Page Content
+        ========================================== */
+
+        .page-content {
+            width: 100%;
+            max-width: 920px;
+            margin: auto;
+            padding: 18px 14px 30px;
+        }
+
+        /* Intro Banner */
+
+        .claim-intro {
+            position: relative;
+            overflow: hidden;
+
+            padding: 22px 19px;
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 29, 77, 0.97),
+                    rgba(7, 50, 109, 0.91)
+                ),
+                url("https://images.unsplash.com/photo-1578575437130-527eed3abbec");
+
+            background-size: cover;
+            background-position: center;
+
+            color: var(--white);
+
+            box-shadow: var(--shadow);
+        }
+
+        .claim-intro::before {
+            content: "";
+            position: absolute;
+            right: -42px;
+            bottom: -84px;
+
+            width: 175px;
+            height: 175px;
+
+            border-radius: 50%;
+            background: rgba(216, 146, 22, 0.16);
+        }
+
+        .claim-intro::after {
+            content: "";
+            position: absolute;
+            top: -65px;
+            right: -55px;
+
+            width: 165px;
+            height: 165px;
+
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .claim-intro-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .intro-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            min-height: 28px;
+            padding: 0 11px;
+            margin-bottom: 13px;
+
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.13);
+
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .claim-intro h2 {
+            margin: 0 0 8px;
+            font-size: 1.55rem;
+            font-weight: 850;
+        }
+
+        .claim-intro h2 span {
+            color: var(--accent-light);
+        }
+
+        .claim-intro p {
+            max-width: 560px;
+            margin: 0;
+
+            color: rgba(255, 255, 255, 0.77);
+
+            font-size: 0.83rem;
+            line-height: 1.55;
+        }
+
+        /* Progress */
+
+        .progress-card {
+            margin-top: 15px;
+            padding: 16px;
+
+            border: 1px solid var(--border);
+            border-radius: 18px;
+
+            background: var(--white);
+
+            box-shadow: 0 7px 22px rgba(0, 29, 77, 0.05);
+        }
+
+        .progress-information {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+
+            margin-bottom: 9px;
+        }
+
+        .progress-information strong {
+            color: var(--primary);
+            font-size: 0.79rem;
+        }
+
+        .progress-information span {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 7px;
+
+            overflow: hidden;
+
+            border-radius: 30px;
+            background: #e9edf4;
+        }
+
+        .progress-bar-custom {
+            width: 50%;
+            height: 100%;
+
+            border-radius: inherit;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--primary),
+                    var(--accent)
+                );
+
+            transition: width 0.35s ease;
+        }
+
+        /* Claim Form Card */
+
+        .claim-form-card {
+            margin-top: 15px;
+            padding: 19px 16px;
+
+            border: 1px solid var(--border);
+            border-radius: 22px;
+
+            background: var(--white);
+
+            box-shadow: var(--shadow);
+        }
+
+        .form-step {
+            display: none;
+            animation: slideFade 0.3s ease;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        @keyframes slideFade {
+            from {
+                opacity: 0;
+                transform: translateX(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Section Title */
+
+        .section-title {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+
+            margin-bottom: 20px;
+        }
+
+        .section-title-icon {
+            width: 46px;
+            height: 46px;
+            flex-shrink: 0;
+
+            border-radius: 15px;
+
+            background: rgba(0, 29, 77, 0.08);
+            color: var(--primary);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.15rem;
+        }
+
+        .section-title h2 {
+            margin: 2px 0 4px;
+            color: var(--primary);
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .section-title p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            line-height: 1.45;
+        }
+
+        /* Form Fields */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .form-field {
+            min-width: 0;
+        }
+
+        .form-field.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-field label {
+            display: block;
+            margin-bottom: 7px;
+
+            color: var(--text-dark);
+
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .required {
+            color: var(--danger);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            left: 14px;
+            z-index: 2;
+
+            transform: translateY(-50%);
+
+            color: rgba(0, 29, 77, 0.62);
+            font-size: 0.98rem;
+
+            pointer-events: none;
+        }
+
+        .form-control-custom,
+        .form-select-custom,
+        .form-textarea-custom {
+            width: 100%;
+
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            outline: none;
+
+            background: #f9fafc;
+            color: var(--primary);
+
+            font-size: 16px;
+
+            transition: 0.22s ease;
+        }
+
+        .form-control-custom,
+        .form-select-custom {
+            height: 56px;
+        }
+
+        .form-control-custom {
+            padding: 0 45px 0 43px;
+        }
+
+        .form-select-custom {
+            padding: 0 42px 0 43px;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .form-textarea-custom {
+            min-height: 145px;
+            padding: 15px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        .form-control-custom::placeholder,
+        .form-textarea-custom::placeholder {
+            color: #8a94a5;
+        }
+
+        .form-control-custom:focus,
+        .form-select-custom:focus,
+        .form-textarea-custom:focus {
+            border-color: var(--accent);
+            background: var(--white);
+
+            box-shadow:
+                0 0 0 4px
+                rgba(216, 146, 22, 0.14);
+        }
+
+        .form-control-custom.invalid,
+        .form-select-custom.invalid,
+        .form-textarea-custom.invalid {
+            border-color: var(--danger);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(214, 79, 79, 0.1);
+        }
+
+        .select-arrow {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+
+            transform: translateY(-50%);
+
+            color: var(--primary);
+
+            pointer-events: none;
+        }
+
+        .field-helper {
+            margin-top: 6px;
+            color: var(--text-muted);
+            font-size: 0.68rem;
+            line-height: 1.4;
+        }
+
+        .field-error {
+            display: none;
+            margin-top: 5px;
+
+            color: var(--danger);
+
+            font-size: 0.7rem;
+            line-height: 1.4;
+        }
+
+        .field-error.visible {
+            display: block;
+        }
+
+        /* Claim Type Cards */
+
+        .claim-type-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .claim-type-option {
+            position: relative;
+        }
+
+        .claim-type-input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .claim-type-card {
+            min-height: 104px;
+            padding: 14px 10px;
+
+            border: 1px solid var(--border);
+            border-radius: 16px;
+
+            background: #fafbfd;
+            color: var(--primary);
+
+            cursor: pointer;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+
+            text-align: center;
+
+            transition: 0.22s ease;
+        }
+
+        .claim-type-card i {
+            font-size: 1.35rem;
+        }
+
+        .claim-type-card strong {
+            display: block;
+            font-size: 0.73rem;
+            font-weight: 800;
+        }
+
+        .claim-type-card span {
+            color: var(--text-muted);
+            font-size: 0.62rem;
+            line-height: 1.3;
+        }
+
+        .claim-type-input:checked + .claim-type-card {
+            border-color: var(--primary);
+            background: rgba(0, 29, 77, 0.08);
+
+            box-shadow:
+                inset 0 0 0 1px
+                var(--primary);
+        }
+
+        .claim-type-input:focus-visible + .claim-type-card {
+            outline: 3px solid rgba(216, 146, 22, 0.3);
+        }
+
+        /* Amount Field */
+
+        .amount-input {
+            display: grid;
+            grid-template-columns: 88px 1fr;
+        }
+
+        .currency-prefix {
+            min-height: 56px;
+
+            border: 1px solid var(--border);
+            border-right: none;
+            border-radius: 14px 0 0 14px;
+
+            background: #eef2f7;
+            color: var(--primary);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+
+            font-size: 0.77rem;
+            font-weight: 800;
+        }
+
+        .amount-input .form-control-custom {
+            padding-left: 15px;
+            border-radius: 0 14px 14px 0;
+        }
+
+        /* Textarea Counter */
+
+        .textarea-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+
+            margin-top: 6px;
+        }
+
+        .textarea-tip {
+            color: var(--text-muted);
+            font-size: 0.66rem;
+        }
+
+        .character-count {
+            color: var(--text-muted);
+            font-size: 0.68rem;
+            white-space: nowrap;
+        }
+
+        .character-count.limit-near {
+            color: var(--warning);
+            font-weight: 700;
+        }
+
+        /* Important Note */
+
+        .important-note {
+            display: grid;
+            grid-template-columns: 42px 1fr;
+            gap: 12px;
+
+            margin-top: 20px;
+            padding: 15px;
+
+            border: 1px solid rgba(216, 146, 22, 0.25);
+            border-radius: 17px;
+
+            background: var(--warning-light);
+        }
+
+        .important-note-icon {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 13px;
+
+            background: rgba(216, 146, 22, 0.14);
+            color: var(--warning);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.08rem;
+        }
+
+        .important-note h3 {
+            margin: 1px 0 5px;
+
+            color: #80540c;
+
+            font-size: 0.8rem;
+            font-weight: 850;
+        }
+
+        .important-note p {
+            margin: 0;
+
+            color: #856929;
+
+            font-size: 0.7rem;
+            line-height: 1.5;
+        }
+
+        /* Review Section */
+
+        .review-card {
+            padding: 15px;
+
+            border: 1px solid var(--border);
+            border-radius: 17px;
+
+            background: #fafbfd;
+        }
+
+        .review-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+
+            margin-bottom: 12px;
+        }
+
+        .review-card-header h3 {
+            margin: 0;
+
+            color: var(--primary);
+
+            font-size: 0.86rem;
+            font-weight: 800;
+        }
+
+        .edit-button {
+            border: none;
+            background: transparent;
+            color: var(--accent);
+
+            font-size: 0.7rem;
+            font-weight: 800;
+        }
+
+        .review-row {
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            gap: 12px;
+
+            padding: 9px 0;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .review-row:last-child {
+            border-bottom: none;
+        }
+
+        .review-row span {
+            color: var(--text-muted);
+            font-size: 0.69rem;
+        }
+
+        .review-row strong {
+            color: var(--text-dark);
+
+            font-size: 0.72rem;
+            font-weight: 750;
+
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .declaration-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+
+            margin-top: 18px;
+            padding: 14px;
+
+            border: 1px solid var(--border);
+            border-radius: 15px;
+
+            background: var(--white);
+        }
+
+        .declaration-box input {
+            width: 19px;
+            height: 19px;
+            margin-top: 1px;
+            flex-shrink: 0;
+
+            accent-color: var(--primary);
+        }
+
+        .declaration-box label {
+            color: var(--text-muted);
+
+            font-size: 0.72rem;
+            line-height: 1.5;
+
+            cursor: pointer;
+        }
+
+        /* Form Buttons */
+
+        .form-actions {
+            display: grid;
+            grid-template-columns: 1fr 1.7fr;
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+        .form-actions.single {
+            grid-template-columns: 1fr;
+        }
+
+        .secondary-button,
+        .primary-button {
+            min-height: 56px;
+
+            border-radius: 15px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+
+            font-size: 0.88rem;
+            font-weight: 800;
+
+            transition: 0.2s ease;
+        }
+
+        .secondary-button {
+            border: 1px solid var(--border);
+            background: #f8fafc;
+            color: var(--primary);
+        }
+
+        .primary-button {
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .primary-button.claim-submit {
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--primary-light)
+                );
+        }
+
+        .secondary-button:active,
+        .primary-button:active {
+            transform: scale(0.98);
+        }
+
+        .primary-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* ==========================================
+           Bottom Navigation
+        ========================================== */
+
+        .bottom-navigation {
+            position: fixed;
+            left: 10px;
+            right: 10px;
+            bottom: max(10px, env(safe-area-inset-bottom));
+            z-index: 950;
+
+            min-height: 69px;
+            padding: 8px 6px;
+
+            border: 1px solid rgba(229, 234, 242, 0.95);
+            border-radius: 22px;
+
+            background: rgba(255, 255, 255, 0.96);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            box-shadow:
+                0 10px 35px
+                rgba(0, 29, 77, 0.15);
+
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            align-items: center;
+        }
+
+        .bottom-nav-link {
+            position: relative;
+
+            min-height: 52px;
+            border-radius: 15px;
+
+            color: #8390a5;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+
+            font-size: 0.6rem;
+            font-weight: 700;
+        }
+
+        .bottom-nav-link i {
+            font-size: 1.18rem;
+        }
+
+        .bottom-nav-link.active {
+            background: rgba(0, 29, 77, 0.08);
+            color: var(--primary);
+        }
+
+        .bottom-nav-link.active::before {
+            content: "";
+            position: absolute;
+            top: 3px;
+
+            width: 19px;
+            height: 3px;
+
+            border-radius: 30px;
+            background: var(--accent);
+        }
+
+        .bottom-nav-link.main-action {
+            width: 53px;
+            height: 53px;
+            min-height: 53px;
+
+            margin: -23px auto 0;
+
+            border-radius: 18px;
+
+            background: var(--primary);
+            color: var(--white);
+
+            box-shadow:
+                0 8px 22px
+                rgba(0, 29, 77, 0.28);
+        }
+
+        .bottom-nav-link.main-action i {
+            font-size: 1.35rem;
+        }
+
+        .bottom-nav-link.main-action span {
+            display: none;
+        }
+
+        /* ==========================================
+           Mobile Menu
+        ========================================== */
+
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1090;
+
+            background: rgba(0, 15, 40, 0.55);
+
+            opacity: 0;
+            visibility: hidden;
+
+            transition: 0.3s ease;
+        }
+
+        .menu-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1100;
+
+            width: min(84%, 340px);
+
+            padding:
+                max(18px, env(safe-area-inset-top))
+                18px
+                25px;
+
+            background: var(--white);
+
+            transform: translateX(105%);
+
+            transition: 0.3s ease;
+
+            display: flex;
+            flex-direction: column;
+
+            box-shadow:
+                -15px 0 45px
+                rgba(0, 29, 77, 0.15);
+        }
+
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+
+            padding-bottom: 18px;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .mobile-menu-user {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            min-width: 0;
+        }
+
+        .mobile-menu-user h3 {
+            margin: 0 0 3px;
+
+            color: var(--primary);
+
+            font-size: 0.88rem;
+            font-weight: 800;
+        }
+
+        .mobile-menu-user p {
+            max-width: 175px;
+            margin: 0;
+
+            overflow: hidden;
+
+            color: var(--text-muted);
+
+            font-size: 0.69rem;
+
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .close-menu-button {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+
+            border: 1px solid var(--border);
+            border-radius: 13px;
+
+            background: var(--white);
+            color: var(--primary);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-menu-navigation {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+            margin-top: 18px;
+        }
+
+        .mobile-menu-link {
+            min-height: 52px;
+            padding: 0 14px;
+
+            border-radius: 14px;
+
+            color: var(--text-dark);
+
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            font-size: 0.87rem;
+            font-weight: 650;
+        }
+
+        .mobile-menu-link i {
+            width: 21px;
+
+            color: var(--primary);
+
+            font-size: 1.12rem;
+        }
+
+        .mobile-menu-link.active {
+            background: rgba(0, 29, 77, 0.07);
+            color: var(--primary);
+        }
+
+        /* Toast */
+
+        .toast-message {
+            position: fixed;
+            top: 18px;
+            left: 50%;
+            z-index: 1500;
+
+            width: calc(100% - 30px);
+            max-width: 420px;
+
+            padding: 14px 17px;
+
+            border-radius: 15px;
+
+            background: var(--white);
+            color: var(--primary);
+
+            box-shadow:
+                0 15px 45px
+                rgba(0, 29, 77, 0.2);
+
+            font-size: 0.84rem;
+            font-weight: 700;
+
+            transform: translate(-50%, -120px);
+            opacity: 0;
+
+            transition: 0.35s ease;
+        }
+
+        .toast-message.show {
+            transform: translate(-50%, 0);
+            opacity: 1;
+        }
+
+        .toast-message.error {
+            color: var(--danger);
+        }
+
+        .toast-message.success {
+            color: var(--success);
+        }
+
+        /* ==========================================
+           Responsive
+        ========================================== */
+
+        @media (min-width: 600px) {
+            .page-content {
+                padding: 24px;
+            }
+
+            .claim-form-card {
+                padding: 25px;
+            }
+
+            .form-grid.two-columns {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .claim-type-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .claim-intro {
+                padding: 27px;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .desktop-sidebar {
+                display: flex;
+            }
+
+            .main-wrapper {
+                width: calc(100% - 255px);
+                margin-left: 255px;
+                padding-bottom: 0;
+            }
+
+            .mobile-header,
+            .bottom-navigation {
+                display: none;
+            }
+
+            .desktop-header {
+                display: flex;
+            }
+
+            .page-content {
+                padding: 28px 32px 45px;
+            }
+
+            .claim-intro h2 {
+                font-size: 1.9rem;
+            }
+        }
+
+        @media (max-width: 390px) {
+            .page-content {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .claim-form-card {
+                padding: 17px 13px;
+            }
+
+            .claim-type-card {
+                min-height: 97px;
+                padding: 12px 8px;
+            }
+
+            .amount-input {
+                grid-template-columns: 78px 1fr;
+            }
+
+            .form-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .review-row {
+                grid-template-columns: 95px 1fr;
+            }
+
+            .bottom-navigation {
+                left: 6px;
+                right: 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Desktop Sidebar -->
+   <aside class="desktop-sidebar">
+
+        <div class="sidebar-logo-box">
+
+            <img
+                src="images/logo.png"
+                class="sidebar-logo"
+                alt="ZamCargo Logo"
+            >
+
+        </div>
+
+        <nav class="desktop-navigation">
+
+            <a
+                href="main_dashboard.html"
+                class="desktop-nav-link"
+            >
+                <i class="bi bi-grid-1x2"></i>
+                Dashboard
+            </a>
+
+            <a
+                href="legacy_systems.html"
+                class="desktop-nav-link "
+            >
+                <i class="bi bi-window-stack"></i>
+                Systems
+            </a>
+
+            <a
+                href="request_quote.html"
+                class="desktop-nav-link"
+            >
+                <i class="bi bi-file-earmark-text"></i>
+                Quotations
+            </a>
+
+            <a
+                href="track_shipment.html"
+                class="desktop-nav-link"
+            >
+                <i class="bi bi-box-seam"></i>
+                Shipments
+            </a>
+
+            <a
+                href="user_claim.html"
+                class="desktop-nav-link active"
+            >
+                <i class="bi bi-shield-exclamation"></i>
+                Claims
+            </a>
+
+            <a
+                href="notifications.html"
+                class="desktop-nav-link"
+            >
+                <i class="bi bi-bell"></i>
+                Notifications
+            </a>
+
+            <a
+                href="user_profile.html"
+                class="desktop-nav-link"
+            >
+                <i class="bi bi-person"></i>
+                My Profile
+            </a>
+
+        </nav>
+
+        <div class="desktop-sidebar-footer">
+
+            <div class="sidebar-support">
+
+                <i class="bi bi-headset"></i>
+
+                <h3>Need system access?</h3>
+
+                <p>
+                    Contact the ICT support team if you cannot access any
+                    integrated business system.
+                </p>
+
+                <a href="support.html">
+                    Contact Support
+                    <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+
+            <button
+                type="button"
+                class="header-button"
+                id="backButton"
+                aria-label="Go back"
+            >
+                <i class="bi bi-arrow-left"></i>
+            </button>
+
+            <div class="mobile-header-title">
+                <h1>File a Claim</h1>
+                <p>Cargo and service complaints</p>
+            </div>
+
+            <button
+                type="button"
+                class="header-button"
+                id="menuButton"
+                aria-label="Open account menu"
+            >
+                <i class="bi bi-list"></i>
+            </button>
+
+        </header>
+
+        <!-- Desktop Header -->
+        <header class="desktop-header">
+
+            <div class="desktop-page-title">
+                <h1>File a Claim</h1>
+
+                <p>
+                    Submit a claim regarding cargo loss, damage, delay or
+                    service-related issues.
+                </p>
+            </div>
+
+            <div class="desktop-profile">
+
+                <div class="desktop-profile-info">
+                    <strong>John Mushi</strong>
+                    <span>Customer Account</span>
+                </div>
+
+                <div class="profile-avatar">
+                    JM
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- Page Content -->
+        <main class="page-content">
+
+            <!-- Introduction -->
+            <section class="claim-intro">
+
+                <div class="claim-intro-content">
+
+                    <span class="intro-label">
+                        <i class="bi bi-shield-exclamation"></i>
+                        Customer Claim
+                    </span>
+
+                    <h2>
+                        File a <span>Claim</span>
+                    </h2>
+
+                    <p>
+                        Submit a claim regarding cargo loss, damage, delay or
+                        service-related issues. Please provide accurate details
+                        to help our team review your complaint efficiently.
+                    </p>
+
+                </div>
+
+            </section>
+
+            <!-- Progress -->
+            <section class="progress-card">
+
+                <div class="progress-information">
+
+                    <strong id="progressLabel">
+                        Claim Information
+                    </strong>
+
+                    <span id="progressNumber">
+                        Step 1 of 2
+                    </span>
+
+                </div>
+
+                <div class="progress-track">
+                    <div
+                        class="progress-bar-custom"
+                        id="progressBar"
+                    ></div>
+                </div>
+
+            </section>
+
+            <!-- Form Card -->
+            <section class="claim-form-card">
+
+                <form id="claimForm" novalidate>
+
+                    <!-- Step 1 -->
+                    <div
+                        class="form-step active"
+                        data-step="1"
+                    >
+
+                        <!-- Shipment Information -->
+                        <div class="section-title">
+
+                            <div class="section-title-icon">
+                                <i class="bi bi-box-seam"></i>
+                            </div>
+
+                            <div>
+                                <h2>Shipment Information</h2>
+
+                                <p>
+                                    Identify the shipment connected to this claim.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="form-grid">
+
+                            <!-- Tracking Number -->
+                            <div class="form-field full-width">
+
+                                <label for="trackingNumber">
+                                    Tracking Number
+                                    <span class="required">*</span>
+                                </label>
+
+                                <div class="input-wrapper">
+
+                                    <i class="bi bi-upc-scan input-icon"></i>
+
+                                    <input
+                                        type="text"
+                                        id="trackingNumber"
+                                        name="trackingNumber"
+                                        class="form-control-custom"
+                                        placeholder="Enter tracking number"
+                                        autocomplete="off"
+                                        autocapitalize="characters"
+                                        spellcheck="false"
+                                        maxlength="30"
+                                        required
+                                    >
+
+                                </div>
+
+                                <p class="field-helper">
+                                    Example: ZC-2026-00128
+                                </p>
+
+                                <small
+                                    class="field-error"
+                                    id="trackingNumberError"
+                                >
+                                    Please enter a valid tracking number.
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Claim Details -->
+                        <div
+                            class="section-title"
+                            style="margin-top: 26px;"
+                        >
+
+                            <div class="section-title-icon">
+                                <i class="bi bi-clipboard2-pulse"></i>
+                            </div>
+
+                            <div>
+                                <h2>Claim Details</h2>
+
+                                <p>
+                                    Select the issue and explain what happened.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="form-grid two-columns">
+
+                            <!-- Claim Type -->
+                            <div class="form-field full-width">
+
+                                <label>
+                                    Claim Type
+                                    <span class="required">*</span>
+                                </label>
+
+                                <div class="claim-type-grid">
+
+                                    <div class="claim-type-option">
+
+                                        <input
+                                            type="radio"
+                                            name="claimType"
+                                            id="cargoLoss"
+                                            value="Cargo Loss"
+                                            class="claim-type-input"
+                                            required
+                                        >
+
+                                        <label
+                                            for="cargoLoss"
+                                            class="claim-type-card"
+                                        >
+                                            <i class="bi bi-box2"></i>
+
+                                            <strong>
+                                                Cargo Loss
+                                            </strong>
+
+                                            <span>
+                                                Missing cargo or packages
+                                            </span>
+                                        </label>
+
+                                    </div>
+
+                                    <div class="claim-type-option">
+
+                                        <input
+                                            type="radio"
+                                            name="claimType"
+                                            id="cargoDamage"
+                                            value="Cargo Damage"
+                                            class="claim-type-input"
+                                        >
+
+                                        <label
+                                            for="cargoDamage"
+                                            class="claim-type-card"
+                                        >
+                                            <i class="bi bi-box2-heart"></i>
+
+                                            <strong>
+                                                Cargo Damage
+                                            </strong>
+
+                                            <span>
+                                                Broken or damaged goods
+                                            </span>
+                                        </label>
+
+                                    </div>
+
+                                    <div class="claim-type-option">
+
+                                        <input
+                                            type="radio"
+                                            name="claimType"
+                                            id="shipmentDelay"
+                                            value="Shipment Delay"
+                                            class="claim-type-input"
+                                        >
+
+                                        <label
+                                            for="shipmentDelay"
+                                            class="claim-type-card"
+                                        >
+                                            <i class="bi bi-clock-history"></i>
+
+                                            <strong>
+                                                Shipment Delay
+                                            </strong>
+
+                                            <span>
+                                                Delivery beyond expected date
+                                            </span>
+                                        </label>
+
+                                    </div>
+
+                                    <div class="claim-type-option">
+
+                                        <input
+                                            type="radio"
+                                            name="claimType"
+                                            id="serviceIssue"
+                                            value="Service Issue"
+                                            class="claim-type-input"
+                                        >
+
+                                        <label
+                                            for="serviceIssue"
+                                            class="claim-type-card"
+                                        >
+                                            <i class="bi bi-headset"></i>
+
+                                            <strong>
+                                                Service Issue
+                                            </strong>
+
+                                            <span>
+                                                Support or service complaint
+                                            </span>
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <small
+                                    class="field-error"
+                                    id="claimTypeError"
+                                >
+                                    Please select the claim type.
+                                </small>
+
+                            </div>
+
+                            <!-- Claim Amount -->
+                            <div class="form-field full-width">
+
+                                <label for="claimAmount">
+                                    Claim Amount
+                                    <span class="required">*</span>
+                                </label>
+
+                                <div class="amount-input">
+
+                                    <div class="currency-prefix">
+                                        TZS
+                                    </div>
+
+                                    <input
+                                        type="text"
+                                        id="claimAmount"
+                                        name="claimAmount"
+                                        class="form-control-custom"
+                                        placeholder="Enter claim amount"
+                                        inputmode="numeric"
+                                        autocomplete="off"
+                                        required
+                                    >
+
+                                </div>
+
+                                <p class="field-helper">
+                                    Enter the amount being claimed without commas.
+                                </p>
+
+                                <small
+                                    class="field-error"
+                                    id="claimAmountError"
+                                >
+                                    Please enter a valid claim amount.
+                                </small>
+
+                            </div>
+
+                            <!-- Description -->
+                            <div class="form-field full-width">
+
+                                <label for="claimDescription">
+                                    Description
+                                    <span class="required">*</span>
+                                </label>
+
+                                <textarea
+                                    id="claimDescription"
+                                    name="claimDescription"
+                                    class="form-textarea-custom"
+                                    maxlength="500"
+                                    placeholder="Describe your claim"
+                                    required
+                                ></textarea>
+
+                                <div class="textarea-footer">
+
+                                    <span class="textarea-tip">
+                                        Explain your claim clearly.
+                                    </span>
+
+                                    <span
+                                        class="character-count"
+                                        id="characterCount"
+                                    >
+                                        0/500
+                                    </span>
+
+                                </div>
+
+                                <small
+                                    class="field-error"
+                                    id="claimDescriptionError"
+                                >
+                                    Please explain your claim using at least
+                                    20 characters.
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Important Note -->
+                        <div class="important-note">
+
+                            <div class="important-note-icon">
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                            </div>
+
+                            <div>
+                                <h3>Important Note</h3>
+
+                                <p>
+                                    Our support team will review your complaint
+                                    and get back to you within 24 hours.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="form-actions single">
+
+                            <button
+                                type="button"
+                                class="primary-button next-button"
+                            >
+                                Review Claim
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div
+                        class="form-step"
+                        data-step="2"
+                    >
+
+                        <div class="section-title">
+
+                            <div class="section-title-icon">
+                                <i class="bi bi-check2-square"></i>
+                            </div>
+
+                            <div>
+                                <h2>Review Your Claim</h2>
+
+                                <p>
+                                    Confirm the information before submitting.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="review-card">
+
+                            <div class="review-card-header">
+
+                                <h3>Claim Summary</h3>
+
+                                <button
+                                    type="button"
+                                    class="edit-button"
+                                    id="editClaimButton"
+                                >
+                                    Edit
+                                </button>
+
+                            </div>
+
+                            <div class="review-row">
+                                <span>Tracking Number</span>
+
+                                <strong id="reviewTrackingNumber">
+                                    —
+                                </strong>
+                            </div>
+
+                            <div class="review-row">
+                                <span>Claim Type</span>
+
+                                <strong id="reviewClaimType">
+                                    —
+                                </strong>
+                            </div>
+
+                            <div class="review-row">
+                                <span>Claim Amount</span>
+
+                                <strong id="reviewClaimAmount">
+                                    —
+                                </strong>
+                            </div>
+
+                            <div class="review-row">
+                                <span>Description</span>
+
+                                <strong id="reviewDescription">
+                                    —
+                                </strong>
+                            </div>
+
+                        </div>
+
+                        <div class="important-note">
+
+                            <div class="important-note-icon">
+                                <i class="bi bi-clock-history"></i>
+                            </div>
+
+                            <div>
+                                <h3>Response Timeline</h3>
+
+                                <p>
+                                    After submission, our support team will
+                                    review your complaint and respond within
+                                    24 hours.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="declaration-box">
+
+                            <input
+                                type="checkbox"
+                                id="claimDeclaration"
+                                name="claimDeclaration"
+                                required
+                            >
+
+                            <label for="claimDeclaration">
+                                I confirm that the information provided is
+                                accurate and relates to the shipment identified
+                                by the tracking number above.
+                            </label>
+
+                        </div>
+
+                        <small
+                            class="field-error"
+                            id="claimDeclarationError"
+                        >
+                            Please confirm that the information is accurate.
+                        </small>
+
+                        <div class="form-actions">
+
+                            <button
+                                type="button"
+                                class="secondary-button previous-button"
+                            >
+                                <i class="bi bi-arrow-left"></i>
+                                Back
+                            </button>
+
+                            <button
+                                type="submit"
+                                class="primary-button claim-submit"
+                                id="submitButton"
+                            >
+                                <i class="bi bi-send"></i>
+                                Submit Claim
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-navigation">
+
+        <a
+            href="main_dashboard.html"
+            class="bottom-nav-link"
+        >
+            <i class="bi bi-grid-1x2"></i>
+            <span>Home</span>
+        </a>
+
+          <a
+            href="legacy_systems.html"
+            class="bottom-nav-link"
+        >
+            <i class="bi bi-window-stack"></i>
+            <span>Systems</span>
+        </a>
+
+        <a
+            href="request-quote.html"
+            class="bottom-nav-link main-action"
+            aria-label="Request quotation"
+        >
+            <i class="bi bi-plus-lg"></i>
+            <span>Request</span>
+        </a>
+
+        <a
+            href="track_shipment.html"
+            class="bottom-nav-link"
+        >
+            <i class="bi bi-box-seam"></i>
+            <span>Shipments</span>
+        </a>
+
+        <a
+            href="user_claim.html"
+            class="bottom-nav-link active"
+        >
+            <i class="bi bi-shield-exclamation"></i>
+            <span>Claims</span>
+        </a>
+
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div
+        class="menu-overlay"
+        id="menuOverlay"
+    ></div>
+
+    <!-- Mobile Side Menu -->
+     <aside
+        class="mobile-menu"
+        id="mobileMenu"
+        aria-hidden="true"
+    >
+
+        <div class="mobile-menu-header">
+
+            <div class="mobile-menu-user">
+
+                <div class="profile-avatar">
+                    JM
+                </div>
+
+                <div>
+
+                    <h3>
+                        John Mushi
+                    </h3>
+
+                    <p>
+                        johnmushi@example.com
+                    </p>
+
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                class="close-menu-button"
+                id="closeMenuButton"
+                aria-label="Close account menu"
+            >
+                <i class="bi bi-x-lg"></i>
+            </button>
+
+        </div>
+
+        <nav class="mobile-menu-navigation">
+
+            <a
+                href="main_dashboard.html"
+                class="mobile-menu-link"
+            >
+                <i class="bi bi-grid-1x2"></i>
+                Dashboard
+            </a>
+
+            <a
+                href="legacy_systems.html"
+                class="mobile-menu-link "
+            >
+                <i class="bi bi-window-stack"></i>
+                Systems
+            </a>
+
+            <a
+                href="request_quote.html"
+                class="mobile-menu-link"
+            >
+                <i class="bi bi-file-earmark-text"></i>
+                Quotations
+            </a>
+
+            <a
+                href="track_shipment.html"
+                class="mobile-menu-link"
+            >
+                <i class="bi bi-box-seam"></i>
+                Shipments
+            </a>
+
+            <a
+                href="user_claim.html"
+                class="mobile-menu-link active"
+            >
+                <i class="bi bi-shield-exclamation"></i>
+                Claims
+            </a>
+
+            <a
+                href="notifications.html"
+                class="mobile-menu-link"
+            >
+                <i class="bi bi-bell"></i>
+                Notifications
+            </a>
+
+            <a
+                href="user_profile.html"
+                class="mobile-menu-link"
+            >
+                <i class="bi bi-person"></i>
+                My Profile
+            </a>
+
+            <a
+                href="support.html"
+                class="mobile-menu-link"
+            >
+                <i class="bi bi-headset"></i>
+                Support
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- Toast -->
+    <div
+        class="toast-message"
+        id="toastMessage"
+        role="status"
+        aria-live="polite"
+    ></div>
+
+    <script>
+        /*
+        ============================================
+        Elements
+        ============================================
+        */
+
+        const claimForm =
+            document.getElementById("claimForm");
+
+        const formSteps =
+            [...document.querySelectorAll(".form-step")];
+
+        const nextButtons =
+            document.querySelectorAll(".next-button");
+
+        const previousButtons =
+            document.querySelectorAll(".previous-button");
+
+        const trackingNumber =
+            document.getElementById("trackingNumber");
+
+        const claimAmount =
+            document.getElementById("claimAmount");
+
+        const claimDescription =
+            document.getElementById("claimDescription");
+
+        const claimDeclaration =
+            document.getElementById("claimDeclaration");
+
+        const characterCount =
+            document.getElementById("characterCount");
+
+        const progressLabel =
+            document.getElementById("progressLabel");
+
+        const progressNumber =
+            document.getElementById("progressNumber");
+
+        const progressBar =
+            document.getElementById("progressBar");
+
+        const editClaimButton =
+            document.getElementById("editClaimButton");
+
+        const submitButton =
+            document.getElementById("submitButton");
+
+        const backButton =
+            document.getElementById("backButton");
+
+        const menuButton =
+            document.getElementById("menuButton");
+
+        const closeMenuButton =
+            document.getElementById("closeMenuButton");
+
+        const mobileMenu =
+            document.getElementById("mobileMenu");
+
+        const menuOverlay =
+            document.getElementById("menuOverlay");
+
+        const toastMessage =
+            document.getElementById("toastMessage");
+
+        let currentStep = 1;
+
+        const stepLabels = {
+            1: "Claim Information",
+            2: "Review and Submit"
+        };
+
+        /*
+        ============================================
+        Step Navigation
+        ============================================
+        */
+
+        function updateStepInterface() {
+            formSteps.forEach((step) => {
+                const stepNumber =
+                    Number(step.dataset.step);
+
+                step.classList.toggle(
+                    "active",
+                    stepNumber === currentStep
+                );
+            });
+
+            progressLabel.textContent =
+                stepLabels[currentStep];
+
+            progressNumber.textContent =
+                `Step ${currentStep} of ${formSteps.length}`;
+
+            progressBar.style.width =
+                `${(currentStep / formSteps.length) * 100}%`;
+
+            if (currentStep === 2) {
+                updateClaimReview();
+            }
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+        /*
+        ============================================
+        Error Helpers
+        ============================================
+        */
+
+        function showFieldError(
+            field,
+            errorId,
+            message = ""
+        ) {
+            const errorElement =
+                document.getElementById(errorId);
+
+            if (field) {
+                field.classList.add("invalid");
+            }
+
+            if (message) {
+                errorElement.textContent = message;
+            }
+
+            errorElement.classList.add("visible");
+        }
+
+        function clearFieldError(field, errorId) {
+            if (field) {
+                field.classList.remove("invalid");
+            }
+
+            document
+                .getElementById(errorId)
+                .classList.remove("visible");
+        }
+
+        /*
+        ============================================
+        Claim Type
+        ============================================
+        */
+
+        function getSelectedClaimType() {
+            const selected =
+                document.querySelector(
+                    'input[name="claimType"]:checked'
+                );
+
+            return selected ? selected.value : "";
+        }
+
+        function validateClaimType() {
+            const claimTypeError =
+                document.getElementById("claimTypeError");
+
+            if (!getSelectedClaimType()) {
+                claimTypeError.classList.add("visible");
+                return false;
+            }
+
+            claimTypeError.classList.remove("visible");
+            return true;
+        }
+
+        document
+            .querySelectorAll(
+                'input[name="claimType"]'
+            )
+            .forEach((input) => {
+                input.addEventListener("change", () => {
+                    validateClaimType();
+                });
+            });
+
+        /*
+        ============================================
+        Tracking Number
+        ============================================
+        */
+
+        function validateTrackingNumber() {
+            const value =
+                trackingNumber.value
+                    .trim()
+                    .toUpperCase();
+
+            trackingNumber.value = value;
+
+            const trackingPattern =
+                /^[A-Z0-9][A-Z0-9-]{5,29}$/;
+
+            if (!trackingPattern.test(value)) {
+                showFieldError(
+                    trackingNumber,
+                    "trackingNumberError",
+                    "Enter a valid tracking number such as ZC-2026-00128."
+                );
+
+                return false;
+            }
+
+            clearFieldError(
+                trackingNumber,
+                "trackingNumberError"
+            );
+
+            return true;
+        }
+
+        trackingNumber.addEventListener("input", () => {
+            trackingNumber.value =
+                trackingNumber.value
+                    .toUpperCase()
+                    .replace(/[^A-Z0-9-]/g, "");
+
+            if (
+                trackingNumber.value.trim().length >= 6
+            ) {
+                validateTrackingNumber();
+            } else {
+                clearFieldError(
+                    trackingNumber,
+                    "trackingNumberError"
+                );
+            }
+        });
+
+        /*
+        ============================================
+        Claim Amount
+        ============================================
+        */
+
+        function getNumericClaimAmount() {
+            return Number(
+                claimAmount.value.replace(/,/g, "")
+            );
+        }
+
+        function formatClaimAmount() {
+            const numericValue =
+                claimAmount.value.replace(/\D/g, "");
+
+            if (!numericValue) {
+                claimAmount.value = "";
+                return;
+            }
+
+            claimAmount.value =
+                Number(numericValue).toLocaleString(
+                    "en-US"
+                );
+        }
+
+        function validateClaimAmount() {
+            const amount =
+                getNumericClaimAmount();
+
+            if (
+                !Number.isFinite(amount) ||
+                amount <= 0
+            ) {
+                showFieldError(
+                    claimAmount,
+                    "claimAmountError",
+                    "Enter a valid claim amount greater than zero."
+                );
+
+                return false;
+            }
+
+            clearFieldError(
+                claimAmount,
+                "claimAmountError"
+            );
+
+            return true;
+        }
+
+        claimAmount.addEventListener("input", () => {
+            formatClaimAmount();
+
+            if (getNumericClaimAmount() > 0) {
+                validateClaimAmount();
+            }
+        });
+
+        /*
+        ============================================
+        Description
+        ============================================
+        */
+
+        function validateDescription() {
+            const value =
+                claimDescription.value.trim();
+
+            if (value.length < 20) {
+                showFieldError(
+                    claimDescription,
+                    "claimDescriptionError",
+                    "Describe the claim using at least 20 characters."
+                );
+
+                return false;
+            }
+
+            clearFieldError(
+                claimDescription,
+                "claimDescriptionError"
+            );
+
+            return true;
+        }
+
+        claimDescription.addEventListener(
+            "input",
+            () => {
+                const currentLength =
+                    claimDescription.value.length;
+
+                characterCount.textContent =
+                    `${currentLength}/500`;
+
+                characterCount.classList.toggle(
+                    "limit-near",
+                    currentLength >= 450
+                );
+
+                if (currentLength >= 20) {
+                    clearFieldError(
+                        claimDescription,
+                        "claimDescriptionError"
+                    );
+                }
+            }
+        );
+
+        /*
+        ============================================
+        Declaration
+        ============================================
+        */
+
+        function validateDeclaration() {
+            const declarationError =
+                document.getElementById(
+                    "claimDeclarationError"
+                );
+
+            if (!claimDeclaration.checked) {
+                declarationError.classList.add(
+                    "visible"
+                );
+
+                return false;
+            }
+
+            declarationError.classList.remove(
+                "visible"
+            );
+
+            return true;
+        }
+
+        claimDeclaration.addEventListener(
+            "change",
+            validateDeclaration
+        );
+
+        /*
+        ============================================
+        Step Validation
+        ============================================
+        */
+
+        function validateCurrentStep() {
+            if (currentStep === 1) {
+                const trackingIsValid =
+                    validateTrackingNumber();
+
+                const typeIsValid =
+                    validateClaimType();
+
+                const amountIsValid =
+                    validateClaimAmount();
+
+                const descriptionIsValid =
+                    validateDescription();
+
+                return (
+                    trackingIsValid &&
+                    typeIsValid &&
+                    amountIsValid &&
+                    descriptionIsValid
+                );
+            }
+
+            if (currentStep === 2) {
+                return validateDeclaration();
+            }
+
+            return true;
+        }
+
+        /*
+        ============================================
+        Navigation Buttons
+        ============================================
+        */
+
+        nextButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                if (!validateCurrentStep()) {
+                    showToast(
+                        "Please complete all required claim information.",
+                        true
+                    );
+
+                    return;
+                }
+
+                if (currentStep < formSteps.length) {
+                    currentStep++;
+                    updateStepInterface();
+                }
+            });
+        });
+
+        previousButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                if (currentStep > 1) {
+                    currentStep--;
+                    updateStepInterface();
+                }
+            });
+        });
+
+        editClaimButton.addEventListener(
+            "click",
+            () => {
+                currentStep = 1;
+                updateStepInterface();
+            }
+        );
+
+        /*
+        ============================================
+        Review
+        ============================================
+        */
+
+        function updateClaimReview() {
+            document.getElementById(
+                "reviewTrackingNumber"
+            ).textContent =
+                trackingNumber.value.trim() || "—";
+
+            document.getElementById(
+                "reviewClaimType"
+            ).textContent =
+                getSelectedClaimType() || "—";
+
+            document.getElementById(
+                "reviewClaimAmount"
+            ).textContent =
+                getNumericClaimAmount()
+                    ? `TZS ${getNumericClaimAmount().toLocaleString(
+                        "en-US"
+                    )}`
+                    : "—";
+
+            document.getElementById(
+                "reviewDescription"
+            ).textContent =
+                claimDescription.value.trim() || "—";
+        }
+
+        /*
+        ============================================
+        Submission
+        ============================================
+        */
+
+        claimForm.addEventListener(
+            "submit",
+            async (event) => {
+                event.preventDefault();
+
+                if (!validateCurrentStep()) {
+                    showToast(
+                        "Please confirm that the claim information is accurate.",
+                        true
+                    );
+
+                    return;
+                }
+
+                const claimData = {
+                    shipmentInformation: {
+                        trackingNumber:
+                            trackingNumber.value.trim()
+                    },
+
+                    claimDetails: {
+                        claimType:
+                            getSelectedClaimType(),
+
+                        claimAmount: {
+                            currency: "TZS",
+                            amount:
+                                getNumericClaimAmount()
+                        },
+
+                        description:
+                            claimDescription.value.trim()
+                    },
+
+                    declarationAccepted:
+                        claimDeclaration.checked,
+
+                    submittedAt:
+                        new Date().toISOString()
+                };
+
+                submitButton.disabled = true;
+
+                submitButton.innerHTML = `
+                    <span
+                        class="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                    ></span>
+                    Submitting Claim...
+                `;
+
+                try {
+                    /*
+                    Replace this demonstration section with
+                    your actual ZamCargo claim API request.
+
+                    Example:
+
+                    const token =
+                        localStorage.getItem(
+                            "zamcargo_token"
+                        ) ||
+                        sessionStorage.getItem(
+                            "zamcargo_token"
+                        );
+
+                    const response = await fetch(
+                        "/api/claims",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json",
+
+                                "Authorization":
+                                    `Bearer ${token}`
+                            },
+
+                            body: JSON.stringify(
+                                claimData
+                            )
+                        }
+                    );
+
+                    const result =
+                        await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(
+                            result.message ||
+                            "Unable to submit claim."
+                        );
+                    }
+                    */
+
+                    await new Promise((resolve) => {
+                        setTimeout(resolve, 1300);
+                    });
+
+                    console.log(
+                        "Submitted claim:",
+                        claimData
+                    );
+
+                    showToast(
+                        "Claim submitted successfully. Our team will respond within 24 hours.",
+                        false,
+                        true
+                    );
+
+                    setTimeout(() => {
+                        window.location.href =
+                            "claims.html";
+                    }, 1700);
+
+                } catch (error) {
+                    console.error(error);
+
+                    showToast(
+                        error.message ||
+                        "Unable to submit the claim. Please try again.",
+                        true
+                    );
+
+                    submitButton.disabled = false;
+
+                    submitButton.innerHTML = `
+                        <i class="bi bi-send"></i>
+                        Submit Claim
+                    `;
+                }
+            }
+        );
+
+        /*
+        ============================================
+        Mobile Menu
+        ============================================
+        */
+
+        function openMenu() {
+            mobileMenu.classList.add("open");
+            menuOverlay.classList.add("show");
+
+            mobileMenu.setAttribute(
+                "aria-hidden",
+                "false"
+            );
+
+            document.body.classList.add(
+                "menu-open"
+            );
+        }
+
+        function closeMenu() {
+            mobileMenu.classList.remove("open");
+            menuOverlay.classList.remove("show");
+
+            mobileMenu.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
+            document.body.classList.remove(
+                "menu-open"
+            );
+        }
+
+        menuButton.addEventListener(
+            "click",
+            openMenu
+        );
+
+        closeMenuButton.addEventListener(
+            "click",
+            closeMenu
+        );
+
+        menuOverlay.addEventListener(
+            "click",
+            closeMenu
+        );
+
+        document.addEventListener(
+            "keydown",
+            (event) => {
+                if (event.key === "Escape") {
+                    closeMenu();
+                }
+            }
+        );
+
+        /*
+        ============================================
+        Back Button
+        ============================================
+        */
+
+        backButton.addEventListener("click", () => {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepInterface();
+            } else {
+                window.location.href =
+                    "main_dashboard.html";
+            }
+        });
+
+        /*
+        ============================================
+        Toast
+        ============================================
+        */
+
+        function showToast(
+            message,
+            isError = false,
+            isSuccess = false
+        ) {
+            toastMessage.textContent = message;
+
+            toastMessage.classList.toggle(
+                "error",
+                isError
+            );
+
+            toastMessage.classList.toggle(
+                "success",
+                isSuccess
+            );
+
+            toastMessage.classList.add("show");
+
+            clearTimeout(showToast.timeout);
+
+            showToast.timeout =
+                setTimeout(() => {
+                    toastMessage.classList.remove(
+                        "show"
+                    );
+                }, 3800);
+        }
+
+        /*
+        ============================================
+        Initialize
+        ============================================
+        */
+
+        updateStepInterface();
+    </script>
+
+</body>
+</html>
